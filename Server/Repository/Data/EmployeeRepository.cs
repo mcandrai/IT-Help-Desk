@@ -37,6 +37,21 @@ namespace Server.Repository.Data
             }
 
         }
+        public int GenerateAccountRole()
+        {
+            int countAccountRole = myContext.AccountRoles.ToList().Count;
+            int result;
+            if (countAccountRole < 1)
+            {
+                return result = (countAccountRole + 1);
+            }
+            else
+            {
+                var maxId = myContext.AccountRoles.Max(e => e.AccountRoleId);
+                int setId = maxId + 1;
+                return result = setId;
+            }
+        }
         public bool DuplicateEmailValue(RegisterVM register)
         {
             int getEmail = myContext.Accounts.Where(a => a.Email == register.Email).Count();
@@ -84,7 +99,8 @@ namespace Server.Repository.Data
             var accountrole = new AccountRole
             {
                 AccountId = employee.NIK,
-                RoleId = 3
+                RoleId = 3,
+                AccountRoleId = GenerateAccountRole(),
             };
 
             myContext.AccountRoles.Add(accountrole);
