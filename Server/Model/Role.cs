@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Server.Model
@@ -11,7 +12,9 @@ namespace Server.Model
     public class Role
     {
         [Key]
-        public int RoleId { get; set; }
-        public string RoleName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<AccountRole> AccountRole { get; set; }
     }
 }

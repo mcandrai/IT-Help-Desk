@@ -55,8 +55,12 @@ namespace Server
                 }
                 });
             });
+            services.AddControllers().AddNewtonsoftJson(x =>
+            x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers();
             services.AddScoped<RoleRepository>();
+            services.AddScoped<AccountRepository>();
+            services.AddScoped<EmployeeRepository>();
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Database")));
         }
 
