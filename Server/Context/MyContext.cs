@@ -25,9 +25,6 @@ namespace Server.Context
               .HasForeignKey<Account>(e => e.NIK);
 
             modelBuilder.Entity<AccountRole>()
-                .HasKey(ar => new { ar.AccountId, ar.RoleId });
-
-            modelBuilder.Entity<AccountRole>()
                 .HasOne(ar => ar.Account)
                 .WithMany(a => a.AccountRole)
                 .HasForeignKey(ar => ar.AccountId);

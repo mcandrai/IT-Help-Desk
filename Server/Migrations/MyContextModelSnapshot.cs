@@ -46,20 +46,24 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Model.AccountRole", b =>
                 {
+                    b.Property<int>("AccountRoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<string>("AccountId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AccountRoleId")
-                        .HasColumnType("int");
+                    b.HasKey("AccountRoleId");
 
-                    b.HasKey("AccountId", "RoleId");
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("tb_tr_accountrole");
+                    b.ToTable("tb_tr_account_role");
                 });
 
             modelBuilder.Entity("Server.Model.Employee", b =>
@@ -114,9 +118,7 @@ namespace Server.Migrations
                 {
                     b.HasOne("Server.Model.Account", "Account")
                         .WithMany("AccountRole")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AccountId");
 
                     b.HasOne("Server.Model.Role", "Role")
                         .WithMany("AccountRole")
