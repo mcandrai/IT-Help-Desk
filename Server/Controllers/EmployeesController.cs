@@ -57,7 +57,7 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        [Route("GetRegisterAll")]
+        [Route("Get-Register-All")]
         public virtual ActionResult<RegisterVM> GetRegisterAll()
         {
             var result = employeeRepository.GetRegisterAll();
@@ -65,7 +65,7 @@ namespace Server.Controllers
         }
 
         [HttpPut]
-        [Route("UpdateRegister")]
+        [Route("Update-Register")]
         public ActionResult<RegisterVM> RegisterUpdate(RegisterVM register)
         {
             /*var result = employeeRepository.UpdateRegister(register);
@@ -98,7 +98,7 @@ namespace Server.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteRegister")]
+        [Route("Delete-Register")]
         public ActionResult<RegisterVM> DeleteRegisterData(RegisterVM register)
         {
             try

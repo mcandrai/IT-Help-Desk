@@ -1,16 +1,77 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Server.Model;
+using Server.Repository.Data;
+using Server.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Server.Controllers
 {
-    public class AccountsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AccountsController : BaseController<Account, AccountRepository, string>
     {
-        public IActionResult Index()
+        private readonly AccountRepository accountRepository;
+        public IConfiguration _configuration;
+        public AccountsController(AccountRepository accountRepository, IConfiguration configuration) : base(accountRepository)
         {
-            return View();
+            this.accountRepository = accountRepository;
+            this._configuration = configuration;
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public ActionResult Login(LoginVM login)
+        {
+            try
+            {
+                bool isEmail = accountRepository.CheckEmail(login);
+
+                if (!isEmail)
+                {
+                    return Ok(new JwToken { status = HttpStatusCode.BadRequest, code = 0, idToken = null, message = "Account not found!" });
+                }
+
+                bool isLogin = accountRepository.Login(login);
+
+                if (isLogin)
+                {
+                    string employeeRole = accountRepository.GetRole(login.Email);
+                    var claims = new List<Claim>
+                    {
+                        new Claim("email", login.Email),
+                        new Claim("role", employeeRole)
+                    };
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                    var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var token = new JwtSecurityToken(
+                            _configuration["Jwt:Issuer"],
+                            _configuration["Jwt:Audience"],
+                            claims,
+                            expires: DateTime.UtcNow.AddMinutes(10),
+                            signingCredentials: signIn
+                        );
+                    var idToken = new JwtSecurityTokenHandler().WriteToken(token);
+                    claims.Add(new Claim("Token Security", idToken.ToString()));
+                    return Ok(new JwToken { status = HttpStatusCode.OK, code = 1, idToken = idToken, message = "Successful login!" });
+                }else
+                {
+                    return Ok(new JwToken { status = HttpStatusCode.BadRequest, code = 0, idToken = null, message = "Your password is invalid, Please try again!" });
+                }
+
+            }
+            catch (Exception)
+            {
+                return BadRequest(new JwToken { status = HttpStatusCode.InternalServerError, idToken = null, message = "Something has gone wrong!" });
+            }
         }
     }
 }
