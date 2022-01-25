@@ -45,6 +45,9 @@ namespace Server
             services.AddScoped<RoleRepository>();
             services.AddScoped<AccountRepository>();
             services.AddScoped<EmployeeRepository>();
+            services.AddScoped<CategoryRepository>();
+            services.AddScoped<StatusRepository>();
+
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
