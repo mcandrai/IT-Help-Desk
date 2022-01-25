@@ -30,5 +30,13 @@ namespace Server.Controllers
             var result = ticketRepository.CreateTicket(ticketDetailVM);
             return Ok(new { status = HttpStatusCode.OK, result = 1, message = "Successfully added data!" });
         }
+
+        [HttpPut]
+        [Route("Update-Ticket-HelpDesk")]
+        public ActionResult<TicketDetailVM> UpdateTicket(TicketDetailVM ticketDetailVM)
+        {
+            var result = ticketRepository.UpdateTicket(ticketDetailVM);
+            return Ok(result);
+        }
     }
 }

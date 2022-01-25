@@ -1,4 +1,5 @@
-﻿using Server.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Server.Context;
 using Server.Model;
 using Server.ViewModel;
 using System;
@@ -34,6 +35,17 @@ namespace Server.Repository.Data
                 TicketId = ticket.Id,
             };
             myContext.Messages.Add(message);
+            return myContext.SaveChanges();
+        }
+
+        public int UpdateTicket(TicketDetailVM ticketDetailVM)
+        {
+            var ticket = myContext.Tickets.FirstOrDefault(a => a.Id == ticketDetailVM.Id);
+            {
+                ticket.UpdateAt = DateTime.Now;
+                ticket.StatusId = ticketDetailVM.StatusId;
+            };
+            myContext.Entry(ticket).State = EntityState.Modified;
             return myContext.SaveChanges();
         }
     }
