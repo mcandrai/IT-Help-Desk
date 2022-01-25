@@ -17,6 +17,7 @@ namespace Server.Context
         public DbSet<Account> Accounts { get; set; }
         public DbSet<ProblemCategory> Categories { get; set; }
         public DbSet<Status> Statuses { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public DbSet<Ticket>Tickets { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<AccountRole> AccountRoles { get; set; }
@@ -36,6 +37,24 @@ namespace Server.Context
                 .HasOne(ar => ar.Role)
                 .WithMany(r => r.AccountRole)
                 .HasForeignKey(ar => ar.RoleId);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(m => m.Message)
+                .WithOne(t => t.Ticket)
+                .HasForeignKey<Message>(m => m.TicketId);
+
+            modelBuilder.Entity<Status>()
+                .HasMany(t => t.Ticket)
+                .WithOne(s => s.Status);
+
+            modelBuilder.Entity<ProblemCategory>()
+                .HasMany(t => t.Ticket)
+                .WithOne(pc => pc.Category);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(t => t.Ticket)
+                .WithOne(e => e.Employee)
+                .HasForeignKey(t => t.NIK);
         }
     }
 }
