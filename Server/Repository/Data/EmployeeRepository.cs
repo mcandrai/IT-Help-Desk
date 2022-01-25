@@ -136,7 +136,6 @@ namespace Server.Repository.Data
 
         public int UpdateRegister(RegisterVM register)
         {
-           
             var employee = new Employee
             {
                 NIK = register.NIK,
@@ -148,12 +147,9 @@ namespace Server.Repository.Data
             myContext.Entry(employee).State = EntityState.Modified;
             myContext.SaveChanges();
 
-            var password = myContext.Employees.Include(a => a.Account).FirstOrDefault();
-            var account = new Account
+            var account = myContext.Accounts.FirstOrDefault(a => a.NIK == employee.NIK);
             {
-                NIK = password.NIK,
-                Email = register.Email,
-                Password = password.Account.Password,
+                account.Email = register.Email;
             };
             myContext.Entry(account).State = EntityState.Modified;
             return myContext.SaveChanges();
