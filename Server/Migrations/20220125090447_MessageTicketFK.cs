@@ -135,7 +135,7 @@ namespace Server.Migrations
                         column: x => x.AccountId,
                         principalTable: "tb_m_accounts",
                         principalColumn: "NIK",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_tb_tr_account_role_tb_m_roles_RoleId",
                         column: x => x.RoleId,
