@@ -91,7 +91,9 @@ namespace Server.Migrations
             modelBuilder.Entity("Server.Model.Message", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("MessageText")
                         .HasColumnType("nvarchar(max)");
@@ -100,6 +102,9 @@ namespace Server.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TicketId")
+                        .IsUnique();
 
                     b.ToTable("tb_tr_messages");
                 });
@@ -214,7 +219,7 @@ namespace Server.Migrations
                 {
                     b.HasOne("Server.Model.Ticket", "Ticket")
                         .WithOne("Message")
-                        .HasForeignKey("Server.Model.Message", "Id")
+                        .HasForeignKey("Server.Model.Message", "TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
