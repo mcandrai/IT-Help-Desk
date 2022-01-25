@@ -4,6 +4,7 @@ using Server.Context;
 using Server.Model;
 using Server.ViewModel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -94,10 +95,10 @@ namespace Server.Repository.Data
             return myContext.SaveChanges();
         }
 
-        public RegisterVM GetRegisterAll()
+        public IEnumerable GetRegisterAll()
         {
-
-            var query = myContext.Employees.Include(a => a.Account).FirstOrDefault();
+            
+            /*var query = myContext.Employees.Include(a => a.Account).FirstOrDefault();
             if (query == null)
             {
                 return null;
@@ -112,8 +113,58 @@ namespace Server.Repository.Data
                 Gender = query.Gender,
                 AccountRoles = myContext.AccountRoles.Where(accountrole => accountrole.AccountId == query.NIK).Select(accountrole => accountrole.Role.Name).ToList()
             };
-            return getData;
+            return getData;*/
+            var query = (from employee in myContext.Set<Employee>()
+                         join account in myContext.Set<Account>()
+                            on employee.NIK equals account.NIK
+                         join accountrole in myContext.Set<AccountRole>()
+                            on employee.NIK equals accountrole.AccountId
+                         join role in myContext.Set<Role>()
+                            on accountrole.RoleId equals role.Id
+                         orderby employee.FirstName
+                         select new
+                         {
+                             employee.NIK,
+                             FullName = employee.FirstName + " " + employee.LastName,
+                             account.Email,
+                             employee.Phone,
+                             Gender = employee.Gender.ToString(),
+                             Role = role.Name,
+                         });
+            return query.ToList();
+        }
 
+        public int UpdateRegister(RegisterVM register)
+        {
+           
+            var employee = new Employee
+            {
+                NIK = register.NIK,
+                FirstName = register.FirstName,
+                LastName = register.LastName,
+                Phone = register.Phone,
+                Gender = (Model.Gender)register.Gender
+            };
+            myContext.Entry(employee).State = EntityState.Modified;
+            myContext.SaveChanges();
+
+            var password = myContext.Employees.Include(a => a.Account).FirstOrDefault();
+            var account = new Account
+            {
+                NIK = password.NIK,
+                Email = register.Email,
+                Password = password.Account.Password,
+            };
+            myContext.Entry(account).State = EntityState.Modified;
+            return myContext.SaveChanges();
+        }
+
+        public bool DeleteRegister(RegisterVM register)
+        {
+            myContext.Remove(myContext.Employees.Single(e => e.NIK == register.NIK));
+            myContext.Remove(myContext.AccountRoles.Single(a=>a.AccountId == register.NIK));
+            myContext.SaveChanges();
+            return true;
         }
     }
 }

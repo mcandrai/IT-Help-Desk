@@ -58,12 +58,34 @@ namespace Server.Controllers
 
         [HttpGet]
         [Route("GetRegisterAll")]
-        public virtual ActionResult<RegisterVM> Detail()
+        public virtual ActionResult<RegisterVM> GetRegisterAll()
         {
             var result = employeeRepository.GetRegisterAll();
             return Ok(result);
         }
 
+        [HttpPut]
+        [Route("UpdateRegister")]
+        public ActionResult<RegisterVM> RegisterUpdate(RegisterVM register)
+        {
+            var result = employeeRepository.UpdateRegister(register);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        [Route("DeleteRegister")]
+        public ActionResult<RegisterVM> DeleteRegisterData(RegisterVM register)
+        {
+            try
+            {
+                bool result = employeeRepository.DeleteRegister(register);
+                return Ok(new { status = HttpStatusCode.OK, result = 1, message = "Successfully delete data" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = HttpStatusCode.InternalServerError, result = e, message = "Something has gone wrong" });
+            }
+        }
 
     }
 }
