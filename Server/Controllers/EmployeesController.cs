@@ -68,8 +68,33 @@ namespace Server.Controllers
         [Route("UpdateRegister")]
         public ActionResult<RegisterVM> RegisterUpdate(RegisterVM register)
         {
-            var result = employeeRepository.UpdateRegister(register);
-            return Ok(result);
+            /*var result = employeeRepository.UpdateRegister(register);
+            return Ok(result);*/
+            try
+            {
+                bool isDuplicateEmail = employeeRepository.UpdateEmail(register);
+                if (isDuplicateEmail)
+                {
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "Email already used!" });
+                }
+
+                bool isDuplicatePhone = employeeRepository.UpdatePhone(register);
+
+                if (isDuplicatePhone)
+                {
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "Phone Number already used!" });
+                }
+                else
+                {
+                    employeeRepository.UpdateRegister(register);
+                    return Ok(new { status = HttpStatusCode.OK, result = 1, message = "Successfully update data!" });
+                }
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = HttpStatusCode.InternalServerError, result = e, message = "Something has gone wrong!" });
+            }
         }
 
         [HttpDelete]

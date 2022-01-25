@@ -58,6 +58,38 @@ namespace Server.Repository.Data
             }
             return false;
         }
+        public bool UpdateEmail(RegisterVM register)
+        {
+            var getEmail = myContext.Accounts.Where(a => a.Email == register.Email).FirstOrDefault();
+            if (getEmail == null)
+            {
+                return false;
+            }
+            else if (getEmail.NIK == register.NIK)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        public bool UpdatePhone(RegisterVM register)
+        {
+            var getPhone = myContext.Employees.Where(e => e.Phone == register.Phone).FirstOrDefault();
+            if (getPhone == null)
+            {
+                return false;
+            }
+            else if (getPhone.NIK == register.NIK)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         public int RegisterEmployee(RegisterVM register)
         {
 
@@ -136,18 +168,18 @@ namespace Server.Repository.Data
 
         public int UpdateRegister(RegisterVM register)
         {
-            var employee = new Employee
+            var employee = myContext.Employees.FirstOrDefault(a => a.NIK == register.NIK);
             {
-                NIK = register.NIK,
-                FirstName = register.FirstName,
-                LastName = register.LastName,
-                Phone = register.Phone,
-                Gender = (Model.Gender)register.Gender
+                employee.NIK = register.NIK;
+                employee.FirstName = register.FirstName;
+                employee.LastName = register.LastName;
+                employee.Phone = register.Phone;
+                employee.Gender = (Model.Gender)register.Gender;
             };
             myContext.Entry(employee).State = EntityState.Modified;
             myContext.SaveChanges();
 
-            var account = myContext.Accounts.FirstOrDefault(a => a.NIK == employee.NIK);
+            var account = myContext.Accounts.FirstOrDefault(a => a.NIK == register.NIK);
             {
                 account.Email = register.Email;
             };
@@ -158,7 +190,6 @@ namespace Server.Repository.Data
         public bool DeleteRegister(RegisterVM register)
         {
             myContext.Remove(myContext.Employees.Single(e => e.NIK == register.NIK));
-            myContext.Remove(myContext.AccountRoles.Single(a=>a.AccountId == register.NIK));
             myContext.SaveChanges();
             return true;
         }
