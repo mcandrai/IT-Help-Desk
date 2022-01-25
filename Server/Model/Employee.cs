@@ -19,6 +19,7 @@ namespace Server.Model
         public Gender Gender { get; set; }
         [JsonIgnore]
         public virtual Account Account { get; set; }
+        public virtual ICollection<Ticket> Ticket { get; set; }
     }
     public enum Gender
     {

@@ -16,7 +16,8 @@ namespace Server.Model
         public DateTime UpdateAt { get; set; }
         public virtual ProblemCategory Category { get; set; }
         public string CategoryId { get; set; }
-        public virtual ICollection<Status> Status{ get; set; }
+        public virtual Status Status { get; set; }
+        public string StatusId { get; set; }
         public virtual Employee Employee { get; set; }
         public string NIK { get; set; }
     }
