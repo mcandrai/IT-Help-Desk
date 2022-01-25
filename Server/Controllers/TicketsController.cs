@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Server.Model;
 using Server.Repository.Data;
 using Server.ViewModel;
@@ -15,9 +16,11 @@ namespace Server.Controllers
     public class TicketsController : BaseController<Ticket, TicketRepository, int>
     {
         private readonly TicketRepository ticketRepository;
-        public TicketsController(TicketRepository ticketRepository) : base(ticketRepository)
+        public IConfiguration _configuration;
+        public TicketsController(TicketRepository ticketRepository, IConfiguration configuration) : base(ticketRepository)
         {
             this.ticketRepository = ticketRepository;
+            this._configuration = configuration;
         }
 
         [HttpPost]

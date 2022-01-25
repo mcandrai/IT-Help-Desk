@@ -52,7 +52,7 @@ namespace Server
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            /*services.AddAuthentication(auth =>
+            services.AddAuthentication(auth =>
             {
                 auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -69,7 +69,7 @@ namespace Server
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
-            });*/
+            });
 
             services.AddCors(c =>
             {
