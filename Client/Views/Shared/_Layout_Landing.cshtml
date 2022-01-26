@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Client</title>
+
+    @*font nunito*@
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    @*font awesemo*@
+    <link href="~/lib/template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    @*sweet alert*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+
+    @*bootstrap*@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+    @*css native*@
+    <link href="~/lib/template/css/sb-admin-2.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <style>
+        body, html {
+            height: 100%;
+        }
+        .bg-body {
+            background-image: url("/image/mario-gogh-VBLHICVh-lI-unsplash.jpg");
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+      
+    </style>
+</head>
+<body class="bg-body">
+
+    @RenderBody()
+
+    @*jquery source*@
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+
+
+    @*bootstrap source*@
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

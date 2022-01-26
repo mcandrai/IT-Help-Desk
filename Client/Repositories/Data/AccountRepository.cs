@@ -1,10 +1,13 @@
 ﻿using Client.Base;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using Server.Model;
+using Server.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Client.Repositories.Data
@@ -26,5 +29,19 @@ namespace Client.Repositories.Data
             };
 
         }
+
+        public async Task<JwToken> Auth(LoginVM login)
+        {
+            JwToken token = null;
+
+            StringContent content = new StringContent(JsonConvert.SerializeObject(login), Encoding.UTF8, "application/json");
+            var result = await httpClient.PostAsync(request + "login/", content);
+
+            string apiResponse = await result.Content.ReadAsStringAsync();
+            token = JsonConvert.DeserializeObject<JwToken>(apiResponse);
+
+            return token;
+        }
+
     }
 }

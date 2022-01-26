@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "401";
+    Layout = "_Layout_Login";
+}
+
+<script>
+    var count = 10;
+    var redirect = "https://localhost:44300/Login";
+
+    function CountDown() {
+        var timer = document.getElementById("timer");
+        if (count > 0) {
+            count--;
+            timer.innerHTML = "This page will redirect in " + count + " seconds.";
+            setTimeout("CountDown()", 1000);
+        } else {
+            window.location.href = redirect;
+        }
+    }
+</script>
+
+<div class="text-center">
+    <div class="error mx-auto" data-text="401">401</div>
+    <p class="lead text-gray-800 mb-5">Missing Permissions</p>
+    <p class="text-gray-500 mb-0">do not worry though, there is always a way to go back login...</p>
+    <a href="https://localhost:44300/Login">&larr; Back to Login</a>
+    <div class="text-body-500">
+        <p id="timer" >
+            <script type="text/javascript">
+                CountDown();
+            </script>
+        </p>
+    </div>
+   
+</div>
+

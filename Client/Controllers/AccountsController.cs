@@ -1,7 +1,9 @@
 ﻿using Client.Base;
 using Client.Repositories.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Server.Model;
+using Server.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,38 @@ namespace Client.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Auth(LoginVM login)
+        {
+            var jwToken = await accountRepository.Auth(login);
+            var token = jwToken.idToken;
+
+            string status = jwToken.status.ToString();
+
+            if (token == null)
+            {
+                TempData["status"] = status;
+                TempData["message"] = jwToken.message;
+                return RedirectToAction("index", "login");
+            }
+
+            HttpContext.Session.SetString("JWToken", token);
+
+            return RedirectToAction("index", "home");
+
+        }
+
+
+        [HttpGet("Accounts/Logout")]
+        public IActionResult Logout()
+        {
+
+
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("index", "login");
         }
     }
 }
