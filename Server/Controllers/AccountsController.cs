@@ -31,6 +31,7 @@ namespace Server.Controllers
         [Route("Login")]
         public ActionResult Login(LoginVM login)
         {
+
             try
             {
                 bool isEmail = accountRepository.CheckEmail(login);
@@ -62,7 +63,8 @@ namespace Server.Controllers
                     var idToken = new JwtSecurityTokenHandler().WriteToken(token);
                     claims.Add(new Claim("Token Security", idToken.ToString()));
                     return Ok(new JwToken { status = HttpStatusCode.OK, code = 1, idToken = idToken, message = "Successful login!" });
-                }else
+                }
+                else
                 {
                     return Ok(new JwToken { status = HttpStatusCode.BadRequest, code = 0, idToken = null, message = "Your password is invalid, Please try again!" });
                 }

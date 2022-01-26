@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Client.Base
 {
-    public class Address
+    public class Address : Controller
     {
-        public string link = "https://localhost:44323/API/";
+        public string link = "https://localhost:44359/api/";
     }
 }

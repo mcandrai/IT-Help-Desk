@@ -28,7 +28,6 @@ namespace Server.Repository.Data
             };
             myContext.Tickets.Add(ticket);
             myContext.SaveChanges();
-
             var message = new Message
             {
                 MessageText = ticketDetailVM.Message,
@@ -47,6 +46,97 @@ namespace Server.Repository.Data
             };
             myContext.Entry(ticket).State = EntityState.Modified;
             return myContext.SaveChanges();
+        }
+
+        public IQueryable ViewTicketUser(string NIK)
+        {
+            var ticket = (from t in myContext.Tickets
+                          join m in myContext.Messages on t.Id equals m.TicketId
+                          join st in myContext.Statuses on t.StatusId equals st.Id
+                          join ct in myContext.Categories on t.CategoryId equals ct.Id
+                          where t.NIK == NIK && st.Id!=3
+                          select new
+                          {
+                              t.Id,
+                              m.MessageText,
+                              t.UpdateAt,
+                              t.CreateAt,
+                              StatusName = st.Name,
+                              CategoryName = ct.Name,
+                          });
+            return ticket;
+        }
+
+        public IQueryable ViewTicketHelpDesk()
+        {
+            var ticket = (from t in myContext.Tickets
+                          join m in myContext.Messages on t.Id equals m.TicketId
+                          join st in myContext.Statuses on t.StatusId equals st.Id
+                          join ct in myContext.Categories on t.CategoryId equals ct.Id
+                          select new
+                          {
+                              t.Id,
+                              m.MessageText,
+                              t.UpdateAt,
+                              t.CreateAt,
+                              StatusName = st.Name,
+                              CategoryName = ct.Name,
+                          });
+            return ticket;
+        }
+        public IQueryable ViewTicketBugSystem()
+        {
+            var ticket = (from t in myContext.Tickets
+                          join m in myContext.Messages on t.Id equals m.TicketId
+                          join st in myContext.Statuses on t.StatusId equals st.Id
+                          join ct in myContext.Categories on t.CategoryId equals ct.Id
+                          where t.StatusId==2
+                          select new
+                          {
+                              t.Id,
+                              m.MessageText,
+                              t.UpdateAt,
+                              t.CreateAt,
+                              StatusName = st.Name,
+                              CategoryName = ct.Name,
+                          });
+            return ticket;
+        }
+        public IQueryable ViewTicketDatabase()
+        {
+            var ticket = (from t in myContext.Tickets
+                          join m in myContext.Messages on t.Id equals m.TicketId
+                          join st in myContext.Statuses on t.StatusId equals st.Id
+                          join ct in myContext.Categories on t.CategoryId equals ct.Id
+                          where t.StatusId == 2
+                          select new
+                          {
+                              t.Id,
+                              m.MessageText,
+                              t.UpdateAt,
+                              t.CreateAt,
+                              StatusName = st.Name,
+                              CategoryName = ct.Name,
+                          });
+            return ticket;
+        }
+        public IQueryable ViewTicketHistory()
+        {
+            var ticket = (from t in myContext.Tickets
+                          join m in myContext.Messages on t.Id equals m.TicketId
+                          join st in myContext.Statuses on t.StatusId equals st.Id
+                          join ct in myContext.Categories on t.CategoryId equals ct.Id
+                          where t.StatusId == 3
+                          select new
+                          {
+                              t.Id,
+                              m.MessageText,
+                              t.UpdateAt,
+                              t.CreateAt,
+                              StatusName = st.Name,
+                              CategoryName = ct.Name,
+                          });
+            return ticket;
         }
     }
 }

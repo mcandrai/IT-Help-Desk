@@ -32,14 +32,9 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "My API",
-                    Version = "v1"
-                });
-            });
+            services.AddControllers().AddNewtonsoftJson(x => 
+            x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            
 
             services.AddControllers();
             services.AddScoped<RoleRepository>();
@@ -49,8 +44,10 @@ namespace Server
             services.AddScoped<StatusRepository>();
             services.AddScoped<TicketRepository>();
             services.AddScoped<MessageRepository>();
-            services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Database")));
-            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddDbContext<MyContext>(options => 
+            options.UseSqlServer(Configuration.GetConnectionString("Database")));
+            
 
             services.AddAuthentication(auth =>
             {
@@ -75,6 +72,14 @@ namespace Server
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "My API",
+                    Version = "v1"
+                });
+            });
 
         }
 
@@ -85,6 +90,7 @@ namespace Server
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseHttpsRedirection();
 
             app.UseSwagger();
 
@@ -96,7 +102,7 @@ namespace Server
 
             app.UseRouting();
 
-            /*app.UseAuthentication();*/
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

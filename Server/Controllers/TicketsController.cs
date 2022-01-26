@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Server.Model;
 using Server.Repository.Data;
@@ -28,7 +29,7 @@ namespace Server.Controllers
         public ActionResult<TicketDetailVM> CreateTicket(TicketDetailVM ticketDetailVM)
         {
             var result = ticketRepository.CreateTicket(ticketDetailVM);
-            return Ok(new { status = HttpStatusCode.OK, result = 1, message = "Successfully added data!" });
+            return Ok(new { status = HttpStatusCode.OK, message = "Successfully added data!" });
         }
 
         [HttpPut]
@@ -36,6 +37,31 @@ namespace Server.Controllers
         public ActionResult<TicketDetailVM> UpdateTicket(TicketDetailVM ticketDetailVM)
         {
             var result = ticketRepository.UpdateTicket(ticketDetailVM);
+            return Ok(result);
+        }
+
+        [HttpGet("View-Ticket-User")]
+        public IActionResult ViewTicketUser(string nik)
+        {
+            var result = ticketRepository.ViewTicketUser(nik);
+            return Ok(result);
+        }
+        [HttpGet("View-Ticket-HelpDesk")]
+        public IActionResult ViewTicketHelpDesk()
+        {
+            var result = ticketRepository.ViewTicketHelpDesk();
+            return Ok(result);
+        }
+        [HttpGet("View-Ticket-BugSystem")]
+        public IActionResult ViewTicketBugSystem()
+        {
+            var result = ticketRepository.ViewTicketBugSystem();
+            return Ok(result);
+        }
+        [HttpGet("View-Ticket-Database")]
+        public IActionResult ViewTicketDatabase()
+        {
+            var result = ticketRepository.ViewTicketDatabase();
             return Ok(result);
         }
     }

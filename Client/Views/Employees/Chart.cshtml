@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Employee Chart Page";
+    Layout = "_Layout";
+}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Employee Chart</h1>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card h-100 shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+            </div>
+            <div class="card-body">
+                <div id="employee-bar">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card h-100 shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+            </div>
+            <div class="card-body">
+                <div id="employee-donut">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/chart_employee.js"></script>
+}

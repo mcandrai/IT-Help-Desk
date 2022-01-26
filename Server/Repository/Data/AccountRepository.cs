@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Server.Context;
 using Server.Model;
 using Server.ViewModel;
@@ -13,10 +14,12 @@ namespace Server.Repository.Data
 {
     public class AccountRepository : GeneralRepository<MyContext, Account, string>
     {
+        public IConfiguration _configuration;
         private readonly MyContext myContext;
-        public AccountRepository(MyContext myContext) : base(myContext)
+        public AccountRepository(IConfiguration configuration, MyContext myContext) : base(myContext)
         {
             this.myContext = myContext;
+            this._configuration = configuration;
         }
 
         public bool CheckEmail(LoginVM login)

@@ -1,0 +1,267 @@
+﻿@{
+    ViewData["Title"] = "Employee Page";
+    Layout = "_Layout";
+}
+
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Employee</h1>
+    <button class="btn btn-success" data-toggle="modal" data-target="#modalAddEmployee"><i class="fas fa-user-plus pr-2"></i>Add Employee</button>
+</div>
+
+<!-- Table -->
+<div class="row">
+    <div class="col">
+        <table id="employeeMasterTable" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>NIK</th>
+                    <th>Fullname</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal Add -->
+<div class="modal fade" id="modalAddEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Employee</h5>
+                <button type="button" class="close" onclick="closeAddEmployeeModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form id="formAddEmployee" class="needs-validation" novalidate>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="firstName">First Name</label>
+                                <input type="text" class="form-control" id="firstName_add" placeholder="Firstname" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" class="form-control" id="lastName_add" placeholder="Lastname" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="gender">Gender</label>
+                                <select id="gender_add" class="custom-select" required>
+                                    <option value=0>Female</option>
+                                    <option value=1>Male</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="brithDate">Brith Date</label>
+                                <input type="date" class="form-control" id="brithDate_add" placeholder="Brith Date" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="phone">Phone</label>
+                                <input type="text" class="form-control" id="phone_add" placeholder="Phone" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="universityId">University</label>
+                                <select id="universityId_add" class="custom-select" required>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="degree">Degree</label>
+                                <input type="text" class="form-control" id="degree_add" placeholder="Degree" required>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="gpa">GPA</label>
+                                <input type="text" class="form-control" id="gpa_add" placeholder="GPA" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email_add" placeholder="Email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password_add" placeholder="Password" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeAddEmployeeModal()">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="modalUpdateEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Employee</h5>
+                <button type="button" class="close" onclick="closeUpdateEmployeeModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form id="formUpdateEmployee" class="needs-validation-update" novalidate>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="nik">NIK</label>
+                                <input type="text" readonly class="form-control" id="nik_edit" placeholder="NIK" required>
+                            </div>
+                        </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" class="form-control" id="firstName_edit" placeholder="Firstname" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName_edit" placeholder="Lastname" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="gender">Gender</label>
+                                    <select id="gender_edit" class="custom-select" required>
+                                        <option value=0>Female</option>
+                                        <option value=1>Male</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="brithDate">Brith Date</label>
+                                    <input type="date" class="form-control" id="brithDate_edit" placeholder="Brith Date" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" class="form-control" id="phone_edit" placeholder="Phone" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="universityId">University</label>
+                                    <select id="universityId_edit" class="custom-select" required>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="degree">Degree</label>
+                                    <input type="text" class="form-control" id="degree_edit" placeholder="Degree" required>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="gpa">GPA</label>
+                                    <input type="text" class="form-control" id="gpa_edit" placeholder="GPA" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email_edit" placeholder="Email" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" onclick="closeUpdateEmployeeModal()">Cancel</button>
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal Detail -->
+<div class="modal fade" id="modalDetailEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail Employee</h5>
+                <button type="button" class="close" onclick="closeDetail()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form id="formDetail" novalidate>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="firstName">First Name</label>
+                                <input type="text" class="form-control" id="firstName_detail" placeholder="Firstname" readonly required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" class="form-control" id="lastName_detail" placeholder="Lastname" required readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="gender">Gender</label>
+                                <select id="gender_detail" class="custom-select" disabled>
+                                    <option value=0>Female</option>
+                                    <option value=1>Male</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="brithDate">Brith Date</label>
+                                <input type="date" class="form-control" id="brithDate_detail" placeholder="Brith Date" readonly required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="phone">Phone</label>
+                                <input type="text" class="form-control" id="phone_detail" placeholder="Phone" required readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="phone">University </label>
+                                <input type="text" class="form-control" id="UniversityId_detail" placeholder="Phone" required readonly>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="degree">Degree</label>
+                                <input type="text" class="form-control" id="degree_detail" placeholder="Degree" required readonly>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="gpa">GPA</label>
+                                <input type="text" class="form-control" id="gpa_detail" placeholder="GPA" required readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email_detail" placeholder="Email" required readonly>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeDetail()">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/client_employee.js"></script>
+}
