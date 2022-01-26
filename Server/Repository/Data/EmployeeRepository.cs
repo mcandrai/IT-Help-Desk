@@ -129,23 +129,6 @@ namespace Server.Repository.Data
 
         public IEnumerable GetRegisterAll()
         {
-            
-            /*var query = myContext.Employees.Include(a => a.Account).FirstOrDefault();
-            if (query == null)
-            {
-                return null;
-            }
-            var getData = new RegisterVM
-            {
-                NIK = query.NIK,
-                FirstName = query.FirstName,
-                LastName = query.LastName,
-                Phone = query.Phone,
-                Email = query.Account.Email,
-                Gender = query.Gender,
-                AccountRoles = myContext.AccountRoles.Where(accountrole => accountrole.AccountId == query.NIK).Select(accountrole => accountrole.Role.Name).ToList()
-            };
-            return getData;*/
             var query = (from employee in myContext.Set<Employee>()
                          join account in myContext.Set<Account>()
                             on employee.NIK equals account.NIK
@@ -164,6 +147,26 @@ namespace Server.Repository.Data
                              Role = role.Name,
                          });
             return query.ToList();
+        }
+
+        public RegisterVM GetRegisterDetail(string NIK)
+        {
+            var query = myContext.Employees.Where(e => e.NIK == NIK).Include(a => a.Account).FirstOrDefault();
+            if (query == null)
+            {
+                return null;
+            }
+            var getData = new RegisterVM
+            {
+                NIK = query.NIK,
+                FirstName = query.FirstName,
+                LastName = query.LastName,
+                Phone = query.Phone,
+                Email = query.Account.Email,
+                Gender = query.Gender,
+                AccountRoles = myContext.AccountRoles.Where(accountrole => accountrole.AccountId == query.NIK).Select(accountrole => accountrole.Role.Name).ToList()
+            };
+            return getData;
         }
 
         public int UpdateRegister(RegisterVM register)

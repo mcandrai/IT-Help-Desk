@@ -28,7 +28,7 @@ namespace Server.Controllers
         }
 
         [HttpPost]
-        [Route("login")]
+        [Route("Login")]
         public ActionResult Login(LoginVM login)
         {
             try
@@ -73,5 +73,77 @@ namespace Server.Controllers
                 return BadRequest(new JwToken { status = HttpStatusCode.InternalServerError, idToken = null, message = "Something has gone wrong!" });
             }
         }
+
+        [HttpPost]
+        [Route("Forgot-Password")]
+        public ActionResult ForgotPassword(ForgotPasswordVM forgotPassword)
+        {
+            try
+            {
+                bool isEmail = accountRepository.CheckEmail(forgotPassword.Email);
+                if (!isEmail)
+                {
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "Account not found!" });
+                }
+                else
+                {
+                    accountRepository.SendOTP(forgotPassword.Email);
+                    return Ok(new { status = HttpStatusCode.OK, result = 1, message = "OTP code sent to your email, Please check inbox or spam!" });
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { status = HttpStatusCode.InternalServerError, result = 0, message = "Something has gone wrong!" });
+            }
+        }
+
+        [HttpPost]
+        [Route("Change-Password")]
+        public ActionResult ChangePassword(ForgotPasswordVM forgotPassword)
+        {
+            try
+            {
+                string password = forgotPassword.Password;
+                
+                if (String.IsNullOrEmpty(password))
+                {
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "Password cannot be empty!" });
+                }
+
+                bool isEmail = accountRepository.CheckEmail(forgotPassword.Email);
+
+                if (!isEmail)
+                {
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "Account not found!" });
+                }
+
+                bool isValidOTP = accountRepository.CheckExpiredOTP(forgotPassword.Email);
+
+                if (!isValidOTP)
+                {
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "OTP code has expired, Please request again!" });
+                }
+                else
+                {
+                    bool isChangePassword = accountRepository.ChangePassword(forgotPassword);
+
+                    if (isChangePassword)
+                    {
+                        return Ok(new { status = HttpStatusCode.OK, result = 1, message = "Success change password!" });
+                    }
+                    else
+                    {
+                        return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "OTP code does not match, Please try again!" });
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { status = HttpStatusCode.InternalServerError, result = 0, message = "Something has gone wrong!" });
+            }
+        }
+
     }
 }
+

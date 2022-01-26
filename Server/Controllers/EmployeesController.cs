@@ -64,6 +64,14 @@ namespace Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("Get-Register-Detail/{NIK}")]
+        public virtual ActionResult<RegisterVM> GetRegisterDetail(string NIK)
+        {
+            var result = employeeRepository.GetRegisterDetail(NIK);
+            return result;
+        }
+
         [HttpPut]
         [Route("Update-Register")]
         public ActionResult<RegisterVM> RegisterUpdate(RegisterVM register)
