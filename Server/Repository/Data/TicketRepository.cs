@@ -48,13 +48,14 @@ namespace Server.Repository.Data
             return myContext.SaveChanges();
         }
 
-        public IQueryable ViewTicketUser(string NIK)
+        public IQueryable ViewTicketUser(string Email)
         {
             var ticket = (from t in myContext.Tickets
+                          join a in myContext.Accounts on t.NIK equals a.NIK
                           join m in myContext.Messages on t.Id equals m.TicketId
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
-                          where t.NIK == NIK && st.Id!=3
+                          where  a.Email==Email && st.Id!=3
                           select new
                           {
                               t.Id,
@@ -108,7 +109,7 @@ namespace Server.Repository.Data
                           join m in myContext.Messages on t.Id equals m.TicketId
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
-                          where t.StatusId == 2
+                          where t.StatusId == 3
                           select new
                           {
                               t.Id,

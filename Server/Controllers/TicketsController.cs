@@ -29,7 +29,7 @@ namespace Server.Controllers
         public ActionResult<TicketDetailVM> CreateTicket(TicketDetailVM ticketDetailVM)
         {
             var result = ticketRepository.CreateTicket(ticketDetailVM);
-            return Ok(new { status = HttpStatusCode.OK, message = "Successfully added data!" });
+            return Ok(new { status = HttpStatusCode.OK,message = "Successfully added data!" });
         }
 
         [HttpPut]
@@ -41,9 +41,9 @@ namespace Server.Controllers
         }
 
         [HttpGet("View-Ticket-User")]
-        public IActionResult ViewTicketUser(string nik)
+        public IActionResult ViewTicketUser(string email)
         {
-            var result = ticketRepository.ViewTicketUser(nik);
+            var result = ticketRepository.ViewTicketUser(email);
             return Ok(result);
         }
         [HttpGet("View-Ticket-HelpDesk")]

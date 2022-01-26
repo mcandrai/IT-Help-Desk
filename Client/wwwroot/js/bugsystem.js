@@ -1,8 +1,10 @@
 ﻿/*get data all employee*/
 $(document).ready(function () {
-    $('#userTable').DataTable({
+    /*var token = sessionStorage.getItem("JWToken");
+    console.log(token);*/
+    $('#ticketTable').DataTable({
         "ajax": {
-            'url': 'GetAll',
+            'url': 'https://localhost:44359/api/Tickets/View-Ticket-BugSystem',
             'error': function (jqXHR) {
                 console.log(jqXHR);
             },
@@ -31,33 +33,36 @@ $(document).ready(function () {
         ],
         'columns': [
             {
-                'data': 'nik'
-            },
-            {
                 'data': null,
-                'render': function (data) {
-                    return data.firstName.concat(" ",data.lastName);
+                'render': function (data, type, row, meta) {
+                    return (meta.row + meta.settings._iDisplayStart + 1);
                 }
             },
             {
-                'data': 'phone'
+                'data': 'id'
             },
             {
-                'data': 'email'
+                'data': 'messageText'
             },
             {
-                'data': null,
-                'render': function (data) {
-                    return data.gender ? "Male" : "Female";
-                }
+                'data': 'updateAt'
+            },
+            {
+                'data': 'createAt'
+            },
+            {
+                'data': 'statusName'
+            },
+            {
+                'data': 'categoryName'
             },
             {
                 'data': null,
                 'bSortable': false,
                 'render': function (data) {
-                    var actionButton = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalDetailEmployee" data-whatever="${data.nik}"><i class="fas fa-info-circle" aria-hidden='true'></i></button>
-                                        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalUpdateEmployee" data-whatever="${data.nik}"><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>
-                                        <button class="btn btn-sm btn-danger" onclick="deleteAlert(${data.nik})"><i class="fas fa-trash-alt" aria-hidden='true'></i></button>`
+                    var actionButton = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalDetailEmployee" data-whatever="${data.id}"><i class="fas fa-info-circle" aria-hidden='true'></i></button>
+                                        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalUpdateEmployee" data-whatever="${data.id}"><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteAlert(${data.id})"><i class="fas fa-trash-alt" aria-hidden='true'></i></button>`
                     return actionButton;
                 }
             }
@@ -74,13 +79,13 @@ $(document).ready(function () {
         var forms = document.getElementsByClassName('needs-validation');
 
         var validation = Array.prototype.filter.call(forms, function (form) {
-            document.getElementById('formAddEmployee').addEventListener('submit', function (event) {
+            document.getElementById('formTicket').addEventListener('submit', function (event) {
                 if (form.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
                 } else {
                     event.preventDefault();
-                    storeEmployee();
+                    storeTicket();
                 }
 
                 form.classList.add('was-validated');
@@ -114,31 +119,29 @@ $(document).ready(function () {
 })();
 
 
-/* store employee*/
-function storeEmployee() {
+/* store ticket*/
+function storeTicket() {
 
-    var employeeData = new Object();
+    var ticketData = new Object();
 
-    employeeData.firstName = $('#firstName_add').val();
-    employeeData.lastName = $('#lastName_add').val()
-    employeeData.gender = $('#gender_add').val();
-    employeeData.brithDate = $('#brithDate_add').val();
-    employeeData.phone = $('#phone_add').val();
-    employeeData.universityId = $('#universityId_add').val();
-    employeeData.degree = $('#degree_add').val();
-    employeeData.gpa = $('#gpa_add').val();
-    employeeData.email = $('#email_add').val();
-    employeeData.password = $('#password_add').val();
+    ticketData.createAt = $('#createAt').val();
+    ticketData.updateAt = $('#updateAt').val()
+    ticketData.categoryId = parseInt($('#categoryId').val());
+    ticketData.nik = $('#nik').val();
+    ticketData.message = $('#message').val();
 
-    var employeeTable = $('#employeeMasterTable').DataTable();
+    console.log(ticketData);
+    var employeeTable = $('#ticketTable').DataTable();
 
     $.ajax({
         type: 'POST',
-        url: 'register',
-        data: employeeData,
+        url: 'tickets/CreateTicket',
+        data: ticketData,
+       /* dataType: "json",
+        contentType: 'application/json',*/
         success: function (data) {
             console.log(data);
-            closeAddEmployeeModal();
+            closeTicketModal();
             employeeTable.ajax.reload();
             alertSuccess();
         },
@@ -220,15 +223,16 @@ function getEmployeeUpdateByNIK(nik) {
 
 
 /*get data university*/
-function getUniversity() {
+function getCategory() {
     $.ajax({
-        url: 'https://localhost:44300/Universities/GetAll'
+        url: 'https://localhost:44359/api/Categories'
     }).done((data) => {
-        var universitySelect = '';
+        var categorySelect = '';
+        console.log(data);
         $.each(data, function (key, val) {
-            universitySelect += `<option value=${val.universityId}>${val.universityName}</option>`
+            categorySelect += `<option value=${val.id}>${val.name}</option>`
         });
-        $("#universityId_add").html(universitySelect);
+        $("#categoryId").html(categorySelect);
 
     }).fail((error) => {
         console.log(error);
@@ -378,15 +382,15 @@ function closeDetail() {
 }
 
 /*helper open modal insert */
-$('#modalAddEmployee').on('show.bs.modal', function () {
-    getUniversity();
+$('#modalCreateTicket').on('show.bs.modal', function () {
+    getCategory();
 });
 
 /*helper close modal insert*/
-function closeAddEmployeeModal() {
-    document.getElementById("formAddEmployee").reset();
-    document.getElementById("formAddEmployee").classList.remove('was-validated');
-    $('#modalAddEmployee').modal('hide');
+function closeTicketModal() {
+    document.getElementById("formTicket").reset();
+    document.getElementById("formTicket").classList.remove('was-validated');
+    $('#modalCreateTicket').modal('hide');
 }
 
 function closeUpdateEmployeeModal() {
