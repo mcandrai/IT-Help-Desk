@@ -313,7 +313,7 @@ function alertSuccess() {
 function alertSuccessUpdate() {
     Swal.fire({
         icon: 'success',
-        text: 'Successfully update data!',
+        text: 'Successfully Done Ticket!',
     })
 }
 
