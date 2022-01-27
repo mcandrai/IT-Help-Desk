@@ -32,11 +32,25 @@ namespace Server.Controllers
             return Ok(new { status = HttpStatusCode.OK,message = "Successfully added data!" });
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("Update-Ticket-HelpDesk")]
         public ActionResult<TicketDetailVM> UpdateTicket(TicketDetailVM ticketDetailVM)
         {
             var result = ticketRepository.UpdateTicket(ticketDetailVM);
+            return Ok(result);
+        }
+        [HttpPost]
+        [Route("Update-Ticket-BugSystem")]
+        public ActionResult<TicketDetailVM> UpdateTicketBug(TicketDetailVM ticketDetailVM)
+        {
+            var result = ticketRepository.UpdateTicketBug(ticketDetailVM);
+            return Ok(result);
+        }
+        [HttpPost]
+        [Route("Update-Ticket-Database")]
+        public ActionResult<TicketDetailVM> UpdateTicketDatabase(TicketDetailVM ticketDetailVM)
+        {
+            var result = ticketRepository.UpdateTicketDatabase(ticketDetailVM);
             return Ok(result);
         }
 

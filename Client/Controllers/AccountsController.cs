@@ -37,9 +37,8 @@ namespace Client.Controllers
                 TempData["message"] = JwToken.message;
                 return RedirectToAction("index", "login");
             }
-            
             HttpContext.Session.SetString("JWToken", token);
-            return RedirectToAction("index", "user");
+            return RedirectToAction("index", "home");
         }
 
         /*[HttpGet("Accounts/GetSessionNIK")]

@@ -1,8 +1,8 @@
-﻿@{ ViewData["Title"] = "User Page";
+﻿@{ ViewData["Title"] = "Database Page";
                 Layout = "_Layout"; }
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">User</h1>
+    <h1 class="h3 mb-0 text-gray-800">Database Engineer</h1>
     <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateTicket"><i class="fa fa-plus pr-2"></i>Create Ticket</button>
 </div>
 
@@ -75,6 +75,29 @@
             </div>
         </div>
 
+        <div class="modal fade" id="modalEscalation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ticket Problem Clear</h5>
+                        <button type="button" class="close" onclick="closeEscalationModal()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            Apakah Tiket dengan ID=
+                            <span id="escalationTicket"></span>
+                            Sudah Terselesaikan?
+                        </div>
+                    </div>
+                    <div class="modal-footer" id="ticketData">
+                        <button type="button" class="btn btn-secondary" onclick="closeEscalationModal()">Cancel</button>
+                        <button type="submit" class="btn btn-success">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         @section Scripts {
             <script type="text/javascript" src="~/js/database.js"></script>
         }

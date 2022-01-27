@@ -62,7 +62,9 @@ $(document).ready(function () {
                 'render': function (data) {
                     var actionButton = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalDetailEmployee" data-whatever="${data.id}"><i class="fas fa-info-circle" aria-hidden='true'></i></button>
                                         <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalUpdateEmployee" data-whatever="${data.id}"><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>
-                                        <button class="btn btn-sm btn-danger" onclick="deleteAlert(${data.id})"><i class="fas fa-trash-alt" aria-hidden='true'></i></button>`
+                                        <button class="btn btn-sm btn-danger" onclick="deleteAlert(${data.id})"><i class="fas fa-trash-alt" aria-hidden='true'></i></button>
+                                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-info-circle" aria-hidden='true'></i></button>
+                                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#" data-whatever="${data.id}"><i class="fas fa-info-circle" aria-hidden='true'></i></button>`
                     return actionButton;
                 }
             }
@@ -153,30 +155,33 @@ function storeTicket() {
 
 }
 
-/* store update employee*/
-function updateEmployee() {
-
-    var employeeData = new Object();
-
-    employeeData.nik = $('#nik_edit').val();
-    employeeData.firstName = $('#firstName_edit').val();
-    employeeData.lastName = $('#lastName_edit').val()
-    employeeData.gender = $('#gender_edit').val();
-    employeeData.brithDate = $('#brithDate_edit').val();
-    employeeData.phone = $('#phone_edit').val();
-    employeeData.universityId = $('#universityId_edit').val();
-    employeeData.degree = $('#degree_edit').val();
-    employeeData.gpa = $('#gpa_edit').val();
-    employeeData.email = $('#email_edit').val();
-
-    var employeeTable = $('#employeeMasterTable').DataTable();
+function getEmployeeByNIK(id) {
     $.ajax({
-        type: 'PUT',
-        url: 'update',
-        data: employeeData,
+        type: 'GET',
+        url: 'Detail/' + nik,
+        contentType: 'application/json;charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+            mappingFormDetail(result)
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+        }
+    })
+}
+
+/* store update employee*/
+function updateTicket(id) {
+    var ticketTable = $('#ticketTable').DataTable();
+    var ticketData = new Object();
+    ticketData.id = id;
+    $.ajax({
+        type: 'POST',
+        url: 'tickets/UpdateTicket',
+        data: ticketData,
         success: function (data) {
-            closeUpdateEmployeeModal();
-            employeeTable.ajax.reload();
+            closeEscalationModal();
+            ticketTable.ajax.reload();
             alertSuccessUpdate();
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -324,7 +329,7 @@ function alertSuccess() {
 function alertSuccessUpdate() {
     Swal.fire({
         icon: 'success',
-        text: 'Successfully update data!',
+        text: 'Successfully Escalation Ticket!',
     })
 }
 
@@ -337,11 +342,15 @@ $('#modalDetailEmployee').on('show.bs.modal', function (event) {
 });
 
 /*helper if modal update show*/
-$('#modalUpdateEmployee').on('show.bs.modal', function (event) {
-    getUniversityUpdate();
-    var button = $(event.relatedTarget)
-    var recipient = button.data('whatever')
-    getEmployeeUpdateByNIK(recipient);
+$('#modalEscalation').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var recipient = button.data('whatever');
+    //getEmployeeUpdateByNIK(recipient);
+    var modal = $(this);
+    modal.find('#escalationTicket').text(recipient);
+    var data = '';
+    data = `<button onClick="updateTicket(${recipient})">Confirm</button>`
+    $("#ticketData").html(data);
 });
 
 
@@ -376,15 +385,10 @@ function mappingFormUpdate(data) {
 }
 
 /*helper close modal detail */
-function closeDetail() {
-    document.getElementById("formDetail").reset();
-    $('#modalDetailEmployee').modal('hide');
+function closeEscalationModal() {
+    $('#modalEscalation').modal('hide');
 }
 
-/*helper open modal insert */
-$('#modalCreateTicket').on('show.bs.modal', function () {
-    getCategory();
-});
 
 /*helper close modal insert*/
 function closeTicketModal() {

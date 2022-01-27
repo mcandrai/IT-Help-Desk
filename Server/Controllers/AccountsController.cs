@@ -66,7 +66,7 @@ namespace Server.Controllers
                         );
                     var idToken = new JwtSecurityTokenHandler().WriteToken(token);
                     claims.Add(new Claim("Token Security", idToken.ToString()));
-                    return Ok(new JwToken { status = HttpStatusCode.OK, code = 1, idToken = idToken, message = "Successful login!" });
+                    return Ok(new JwToken { status = HttpStatusCode.OK, code = 1, idToken = idToken,message = "Successful login!" });
                 }
                 else
                 {

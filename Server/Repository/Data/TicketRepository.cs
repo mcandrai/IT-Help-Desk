@@ -37,15 +37,75 @@ namespace Server.Repository.Data
             return myContext.SaveChanges();
         }
 
+        
         public int UpdateTicket(TicketDetailVM ticketDetailVM)
         {
-            var ticket = myContext.Tickets.FirstOrDefault(a => a.Id == ticketDetailVM.Id);
+            var getTicket = myContext.Tickets.FirstOrDefault(a => a.Id == ticketDetailVM.Id);
+            var ticket = new Ticket
             {
-                ticket.UpdateAt = DateTime.Now;
-                ticket.StatusId = ticketDetailVM.StatusId;
+                Id = getTicket.Id,
+                CreateAt = getTicket.CreateAt,
+                UpdateAt = DateTime.Now,
+                CategoryId = getTicket.CategoryId,
+                StatusId = 2,
+                NIK = getTicket.NIK
             };
+            myContext.Entry(getTicket).State = EntityState.Detached;
             myContext.Entry(ticket).State = EntityState.Modified;
             return myContext.SaveChanges();
+        }
+
+        public int UpdateTicketBug(TicketDetailVM ticketDetailVM)
+        {
+            var getTicket = myContext.Tickets.FirstOrDefault(a => a.Id == ticketDetailVM.Id);
+            var ticket = new Ticket
+            {
+                Id = getTicket.Id,
+                CreateAt = getTicket.CreateAt,
+                UpdateAt = DateTime.Now,
+                CategoryId = getTicket.CategoryId,
+                StatusId = 3,
+                NIK = getTicket.NIK
+            };
+            myContext.Entry(getTicket).State = EntityState.Detached;
+            myContext.Entry(ticket).State = EntityState.Modified;
+            return myContext.SaveChanges();
+        }
+        public int UpdateTicketDatabase(TicketDetailVM ticketDetailVM)
+        {
+            var getTicket = myContext.Tickets.FirstOrDefault(a => a.Id == ticketDetailVM.Id);
+            var ticket = new Ticket
+            {
+                Id = getTicket.Id,
+                CreateAt = getTicket.CreateAt,
+                UpdateAt = DateTime.Now,
+                CategoryId = getTicket.CategoryId,
+                StatusId = 5,
+                NIK = getTicket.NIK
+            };
+            myContext.Entry(getTicket).State = EntityState.Detached;
+            myContext.Entry(ticket).State = EntityState.Modified;
+            return myContext.SaveChanges();
+        }
+
+        public TicketDetailVM GetTicketDetail(int ID)
+        {
+            var query = myContext.Tickets.Where(t=>t.Id == ID).Include(m => m.Message).FirstOrDefault();
+            if (query == null)
+            {
+                return null;
+            }
+            var getData = new TicketDetailVM
+            {
+                Id = query.Id,
+                CreateAt = query.CreateAt,
+                UpdateAt = query.UpdateAt,
+                CategoryId = query.CategoryId,
+                StatusId = query.StatusId,
+                NIK = query.NIK,
+                Message = query.Message.MessageText
+            };
+            return getData;
         }
 
         public IQueryable ViewTicketUser(string NIK)

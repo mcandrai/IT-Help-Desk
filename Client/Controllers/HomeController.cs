@@ -23,7 +23,22 @@ namespace Client.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Employee"))
+            {
+                return RedirectToAction("index", "user");
+            }
+            else if (User.IsInRole("HelpDesk"))
+            {
+                return RedirectToAction("index", "helpdesk");
+            }
+            else if (User.IsInRole("BugSystem"))
+            {
+                return RedirectToAction("index", "bugsystem");
+            }
+            else
+            {
+                return RedirectToAction("index", "database");
+            }
         }
 
         public IActionResult Privacy()
