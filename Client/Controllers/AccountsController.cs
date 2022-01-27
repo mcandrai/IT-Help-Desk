@@ -24,7 +24,8 @@ namespace Client.Controllers
             return View();
         }
 
-        [HttpPost("accounts/login")]
+
+        [HttpPost("Accounts/Login")]
         public async Task<IActionResult> Auth(LoginVM login)
         {
             var JwToken = await accountRepository.Auth(login);
@@ -44,6 +45,7 @@ namespace Client.Controllers
 
 
         }
+
         [HttpGet("Accounts/Logout")]
         public IActionResult Logout()
         {

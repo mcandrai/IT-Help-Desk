@@ -38,7 +38,7 @@ namespace Server.Controllers
 
                 if (!isEmail)
                 {
-                    return Ok(new JwToken { status = HttpStatusCode.BadRequest, code = 0, idToken = null, message = "Account not found!" });
+                    return Ok(new JwToken { status = HttpStatusCode.NotFound, idToken = null, message = "Account not found!" });
                 }
 
                 bool isLogin = accountRepository.Login(login);
@@ -62,11 +62,11 @@ namespace Server.Controllers
                         );
                     var idToken = new JwtSecurityTokenHandler().WriteToken(token);
                     claims.Add(new Claim("Token Security", idToken.ToString()));
-                    return Ok(new JwToken { status = HttpStatusCode.OK, code = 1, idToken = idToken, message = "Successful login!" });
+                    return Ok(new JwToken { status = HttpStatusCode.OK, idToken = idToken, message = "Successful login!" });
                 }
                 else
                 {
-                    return Ok(new JwToken { status = HttpStatusCode.BadRequest, code = 0, idToken = null, message = "Your password is invalid, Please try again!" });
+                    return Ok(new JwToken { status = HttpStatusCode.Forbidden, idToken = null, message = "Your password is invalid, Please try again!" });
                 }
 
             }

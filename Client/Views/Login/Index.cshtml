@@ -1,6 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "Login Page";
-    Layout = "_Layout_Login";
+    ViewData["Title"] = "Login";
+    Layout = "_Layout_Auth";
 }
 
 
@@ -26,12 +26,12 @@
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                    <div class="col-lg-5 d-none d-lg-block bg-login-image">
 
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         @{
-                            if (status == "BadRequest")
+                            if (status == "Forbidden" || status == "NotFound" || status == "BadRequest")
                             {
                                 <div class="alert alert-danger alert-dismissible fade show mx-2 my-2">
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -40,14 +40,15 @@
                             }
                         }
                         <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                            <div class="text-left mb-4">
+                                <h1 class="h4 text-gray-900">Log in.</h1>
+                                <small>Log in with your data that you entered during your registration.</small>
                             </div>
-                            <form class="user" method="post" action="accounts/login" id="asd">
+                            <form class="user" method="post" action="Accounts/Login" id="asd">
                                 <div class="form-group">
                                     <input type="email" name="Email" class="form-control form-control-user"
                                            id="exampleInputEmail" aria-describedby="emailHelp"
-                                           placeholder="Enter Email Address..." required>
+                                           placeholder="Email" required>
                                 </div>
                                 <div class="form-group">
                                     <input type="password" name="Password" class="form-control form-control-user"
@@ -63,13 +64,14 @@
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
-                                    Login
+                                    LOGIN
                                 </button>
 
                             </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="#">Forgot Password?</a>
+                                <p class="small">Don’t have an account?<a asp-controller="Registration" asp-action="Index"> Sign up</a></p>
+                                <p class="small"><a href="">Forgot Password?</a></p>
                             </div>
                         </div>
                     </div>

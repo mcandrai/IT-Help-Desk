@@ -1,8 +1,10 @@
-﻿@{ ViewData["Title"] = "User Page";
-                Layout = "_Layout"; }
-<!-- Page Heading -->
+﻿@{  
+    ViewData["Title"] = "User";
+    Layout = "_Layout"
+; }
+
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">User</h1>
+    <h1 class="h3 mb-0 text-gray-800">Ticket</h1>
     <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateTicket"><i class="fa fa-plus pr-2"></i>Create Ticket</button>
 </div>
 
@@ -11,19 +13,18 @@
         <table id="ticketTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>ID Ticket</th>
-                    <th>Message</th>
-                    <th>Update At</th>
-                    <th>Create At</th>
-                    <th>Status Name</th>
-                    <th>Category Name</th>
-                    <th>Action</th>
+                    <th>NO</th>
+                    <th>TICKET ID</th>
+                    <th>CREATED</th>
+                    <th>UPDATED</th>
+                    <th>STATUS</th>
+                    <th>PROBLEM</th>
+                    <th>ACTION</th>
                 </tr>
             </thead>
         </table>
 
-        <!-- Modal Create Ticket -->
+    
         <div class="modal fade" id="modalCreateTicket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -74,7 +75,8 @@
                 </div>
             </div>
         </div>
-        @section Scripts {
-            <script type="text/javascript" src="~/js/userDashboard.js"></script>
-        }
-       
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript" src="~/js/user_ticket.js"></script>
+}

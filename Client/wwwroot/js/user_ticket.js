@@ -1,7 +1,5 @@
-﻿/*get data all employee*/
+﻿
 $(document).ready(function () {
-    /*var token = sessionStorage.getItem("JWToken");
-    console.log(token);*/
     $('#ticketTable').DataTable({
         "ajax": {
             'url': 'https://localhost:44359/api/Tickets/View-Ticket-HelpDesk',
@@ -40,9 +38,6 @@ $(document).ready(function () {
             },
             {
                 'data': 'id'
-            },
-            {
-                'data': 'messageText'
             },
             {
                 'data': 'updateAt'

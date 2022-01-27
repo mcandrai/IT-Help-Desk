@@ -18,7 +18,7 @@ namespace Client.Repositories.Data
         private readonly string request;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly HttpClient httpClient;
-        public AccountRepository(Address address, string request = "accounts/") : base(address, request)
+        public AccountRepository(Address address, string request = "Accounts/") : base(address, request)
         {
             this.address = address;
             this.request = request;
@@ -34,7 +34,7 @@ namespace Client.Repositories.Data
             JwToken token = null;
 
             StringContent content = new StringContent(JsonConvert.SerializeObject(login), Encoding.UTF8, "application/json");
-            var result = await httpClient.PostAsync(request + "login", content);
+            var result = await httpClient.PostAsync(request + "Login", content);
 
             string apiResponse = await result.Content.ReadAsStringAsync();
             token = JsonConvert.DeserializeObject<JwToken>(apiResponse);

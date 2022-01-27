@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 namespace Client.Controllers
 {
     [Authorize]
-    /*[Authorize(Roles = "HelpDesk")]*/
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -21,8 +20,13 @@ namespace Client.Controllers
             _logger = logger;
         }
 
+        [HttpGet("dashboard")]
         public IActionResult Index()
         {
+            if (User.IsInRole("Employee"))
+            {
+                return RedirectToAction("index", "user");
+            }
             return View();
         }
 

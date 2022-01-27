@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Client</title>
 
+    @*font family*@
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
     @*bootstrap source*@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
@@ -35,11 +39,11 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon">
-                    <i class="fas fa-briefcase"></i>
+                    <i class="fas fa-hands-helping"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">HR ADMIN</div>
+                <div class="sidebar-brand-text mx-3">HELP DESK</div>
             </a>
-            @if (User.IsInRole("Managerjs") || User.IsInRole("Direktur"))
+            @if (User.IsInRole("Help Desk"))
             {
                 <!-- Divider -->
                 <hr class="sidebar-divider my-0">
@@ -74,25 +78,13 @@
                 <hr class="sidebar-divider my-0">
             }
 
-            <!-- Nav Item - Pokemon -->
+            <!-- Nav Item - Ticket -->
             <li class="nav-item">
-                <a class="nav-link" asp-controller="Pokemon" asp-action="Index">
-                    <i class="fas fa-dove"></i>
-                    <span>Pokemon</span>
+                <a class="nav-link" asp-controller="User" asp-action="Index">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Tickets</span>
                 </a>
             </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Nav Item - Exercise -->
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Exercise" asp-action="Index">
-                    <i class="fas fa-book-open"></i>
-                    <span>Exercise</span>
-                </a>
-            </li>
-
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

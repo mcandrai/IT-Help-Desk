@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Client.Controllers
 {
-    public class UserController : Controller
+    public class RegistrationController : Controller
     {
-        [HttpGet("user-ticket")]
         public IActionResult Index()
         {
             return View();
