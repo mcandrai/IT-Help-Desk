@@ -6,10 +6,12 @@ function Triggerdata() {
         dataType: "json",
         dataSrc: ""
     }).done(result => {
+        /*document.getElementById("userName").value = result.nik;*/
         storeNIK(result.nik)
     }).fail(error => {
     })
 }
+
 function storeNIK(nik) {
     console.log(nik);
     $('#ticketTable').DataTable({
@@ -134,10 +136,8 @@ $(document).ready(function () {
 
 
 /* store ticket*/
-function storeTicket(nik) {
-
+function storeTicket() {
     var ticketData = new Object();
-
     ticketData.createAt = $('#createAt').val();
     ticketData.updateAt = $('#updateAt').val()
     ticketData.categoryId = parseInt($('#categoryId').val());
@@ -248,6 +248,17 @@ function getCategory() {
         });
         $("#categoryId").html(categorySelect);
 
+    }).fail((error) => {
+        console.log(error);
+    })
+}
+
+function getNIK() {
+    $.ajax({
+        url: 'accounts/GenerateJWTNIK'
+    }).done((data) => {
+        var nik = data.nik;
+        document.getElementById("nik").value = nik;
     }).fail((error) => {
         console.log(error);
     })
@@ -398,6 +409,7 @@ function closeDetail() {
 /*helper open modal insert */
 $('#modalCreateTicket').on('show.bs.modal', function () {
     getCategory();
+    getNIK();
 });
 
 /*helper close modal insert*/

@@ -2,7 +2,7 @@
                 Layout = "_Layout"; }
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 id="nikName" class="h3 mb-0 text-gray-800">@TempData["nik"]</h1>
+    <h1 id="nikName" class="h3 mb-0 text-gray-800">User</h1>
     <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateTicket"><i class="fa fa-plus pr-2"></i>Create Ticket</button>
 </div>
 
@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="nik">NIK</label>
-                                        <input type="text" class="form-control" id="nik" placeholder="NIK" required>
+                                        <input type="text" class="form-control" id="nik" placeholder="NIK" required readonly>
                                     </div>
                                 </div>
                                 <div class="form-row">

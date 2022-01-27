@@ -37,11 +37,9 @@ namespace Client.Controllers
                 TempData["message"] = JwToken.message;
                 return RedirectToAction("index", "login");
             }
-            TempData["nik"] = JwToken.nik;
             
             HttpContext.Session.SetString("JWToken", token);
-            var nik = Json(JwToken.nik);
-            return RedirectToAction("index", "user",nik);
+            return RedirectToAction("index", "user");
         }
 
         /*[HttpGet("Accounts/GetSessionNIK")]
@@ -54,8 +52,6 @@ namespace Client.Controllers
         [HttpGet("Accounts/GenerateJWTNIK")]
         public async Task<JsonResult> GenerateJWTNIK()
         {
-            //var result = await repository.UpdateEmployee(userVM);
-
             var result = await accountRepository.GenerateJWTNIK();
             return Json(result);
         }
