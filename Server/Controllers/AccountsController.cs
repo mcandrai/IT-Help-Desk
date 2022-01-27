@@ -46,10 +46,14 @@ namespace Server.Controllers
                 if (isLogin)
                 {
                     string employeeRole = accountRepository.GetRole(login.Email);
+                    string nikUser = accountRepository.GetNIK(login.Email);
+                    string nameUser = accountRepository.GetName(login.Email);
                     var claims = new List<Claim>
                     {
                         new Claim("email", login.Email),
-                        new Claim("role", employeeRole)
+                        new Claim("name",nameUser),
+                        new Claim("role", employeeRole),
+                        new Claim("nik",nikUser)
                     };
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                     var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

@@ -5,6 +5,7 @@ using Server.Model;
 using Server.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -41,6 +42,20 @@ namespace Client.Repositories.Data
 
             return token;
         }
+
+        public async Task<GetDataLogin> GenerateJWTNIK()
+        {
+            var content = new GetDataLogin();
+            var token = _contextAccessor.HttpContext.Session.GetString("JWToken");
+            var result = new JwtSecurityTokenHandler().ReadJwtToken(token);
+
+            content.NIK = result.Claims.First(claim => claim.Type == "nik").Value;
+            content.Name = result.Claims.First(claim => claim.Type == "name").Value;
+            content.Email = result.Claims.First(claim => claim.Type == "email").Value;
+            content.Role = result.Claims.First(claim => claim.Type == "role").Value;
+            return content;
+        }
+
 
     }
 }

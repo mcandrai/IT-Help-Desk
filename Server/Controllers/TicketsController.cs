@@ -41,9 +41,9 @@ namespace Server.Controllers
         }
 
         [HttpGet("View-Ticket-User")]
-        public IActionResult ViewTicketUser(string email)
+        public IActionResult ViewTicketUser(string nik)
         {
-            var result = ticketRepository.ViewTicketUser(email);
+            var result = ticketRepository.ViewTicketUser(nik);
             return Ok(result);
         }
         [HttpGet("View-Ticket-HelpDesk")]

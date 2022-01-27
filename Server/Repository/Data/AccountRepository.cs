@@ -68,7 +68,24 @@ namespace Server.Repository.Data
 
             return string.Join(",", result);
         }
+        public string GetNIK(string email)
+        {
+            var getAccount = myContext.Accounts.FirstOrDefault(a => a.Email == email);
 
+            string result = getAccount.NIK;
+
+            return result;
+        }
+        public string GetName(string email)
+        {
+            var getAccount = myContext.Accounts.FirstOrDefault(a => a.Email == email);
+            var getName = myContext.Employees.FirstOrDefault(e => e.NIK == getAccount.NIK);
+            var fullName = getName.FirstName +" "+ getName.LastName;
+
+            string result = fullName;
+
+            return result;
+        }
         public int GenerateOTP()
         {
             Random random = new Random();

@@ -29,21 +29,37 @@ namespace Client.Controllers
         {
             var JwToken = await accountRepository.Auth(login);
             var token = JwToken.idToken;
-
+            
             string status = JwToken.status.ToString();
-
             if (token == null)
             {
                 TempData["status"] = status;
                 TempData["message"] = JwToken.message;
                 return RedirectToAction("index", "login");
             }
-
+            TempData["nik"] = JwToken.nik;
+            
             HttpContext.Session.SetString("JWToken", token);
-            return RedirectToAction("index", "home");
-
-
+            var nik = Json(JwToken.nik);
+            return RedirectToAction("index", "user",nik);
         }
+
+        /*[HttpGet("Accounts/GetSessionNIK")]
+         public async Task<JsonResult> GetSessionNIK()
+         {
+             var result = HttpContext.Session.GetString("JWToken");
+             return Json(result);
+         }*/
+
+        [HttpGet("Accounts/GenerateJWTNIK")]
+        public async Task<JsonResult> GenerateJWTNIK()
+        {
+            //var result = await repository.UpdateEmployee(userVM);
+
+            var result = await accountRepository.GenerateJWTNIK();
+            return Json(result);
+        }
+
         [HttpGet("Accounts/Logout")]
         public IActionResult Logout()
         {

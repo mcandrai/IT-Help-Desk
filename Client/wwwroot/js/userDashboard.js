@@ -1,10 +1,20 @@
 ﻿/*get data all employee*/
-$(document).ready(function () {
-    /*var token = sessionStorage.getItem("JWToken");
-    console.log(token);*/
+Triggerdata();
+function Triggerdata() {
+    $.ajax({
+        url: 'accounts/GenerateJWTNIK',
+        dataType: "json",
+        dataSrc: ""
+    }).done(result => {
+        storeNIK(result.nik)
+    }).fail(error => {
+    })
+}
+function storeNIK(nik) {
+    console.log(nik);
     $('#ticketTable').DataTable({
         "ajax": {
-            'url': 'https://localhost:44359/api/Tickets/View-Ticket-HelpDesk',
+            'url': 'https://localhost:44359/api/Tickets/View-Ticket-User?nik=' + nik,
             'error': function (jqXHR) {
                 console.log(jqXHR);
             },
@@ -18,7 +28,7 @@ $(document).ready(function () {
                 text: '<i class="fa fa-file-excel-o"></i>',
                 extend: 'excelHtml5',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4,5,6]
+                    columns: [0, 1, 2, 3, 4, 5, 6]
                 }
             },
             {
@@ -26,7 +36,7 @@ $(document).ready(function () {
                 text: '<i class="fa fa-file-pdf-o"></i>',
                 extend: 'pdfHtml5',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4,5,6]
+                    columns: [0, 1, 2, 3, 4, 5, 6]
                 }
             }
 
@@ -68,8 +78,12 @@ $(document).ready(function () {
             }
         ]
     });
-});
 
+}
+$(document).ready(function () {
+    /*var nik = Triggerdata();
+    console.log(nik);*/
+});
 
 /*validation save employee*/
 (function () {
@@ -120,7 +134,7 @@ $(document).ready(function () {
 
 
 /* store ticket*/
-function storeTicket() {
+function storeTicket(nik) {
 
     var ticketData = new Object();
 
