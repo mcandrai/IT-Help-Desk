@@ -27,8 +27,10 @@ namespace Server.Controllers
             this._configuration = configuration;
         }
 
+        //api server for login
+
         [HttpPost]
-        [Route("Login")]
+        [Route("login")]
         public ActionResult Login(LoginVM login)
         {
 
@@ -38,7 +40,7 @@ namespace Server.Controllers
 
                 if (!isEmail)
                 {
-                    return Ok(new JwToken { status = HttpStatusCode.BadRequest, code = 0, idToken = null, message = "Account not found!" });
+                    return Ok(new JwToken { status = HttpStatusCode.NotFound, idToken = null, message = "Account not found!" });
                 }
 
                 bool isLogin = accountRepository.Login(login);
@@ -66,11 +68,11 @@ namespace Server.Controllers
                         );
                     var idToken = new JwtSecurityTokenHandler().WriteToken(token);
                     claims.Add(new Claim("Token Security", idToken.ToString()));
-                    return Ok(new JwToken { status = HttpStatusCode.OK, code = 1, idToken = idToken,message = "Successful login!" });
+                    return Ok(new JwToken { status = HttpStatusCode.OK, idToken = idToken,message = "Successful login!" });
                 }
                 else
                 {
-                    return Ok(new JwToken { status = HttpStatusCode.BadRequest, code = 0, idToken = null, message = "Your password is invalid, Please try again!" });
+                    return Ok(new JwToken { status = HttpStatusCode.Forbidden, idToken = null, message = "Your password is invalid, Please try again!" });
                 }
 
             }
@@ -80,8 +82,10 @@ namespace Server.Controllers
             }
         }
 
+        //api server for send otp
+
         [HttpPost]
-        [Route("Forgot-Password")]
+        [Route("forgot-password")]
         public ActionResult ForgotPassword(ForgotPasswordVM forgotPassword)
         {
             try
@@ -89,7 +93,7 @@ namespace Server.Controllers
                 bool isEmail = accountRepository.CheckEmail(forgotPassword.Email);
                 if (!isEmail)
                 {
-                    return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "Account not found!" });
+                    return BadRequest(new { status = HttpStatusCode.NotFound, message = "Account not found!" });
                 }
                 else
                 {
@@ -99,12 +103,14 @@ namespace Server.Controllers
             }
             catch (Exception)
             {
-                return BadRequest(new { status = HttpStatusCode.InternalServerError, result = 0, message = "Something has gone wrong!" });
+                return BadRequest(new { status = HttpStatusCode.InternalServerError, message = "Something has gone wrong!" });
             }
         }
 
+        //api server for change password
+
         [HttpPost]
-        [Route("Change-Password")]
+        [Route("change-password")]
         public ActionResult ChangePassword(ForgotPasswordVM forgotPassword)
         {
             try
@@ -113,21 +119,21 @@ namespace Server.Controllers
                 
                 if (String.IsNullOrEmpty(password))
                 {
-                    return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "Password cannot be empty!" });
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Password cannot be empty!" });
                 }
 
                 bool isEmail = accountRepository.CheckEmail(forgotPassword.Email);
 
                 if (!isEmail)
                 {
-                    return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "Account not found!" });
+                    return BadRequest(new { status = HttpStatusCode.NotFound, message = "Account not found!" });
                 }
 
                 bool isValidOTP = accountRepository.CheckExpiredOTP(forgotPassword.Email);
 
                 if (!isValidOTP)
                 {
-                    return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "OTP code has expired, Please request again!" });
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, message = "OTP code has expired, Please request again!" });
                 }
                 else
                 {
@@ -135,18 +141,18 @@ namespace Server.Controllers
 
                     if (isChangePassword)
                     {
-                        return Ok(new { status = HttpStatusCode.OK, result = 1, message = "Success change password!" });
+                        return Ok(new { status = HttpStatusCode.OK, message = "Success change password!" });
                     }
                     else
                     {
-                        return BadRequest(new { status = HttpStatusCode.BadRequest, result = 0, message = "OTP code does not match, Please try again!" });
+                        return BadRequest(new { status = HttpStatusCode.BadRequest, message = "OTP code does not match, Please try again!" });
                     }
                 }
 
             }
             catch (Exception)
             {
-                return BadRequest(new { status = HttpStatusCode.InternalServerError, result = 0, message = "Something has gone wrong!" });
+                return BadRequest(new { status = HttpStatusCode.InternalServerError, message = "Something has gone wrong!" });
             }
         }
 

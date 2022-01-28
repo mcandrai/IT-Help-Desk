@@ -1,9 +1,9 @@
-﻿@{ ViewData["Title"] = "HelpDesk Page";
-                Layout = "_Layout"; }
+﻿@{ ViewData["Title"] = "Ticket";
+    Layout = "_Layout"; }
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">HelpDesk</h1>
-    
+    <h1 class="h3 mb-0 text-gray-800">Tickets</h1>
+
 </div>
 
 <div class="row">
@@ -11,14 +11,12 @@
         <table id="ticketTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>ID Ticket</th>
-                    <th>Message</th>
-                    <th>Update At</th>
-                    <th>Create At</th>
-                    <th>Status Nama</th>
-                    <th>Category Name</th>
-                    <th>Action</th>
+                    <th>TICKET ID</th>
+                    <th>PROBLEM</th>
+                    <th>NAME</th>
+                    <th>PRIORITY</th>
+                    <th>STATUS</th>
+                    <th>ACTION</th>
                 </tr>
             </thead>
         </table>
@@ -113,7 +111,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="container-fluid">
-                            Apakah Anda Ingin Melakukan Eskalasi dengan ID Tiket = 
+                            Apakah Anda Ingin Melakukan Eskalasi dengan ID Tiket =
                             <span id="escalationTicket"></span>
                             Kepada Bug System?
                         </div>
@@ -125,7 +123,8 @@
                 </div>
             </div>
         </div>
-
-        @section Scripts {
-            <script type="text/javascript" src="~/js/helpdesk.js"></script>
-        }
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript" src="~/js/help_desk.js"></script>
+}

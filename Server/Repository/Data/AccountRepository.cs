@@ -106,7 +106,7 @@ namespace Server.Repository.Data
 
             int randomOTP = GenerateOTP();
             string bodyMessage = $"To reset your password, use code OTP : {randomOTP} \n\n Expired : {expiredToken} .";
-            client.Send("mccreg61net@gmail.com", Email, "Help Dek - Reset Password", bodyMessage);
+            client.Send("mccreg61net@gmail.com", Email, "Help Desk - Reset Password", bodyMessage);
 
             UpdateAccountOTP(Email, randomOTP, expiredToken);
             return true;

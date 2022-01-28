@@ -1,10 +1,13 @@
 ﻿using Client.Base;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using Server.Model;
+using Server.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Client.Repositories.Data
@@ -26,5 +29,22 @@ namespace Client.Repositories.Data
             };
 
         }
+
+        public Object Register(RegisterVM entity)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+
+            Object entities = new object();
+
+            using (var response = httpClient.PostAsync(address.link + request + "register", content).Result)
+            {
+                string apiResponse = response.Content.ReadAsStringAsync().Result;
+                entities = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+
+            return entities;
+        }
+
+      
     }
 }

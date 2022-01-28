@@ -24,6 +24,8 @@ namespace Client.Controllers
             return View();
         }
 
+        //api client for login
+
         [HttpPost("accounts/login")]
         public async Task<IActionResult> Auth(LoginVM login)
         {
@@ -41,26 +43,39 @@ namespace Client.Controllers
             return RedirectToAction("index", "home");
         }
 
-        /*[HttpGet("Accounts/GetSessionNIK")]
-         public async Task<JsonResult> GetSessionNIK()
-         {
-             var result = HttpContext.Session.GetString("JWToken");
-             return Json(result);
-         }*/
+        //api client for get data user login
 
-        [HttpGet("Accounts/GenerateJWTNIK")]
-        public async Task<JsonResult> GenerateJWTNIK()
+        [HttpGet("accounts/get-data-login")]
+        public JsonResult LoginDetail()
         {
-            var result = await accountRepository.GenerateJWTNIK();
+            var result = accountRepository.LoginDetail();
             return Json(result);
         }
 
-        [HttpGet("Accounts/Logout")]
+        //api client for send otp
+
+        [HttpPost("accounts/forgot-password")]
+        public JsonResult Register(ForgotPasswordVM entity)
+        {
+            var result = accountRepository.ForgotPassword(entity);
+            return Json(result);
+        }
+
+        //api client for change password
+
+        [HttpPost("accounts/change-password")]
+        public JsonResult ChangePassword(ForgotPasswordVM entity)
+        {
+            var result = accountRepository.ChangePassword(entity);
+            return Json(result);
+        }
+
+        //api client for logout
+
+        [HttpGet("accounts/logout")]
         public IActionResult Logout()
         {
-
             HttpContext.Session.Clear();
-
             return RedirectToAction("index", "login");
         }
 

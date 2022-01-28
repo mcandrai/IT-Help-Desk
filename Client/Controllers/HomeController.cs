@@ -21,17 +21,18 @@ namespace Client.Controllers
             _logger = logger;
         }
 
+        [HttpGet("dashboard")]
         public IActionResult Index()
         {
             if (User.IsInRole("Employee"))
             {
                 return RedirectToAction("index", "user");
             }
-            else if (User.IsInRole("HelpDesk"))
+            else if (User.IsInRole("Help Desk"))
             {
-                return RedirectToAction("index", "helpdesk");
+                return View();
             }
-            else if (User.IsInRole("BugSystem"))
+            else if (User.IsInRole("Bug System"))
             {
                 return RedirectToAction("index", "bugsystem");
             }

@@ -1,24 +1,21 @@
-﻿@{ ViewData["Title"] = "Database Page";
-                Layout = "_Layout"; }
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Database Engineer</h1>
-    <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateTicket"><i class="fa fa-plus pr-2"></i>Create Ticket</button>
-</div>
+﻿@{ 
+    ViewData["Title"] = "Database Page";
+    Layout = "_Layout"; 
+}
+
+
 
 <div class="row">
     <div class="col">
         <table id="ticketTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>ID Ticket</th>
-                    <th>Message</th>
-                    <th>Update At</th>
-                    <th>Create At</th>
-                    <th>Status Name</th>
-                    <th>Category Name</th>
-                    <th>Action</th>
+                    <th>TICKET ID</th>
+                    <th>PROBLEM</th>
+                    <th>NAME</th>
+                    <th>PRIORITY</th>
+                    <th>STATUS</th>
+                    <th>ACTION</th>
                 </tr>
             </thead>
         </table>
@@ -98,6 +95,8 @@
                 </div>
             </div>
         </div>
+        </div>
+    </div>
         @section Scripts {
-            <script type="text/javascript" src="~/js/database.js"></script>
+            <script type="text/javascript" src="~/js/database_engineer.js"></script>
         }

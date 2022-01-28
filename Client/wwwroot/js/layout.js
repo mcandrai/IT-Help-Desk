@@ -1,14 +1,13 @@
-﻿
-Triggerdata();
+﻿Triggerdata();
 function Triggerdata() {
     $.ajax({
-        url: 'accounts/GenerateJWTNIK',
+        url: 'accounts/get-data-login',
         dataType: "json",
         dataSrc: ""
     }).done(result => {
-        console.log(result.name);
         var userName = document.getElementById("userName");
         userName.textContent = result.name;
     }).fail(error => {
+        console.log(error)
     })
 }

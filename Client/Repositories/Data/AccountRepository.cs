@@ -30,6 +30,9 @@ namespace Client.Repositories.Data
             };
 
         }
+
+        //connection to account controller in server
+        
         public async Task<JwToken> Auth(LoginVM login)
         {
             JwToken token = null;
@@ -43,7 +46,9 @@ namespace Client.Repositories.Data
             return token;
         }
 
-        public async Task<GetDataLogin> GenerateJWTNIK()
+        //get detail data user login
+
+        public GetDataLogin LoginDetail()
         {
             var content = new GetDataLogin();
             var token = _contextAccessor.HttpContext.Session.GetString("JWToken");
@@ -56,6 +61,33 @@ namespace Client.Repositories.Data
             return content;
         }
 
+
+        public Object ForgotPassword(ForgotPasswordVM entity)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+            Object entities = new object();
+
+            using (var response = httpClient.PostAsync(address.link + request + "forgot-password", content).Result)
+            {
+                string apiResponse = response.Content.ReadAsStringAsync().Result;
+                entities = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+            return entities;
+        }
+
+
+        public Object ChangePassword(ForgotPasswordVM entity)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+            Object entities = new object();
+
+            using (var response = httpClient.PostAsync(address.link + request + "change-password", content).Result)
+            {
+                string apiResponse = response.Content.ReadAsStringAsync().Result;
+                entities = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+            return entities;
+        }
 
     }
 }

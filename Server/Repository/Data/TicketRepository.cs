@@ -20,8 +20,8 @@ namespace Server.Repository.Data
         {
             var ticket = new Ticket
             {
-                CreateAt = ticketDetailVM.CreateAt,
-                UpdateAt = ticketDetailVM.UpdateAt,
+                CreateAt = DateTime.Now,
+                UpdateAt = DateTime.Now,
                 StatusId = 1,
                 CategoryId = ticketDetailVM.CategoryId,
                 NIK = ticketDetailVM.NIK

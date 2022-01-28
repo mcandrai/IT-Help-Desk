@@ -21,7 +21,8 @@ namespace Client.Controllers
         {
             return View();
         }
-        [HttpPost]
+
+        [HttpPost("tickets/create-ticket")]
         public JsonResult CreateTicket(TicketDetailVM ticketDetailVM)
         {
             var result = ticketRepository.CreateTicket(ticketDetailVM);

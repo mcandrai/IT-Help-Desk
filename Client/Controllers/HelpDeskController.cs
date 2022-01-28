@@ -7,12 +7,27 @@ using System.Threading.Tasks;
 
 namespace Client.Controllers
 {
-    [Authorize(Roles="HelpDesk")]
+    [Authorize(Roles="Help Desk")]
     public class HelpDeskController : Controller
     {
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Employee"))
+            {
+                return RedirectToAction("index", "user");
+            }
+            else if (User.IsInRole("Help Desk"))
+            {
+                return View();
+            }
+            else if (User.IsInRole("Bug System"))
+            {
+                return RedirectToAction("index", "bugsystem");
+            }
+            else
+            {
+                return RedirectToAction("index", "database");
+            }
         }
     }
 }
