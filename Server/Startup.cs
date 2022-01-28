@@ -38,6 +38,8 @@ namespace Server
 
             services.AddControllers();
             services.AddScoped<RoleRepository>();
+            services.AddScoped<PriorityRepository>();
+            services.AddScoped<MessageDetailRepository>();
             services.AddScoped<AccountRepository>();
             services.AddScoped<EmployeeRepository>();
             services.AddScoped<CategoryRepository>();

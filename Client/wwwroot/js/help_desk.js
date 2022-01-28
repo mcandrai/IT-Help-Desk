@@ -33,27 +33,22 @@ $(document).ready(function () {
         ],
         'columns': [
             {
-                'data': 'id'
+                'data': null,
+                'render': function (data) {
+                    var link = `<a href="message/${data.id}">${data.id}</a>`
+                    return link;
+                }
             },
             {
                 'data': 'categoryName'
             },
+            {
+                'data': 'employeeName'
+            },
+            {
+                'data': 'priorityName'
+            },
 
-            {
-                'data': '',
-                'render': function (data) {
-                    var button = 'under maintance'
-                    return button;
-                }
-            },
-            
-            {
-                'data': '',
-                'render': function (data) {
-                    var button = 'under maintance'
-                    return button;
-                }
-            },
             {
                 'data': 'statusName'
             },

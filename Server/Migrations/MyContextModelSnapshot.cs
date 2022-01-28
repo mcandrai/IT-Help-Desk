@@ -109,6 +109,49 @@ namespace Server.Migrations
                     b.ToTable("tb_tr_messages");
                 });
 
+            modelBuilder.Entity("Server.Model.MessageDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MessageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MessageText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NIK")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("NIK");
+
+                    b.ToTable("tb_tr_message_detail");
+                });
+
+            modelBuilder.Entity("Server.Model.Priority", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_priorities");
+                });
+
             modelBuilder.Entity("Server.Model.ProblemCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -170,6 +213,9 @@ namespace Server.Migrations
                     b.Property<string>("NIK")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("PriorityId")
+                        .HasColumnType("int");
+
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
@@ -181,6 +227,8 @@ namespace Server.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("NIK");
+
+                    b.HasIndex("PriorityId");
 
                     b.HasIndex("StatusId");
 
@@ -226,6 +274,23 @@ namespace Server.Migrations
                     b.Navigation("Ticket");
                 });
 
+            modelBuilder.Entity("Server.Model.MessageDetail", b =>
+                {
+                    b.HasOne("Server.Model.Message", "Message")
+                        .WithMany("MessageDetail")
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Model.Employee", "Employee")
+                        .WithMany("MessageDetail")
+                        .HasForeignKey("NIK");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Message");
+                });
+
             modelBuilder.Entity("Server.Model.Ticket", b =>
                 {
                     b.HasOne("Server.Model.ProblemCategory", "Category")
@@ -238,6 +303,12 @@ namespace Server.Migrations
                         .WithMany("Ticket")
                         .HasForeignKey("NIK");
 
+                    b.HasOne("Server.Model.Priority", "Priority")
+                        .WithMany("Ticket")
+                        .HasForeignKey("PriorityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Server.Model.Status", "Status")
                         .WithMany("Ticket")
                         .HasForeignKey("StatusId")
@@ -247,6 +318,8 @@ namespace Server.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Employee");
+
+                    b.Navigation("Priority");
 
                     b.Navigation("Status");
                 });
@@ -260,6 +333,18 @@ namespace Server.Migrations
                 {
                     b.Navigation("Account");
 
+                    b.Navigation("MessageDetail");
+
+                    b.Navigation("Ticket");
+                });
+
+            modelBuilder.Entity("Server.Model.Message", b =>
+                {
+                    b.Navigation("MessageDetail");
+                });
+
+            modelBuilder.Entity("Server.Model.Priority", b =>
+                {
                     b.Navigation("Ticket");
                 });
 

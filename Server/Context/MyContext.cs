@@ -20,6 +20,8 @@ namespace Server.Context
         public DbSet<Message> Messages { get; set; }
         public DbSet<Ticket>Tickets { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Priority> Priorities { get; set; }
+        public DbSet<MessageDetail> MessageDetails { get; set; }
         public DbSet<AccountRole> AccountRoles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,6 +48,19 @@ namespace Server.Context
             modelBuilder.Entity<Status>()
                 .HasMany(t => t.Ticket)
                 .WithOne(s => s.Status);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(md => md.MessageDetail)
+                .WithOne(e => e.Employee)
+                .HasForeignKey(t => t.NIK);
+
+            modelBuilder.Entity<Message>()
+                .HasMany(md => md.MessageDetail)
+                .WithOne(m => m.Message);
+
+            modelBuilder.Entity<Priority>()
+                .HasMany(t => t.Ticket)
+                .WithOne(p => p.Priority);
 
             modelBuilder.Entity<ProblemCategory>()
                 .HasMany(t => t.Ticket)

@@ -43,17 +43,17 @@ function GetData(nik) {
         ],
         'columns': [
             {
-                'data': 'id'
+                'data': null,
+                'render': function (data) {
+                    var link = `<a href="message/${data.id}">${data.id}</a>`
+                    return link;
+                }
             },
             {
                 'data': 'categoryName'
             },
             {
-                'data': null,
-                'render': function () {
-                    var value = "under maintance";
-                    return value;
-                }
+                'data': 'priorityName'
             },
             {
                 'data': 'statusName'
@@ -63,11 +63,11 @@ function GetData(nik) {
                 'data': null,
                 'bSortable': false,
                 'render': function (data) {
-                    //var actionButton = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalDetailEmployee" data-whatever="${data.id}"><i class="fas fa-info-circle" aria-hidden='true'></i></button>
-                    //                    <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalUpdateEmployee" data-whatever="${data.id}"><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>
-                    //                    <button class="btn btn-sm btn-danger" onclick="deleteAlert(${data.id})"><i class="fas fa-trash-alt" aria-hidden='true'></i></button>`
-                    //return actionButton;
-                    var button = 'under maintance';
+                    /*var actionButton = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalDetailEmployee" data - whatever="${data.id}" > <i class="fas fa-info-circle" aria-hidden='true'></i></button >
+                                       <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalUpdateEmployee" data-whatever="${data.id}"><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>
+                                       <button class="btn btn-sm btn-danger" onclick="deleteAlert(${data.id})"><i class="fas fa-trash-alt" aria-hidden='true'></i></button>`
+                    return actionButton;*/
+                    var button = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalDetailEmployee" data - whatever="${data.id}" > <i class="fas fa-info-circle" aria-hidden='true'></i></button >`;
                     return button;
                 }
             }
@@ -97,7 +97,6 @@ function GetData(nik) {
         });
     }, false);
 })();
-
 
 function StoreTicket() {
     var ticketData = new Object();

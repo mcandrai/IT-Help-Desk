@@ -1,7 +1,7 @@
 ﻿Triggerdata();
 function Triggerdata() {
     $.ajax({
-        url: 'accounts/get-data-login',
+        url: 'https://localhost:44323/accounts/get-data-login',
         dataType: "json",
         dataSrc: ""
     }).done(result => {

@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace Server.Model
 {
-    [Table("tb_tr_messages")]
-    public class Message
+    [Table("tb_m_priorities")]
+    public class Priority
     {
         [Key]
         public int Id { get; set; }
-        public string MessageText { get; set; }
-        public virtual Ticket Ticket { get; set; }
-        public int TicketId { get; set; }
-        public virtual ICollection<MessageDetail> MessageDetail { get; set; }
+        public string Name { get; set; }
+        public virtual ICollection<Ticket> Ticket { get; set; }
     }
 }

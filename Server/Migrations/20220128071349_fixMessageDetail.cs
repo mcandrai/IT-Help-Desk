@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Server.Migrations
 {
-    public partial class MessageTicketFK : Migration
+    public partial class fixMessageDetail : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,6 +33,19 @@ namespace Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tb_m_employees", x => x.NIK);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tb_m_priorities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_m_priorities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,6 +106,7 @@ namespace Server.Migrations
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false),
+                    PriorityId = table.Column<int>(type: "int", nullable: false),
                     NIK = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -110,6 +124,12 @@ namespace Server.Migrations
                         principalTable: "tb_m_employees",
                         principalColumn: "NIK",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_tb_m_tickets_tb_m_priorities_PriorityId",
+                        column: x => x.PriorityId,
+                        principalTable: "tb_m_priorities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_tb_m_tickets_tb_m_statuses_StatusId",
                         column: x => x.StatusId,
@@ -135,7 +155,7 @@ namespace Server.Migrations
                         column: x => x.AccountId,
                         principalTable: "tb_m_accounts",
                         principalColumn: "NIK",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_tb_tr_account_role_tb_m_roles_RoleId",
                         column: x => x.RoleId,
@@ -164,6 +184,34 @@ namespace Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "tb_tr_message_detail",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NIK = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    MessageId = table.Column<int>(type: "int", nullable: false),
+                    MessageText = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_tr_message_detail", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tb_tr_message_detail_tb_m_employees_NIK",
+                        column: x => x.NIK,
+                        principalTable: "tb_m_employees",
+                        principalColumn: "NIK",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_tb_tr_message_detail_tb_tr_messages_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "tb_tr_messages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_tb_m_tickets_CategoryId",
                 table: "tb_m_tickets",
@@ -173,6 +221,11 @@ namespace Server.Migrations
                 name: "IX_tb_m_tickets_NIK",
                 table: "tb_m_tickets",
                 column: "NIK");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_m_tickets_PriorityId",
+                table: "tb_m_tickets",
+                column: "PriorityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tb_m_tickets_StatusId",
@@ -190,6 +243,16 @@ namespace Server.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tb_tr_message_detail_MessageId",
+                table: "tb_tr_message_detail",
+                column: "MessageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_tr_message_detail_NIK",
+                table: "tb_tr_message_detail",
+                column: "NIK");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tb_tr_messages_TicketId",
                 table: "tb_tr_messages",
                 column: "TicketId",
@@ -202,13 +265,16 @@ namespace Server.Migrations
                 name: "tb_tr_account_role");
 
             migrationBuilder.DropTable(
-                name: "tb_tr_messages");
+                name: "tb_tr_message_detail");
 
             migrationBuilder.DropTable(
                 name: "tb_m_accounts");
 
             migrationBuilder.DropTable(
                 name: "tb_m_roles");
+
+            migrationBuilder.DropTable(
+                name: "tb_tr_messages");
 
             migrationBuilder.DropTable(
                 name: "tb_m_tickets");
@@ -218,6 +284,9 @@ namespace Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "tb_m_employees");
+
+            migrationBuilder.DropTable(
+                name: "tb_m_priorities");
 
             migrationBuilder.DropTable(
                 name: "tb_m_statuses");

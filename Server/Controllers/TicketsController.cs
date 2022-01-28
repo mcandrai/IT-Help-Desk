@@ -78,5 +78,19 @@ namespace Server.Controllers
             var result = ticketRepository.ViewTicketDatabase();
             return Ok(result);
         }
+
+        [HttpGet("View-Ticket-Detail")]
+        public IActionResult ViewTicketDetail(int ID)
+        {
+            var result = ticketRepository.GetTicketDetail(ID);
+            return Ok(result);
+        }
+
+        [HttpGet("View-Message-Detail")]
+        public IActionResult ViewMessageDetail(int id)
+        {
+            var result = ticketRepository.ViewMessageDetail(id);
+            return Ok(result);
+        }
     }
 }

@@ -35,6 +35,7 @@ namespace Client
             services.AddScoped<EmployeeRepository>();
             services.AddScoped<AccountRepository>();
             services.AddScoped<TicketRepository>();
+            services.AddScoped<MessageRepository>();
             services.AddScoped<Address>();
             
             

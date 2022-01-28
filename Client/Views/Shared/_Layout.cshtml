@@ -51,12 +51,33 @@
                 <hr class="sidebar-divider my-0">
             }
             <!-- Nav Item - Ticket -->
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="HelpDesk" asp-action="Index">
-                    <i class="fas fa-ticket-alt"></i>
-                    <span>Tickets</span>
-                </a>
-            </li>
+            @if (User.IsInRole("Help Desk"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="HelpDesk" asp-action="Index">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Tickets</span>
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("Employee"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="User" asp-action="Index">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Tickets</span>
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("Bug System"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="BugSystem" asp-action="Index">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Tickets</span>
+                    </a>
+                </li>
+            }
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -82,7 +103,7 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="Accounts/Logout">
+                                <a class="dropdown-item" href="https://localhost:44323/Accounts/Logout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
                                 </a>
                             </div>

@@ -30,26 +30,22 @@
         ],
         'columns': [
             {
-                'data': 'id'
+                'data': null,
+                'render': function (data) {
+                    var link = `<a href="message/${data.id}">${data.id}</a>`
+                    return link;
+                }
             },
             {
                 'data': 'categoryName'
             },
             {
-                'data': '',
-                'render': function (data) {
-                    var button = 'under maintance'
-                    return button;
-                }
+                'data': 'employeeName'
             },
-            
             {
-                'data': '',
-                'render': function (data) {
-                    var button = 'under maintance'
-                    return button;
-                }
+                'data': 'priorityName'
             },
+
             {
                 'data': 'statusName'
             },
