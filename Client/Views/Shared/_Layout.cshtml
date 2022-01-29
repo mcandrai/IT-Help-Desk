@@ -78,6 +78,15 @@
                     </a>
                 </li>
             }
+            @if (User.IsInRole("Database Engineer"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Database" asp-action="Index">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Tickets</span>
+                    </a>
+                </li>
+            }
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -144,10 +153,11 @@
     @*apex chart source*@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+
     @*javascript native*@
     <script src="~/lib/template/js/sb-admin-2.min.js" asp-append-version="true"></script>
-    <script src="~/js/layout.js" asp-append-version="true"></script> 
-    
+    <script src="~/js/layout.js" asp-append-version="true"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

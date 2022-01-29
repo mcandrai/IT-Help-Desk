@@ -53,10 +53,40 @@ function GetData(nik) {
                 'data': 'categoryName'
             },
             {
-                'data': 'priorityName'
+                'data': null,
+                'render': function (data) {
+                    if (data.priorityName == "Low") {
+                        var name = `<span class="label badge-pill label-primary">${data.priorityName}</span>`
+                    }
+                    else if (data.priorityName == "Medium") {
+                        var name = `<span class="label  badge-pill label-warning">${data.priorityName}</span>`
+                    }
+                    else if (data.priorityName == "High") {
+                        var name = `<span class="label  badge-pill label-danger">${data.priorityName}</span>`
+                    }
+                    else {
+                        var name = data.priorityName
+                    }
+                    return name;
+                }
             },
             {
-                'data': 'statusName'
+                'data': null,
+                'render': function (data) {
+                    if (data.statusName == "New") {
+                        var status = `<span style="color:yellow;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
+                    }
+                    else if (data.statusName == "Done") {
+                        var status = `<span style="color:red;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
+                    }
+                    else if (data.statusName == "Replied") {
+                        var status = `<span style="color:blue;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
+                    }
+                    else if (data.statusName == "Waiting Reply") {
+                        var status = `<span style="color:orange;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
+                    }
+                    return status;
+                }
             },
           
             {

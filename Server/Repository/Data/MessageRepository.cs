@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Server.Context;
 using Server.Model;
 using Server.ViewModel;
@@ -29,8 +30,47 @@ namespace Server.Repository.Data
                 MessageText = messageDetail.MessageText
             };
             myContext.MessageDetails.Add(ticket);
-            return myContext.SaveChanges();
+            myContext.SaveChanges();
 
+            var message = myContext.Messages.FirstOrDefault(m => m.Id == messageDetail.MessageId);
+            var status = myContext.Tickets.FirstOrDefault(t => t.Id == message.TicketId);
+            var account = myContext.AccountRoles.FirstOrDefault(ar => ar.AccountId == messageDetail.NIK);
+            var role = myContext.Roles.FirstOrDefault(r => r.Id == account.RoleId);
+            //user reply sendiri
+            if (status.StatusId == 1 && role.Id==3) { 
+            {
+                status.StatusId = 1;
+            };
+            }
+            //helpdesk reply
+            else if(status.StatusId == 1 && role.Id!=3)
+            {
+                {
+                    status.StatusId = 3;
+                };
+            }
+            //user reply setelah helpdesk reply
+            else if(status.StatusId == 3 && role.Id == 3)
+            {
+                {
+                    status.StatusId = 4;
+                };
+            }
+            //helpdesk reply setelah user reply kembali
+            else if (status.StatusId == 4 && role.Id != 3)
+            {
+                {
+                    status.StatusId = 3;
+                };
+            }
+            else
+            {
+                {
+                    status.StatusId = status.StatusId;
+                };
+            }
+            myContext.Entry(status).State = EntityState.Modified;
+            return myContext.SaveChanges();
         }
     }
 }

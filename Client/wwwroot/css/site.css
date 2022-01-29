@@ -13,3 +13,24 @@ for details on configuring this project to bundle and minify static web assets. 
 .buttonExcel {
     color: #27ae60 !important;
 }
+
+#ticketTable .label-warning {
+    background-color: #ffd800;
+    color: #ffffff;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+#ticketTable .label-danger {
+    background-color: #ff0000;
+    color: #ffffff;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+#ticketTable .label-primary {
+    background-color: #0932f8;
+    color: #ffffff;
+    font-weight: 400;
+    letter-spacing: 1px;
+}

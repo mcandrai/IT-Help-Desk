@@ -4,8 +4,8 @@
 }
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">MessageDetail</h1>
-    <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateTicket"><i class="fa fa-plus pr-2"></i>Create Ticket</button>
-</div>
+@*    <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateTicket"><i class="fa fa-plus pr-2"></i>Create Ticket</button>
+*@</div>
 <div class="row">
     <details id="detailTicket">
         <summary>Ticket Details</summary>
@@ -21,6 +21,23 @@
 <div id="categoryId">
 
 </div>
+<div class="row">
+    <div class="col">
+        <form id="formTicket" class="needs-validation" novalidate>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="message"></label>
+                    <textarea class="form-control" id="messageText" rows="3" required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeTicketModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Modal Create Ticket -->
 <div class="modal fade" id="modalCreateTicket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">

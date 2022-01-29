@@ -48,7 +48,6 @@ namespace Server.Repository.Data
                 CreateAt = getTicket.CreateAt,
                 UpdateAt = DateTime.Now,
                 CategoryId = getTicket.CategoryId,
-                StatusId = 2,
                 PriorityId = 2,
                 NIK = getTicket.NIK
             };
@@ -66,7 +65,6 @@ namespace Server.Repository.Data
                 CreateAt = getTicket.CreateAt,
                 UpdateAt = DateTime.Now,
                 CategoryId = getTicket.CategoryId,
-                StatusId = 2,
                 PriorityId = 3,
                 NIK = getTicket.NIK
             };
@@ -83,8 +81,8 @@ namespace Server.Repository.Data
                 CreateAt = getTicket.CreateAt,
                 UpdateAt = DateTime.Now,
                 CategoryId = getTicket.CategoryId,
-                StatusId = 3,
-                PriorityId = 4,
+                StatusId = 2,
+                PriorityId = 3,
                 NIK = getTicket.NIK
             };
             myContext.Entry(getTicket).State = EntityState.Detached;
@@ -121,7 +119,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
-                          where  a.NIK==NIK && st.Id!=3
+                          where  a.NIK==NIK
                           select new
                           {
                               t.Id,
@@ -232,9 +230,51 @@ namespace Server.Repository.Data
                           {
                               md.MessageText,
                               r.Name,
-                              md.CreateAt
+                              CreateAt = TimeAgo(md.CreateAt)
                           });
             return ticket;
+        }
+
+        public static string TimeAgo(DateTime dateTime)
+        {
+            string result = string.Empty;
+            var timeSpan = DateTime.Now.Subtract(dateTime);
+
+            if (timeSpan <= TimeSpan.FromSeconds(60))
+            {
+                result = string.Format("{0} seconds ago", timeSpan.Seconds);
+            }
+            else if (timeSpan <= TimeSpan.FromMinutes(60))
+            {
+                result = timeSpan.Minutes > 1 ?
+                    String.Format("about {0} minutes ago", timeSpan.Minutes) :
+                    "about a minute ago";
+            }
+            else if (timeSpan <= TimeSpan.FromHours(24))
+            {
+                result = timeSpan.Hours > 1 ?
+                    String.Format("about {0} hours ago", timeSpan.Hours) :
+                    "about an hour ago";
+            }
+            else if (timeSpan <= TimeSpan.FromDays(30))
+            {
+                result = timeSpan.Days > 1 ?
+                    String.Format("about {0} days ago", timeSpan.Days) :
+                    "yesterday";
+            }
+            else if (timeSpan <= TimeSpan.FromDays(365))
+            {
+                result = timeSpan.Days > 30 ?
+                    String.Format("about {0} months ago", timeSpan.Days / 30) :
+                    "about a month ago";
+            }
+            else
+            {
+                result = timeSpan.Days > 365 ?
+                    String.Format("about {0} years ago", timeSpan.Days / 365) :
+                    "about a year ago";
+            }
+            return result;
         }
     }
 }

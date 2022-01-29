@@ -23,7 +23,6 @@ function createMessage() {
     ticketData.nik = nik;
     ticketData.messageId = last_segment;
     ticketData.messageText = $('#messageText').val()
-    console.log(ticketData);
     $.ajax({
         type: 'POST',
         url: 'https://localhost:44359/api/Messages/Create-Message',
@@ -32,7 +31,7 @@ function createMessage() {
         data: JSON.stringify(ticketData),
         success: function (data) {
             closeTicketModal();
-            alertSuccess();
+            GetMessageDetail();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             var error = jqXHR.responseJSON;
@@ -40,6 +39,12 @@ function createMessage() {
         }
     })
 }
+
+function closeTicketModal() {
+    document.getElementById("formTicket").reset();
+    document.getElementById("formTicket").classList.remove('was-validated');
+}
+
 function getDetailTicket(last_segment){
     $.ajax({
         type: 'GET',
