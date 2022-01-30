@@ -8,6 +8,7 @@ namespace Client.Controllers
 {
     public class ResetPasswordController : Controller
     {
+        [HttpGet("reset-password")]
         public IActionResult Index()
         {
             return View();

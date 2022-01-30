@@ -8,6 +8,7 @@ namespace Client.Controllers
 {
     public class ForgotPasswordController : Controller
     {
+        [HttpGet("forgot-password")]
         public IActionResult Index()
         {
             return View();

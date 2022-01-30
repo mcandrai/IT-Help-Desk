@@ -10,6 +10,7 @@ namespace Client.Controllers
     [Authorize(Roles = "Database Engineer")]
     public class DatabaseController : Controller
     {
+        [HttpGet("database-engineer-ticket")]
         public IActionResult Index()
         {
             return View();

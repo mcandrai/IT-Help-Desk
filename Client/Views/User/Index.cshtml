@@ -6,7 +6,7 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Tickets</h1>
-    <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateTicket"><i class="fa fa-plus pr-2"></i>Create Ticket</button>
+    <button class="btn btn-info" data-toggle="modal" data-target="#modalCreateTicket">New Ticket</button>
 </div>
 
 <div class="row">
@@ -18,7 +18,6 @@
                     <th>PROBLEM</th>
                     <th>PRIORITY</th>
                     <th>STATUS</th>
-                    <th>ACTION</th>
                 </tr>
             </thead>
         </table>
@@ -37,14 +36,10 @@
                         <div class="container-fluid">
                             <form id="formTicket" class="needs-validation" novalidate>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-12">
                                         <label for="category">Category</label>
                                         <select id="categoryId" class="custom-select" required>
                                         </select>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="nik">NIK</label>
-                                        <input type="text" class="form-control" id="nik" placeholder="NIK" required readonly>
                                     </div>
                                 </div>
                                 <div class="form-row">

@@ -45,7 +45,7 @@ function GetData(nik) {
             {
                 'data': null,
                 'render': function (data) {
-                    var link = `<a href="message/${data.id}">${data.id}</a>`
+                    var link = `<a href="ticket-detail/${data.id}">${data.id}</a>`
                     return link;
                 }
             },
@@ -55,52 +55,17 @@ function GetData(nik) {
             {
                 'data': null,
                 'render': function (data) {
-                    if (data.priorityName == "Low") {
-                        var name = `<span class="label badge-pill label-primary">${data.priorityName}</span>`
-                    }
-                    else if (data.priorityName == "Medium") {
-                        var name = `<span class="label  badge-pill label-warning">${data.priorityName}</span>`
-                    }
-                    else if (data.priorityName == "High") {
-                        var name = `<span class="label  badge-pill label-danger">${data.priorityName}</span>`
-                    }
-                    else {
-                        var name = data.priorityName
-                    }
-                    return name;
+                    var name = `<span class="label badge-pill ${data.priorityName}">${data.priorityName}</span>`
+                        return name;
                 }
             },
             {
                 'data': null,
                 'render': function (data) {
-                    if (data.statusName == "New") {
-                        var status = `<span style="color:yellow;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
-                    }
-                    else if (data.statusName == "Done") {
-                        var status = `<span style="color:red;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
-                    }
-                    else if (data.statusName == "Replied") {
-                        var status = `<span style="color:blue;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
-                    }
-                    else if (data.statusName == "Waiting Reply") {
-                        var status = `<span style="color:orange;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
-                    }
+                    var status = `<span class="${data.statusName}">${data.statusName}</span>`
                     return status;
                 }
             },
-          
-            {
-                'data': null,
-                'bSortable': false,
-                'render': function (data) {
-                    /*var actionButton = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalDetailEmployee" data - whatever="${data.id}" > <i class="fas fa-info-circle" aria-hidden='true'></i></button >
-                                       <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalUpdateEmployee" data-whatever="${data.id}"><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>
-                                       <button class="btn btn-sm btn-danger" onclick="deleteAlert(${data.id})"><i class="fas fa-trash-alt" aria-hidden='true'></i></button>`
-                    return actionButton;*/
-                    var button = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalDetailEmployee" data - whatever="${data.id}" > <i class="fas fa-info-circle" aria-hidden='true'></i></button >`;
-                    return button;
-                }
-            }
         ]
     });
 
@@ -128,11 +93,12 @@ function GetData(nik) {
     }, false);
 })();
 
+let nik_ticket;
 function StoreTicket() {
     var ticketData = new Object();
 
     ticketData.categoryId = parseInt($('#categoryId').val());
-    ticketData.nik = $('#nik').val();
+    ticketData.nik = nik_ticket;
     ticketData.message = $('#message').val();
 
 
@@ -175,8 +141,8 @@ function GetNIK() {
     $.ajax({
         url: 'accounts/get-data-login'
     }).done((data) => {
-        var nik = data.nik;
-        document.getElementById("nik").value = nik;
+        var result = data.nik;
+        nik_ticket = result;
     }).fail((error) => {
         console.log(error);
     })
@@ -194,16 +160,10 @@ function alertError() {
 function alertSuccess() {
     Swal.fire({
         icon: 'success',
-        text: 'Successfully save data!',
+        text: 'Successfully sent ticket!',
     })
 }
 
-function alertSuccessUpdate() {
-    Swal.fire({
-        icon: 'success',
-        text: 'Successfully update data!',
-    })
-}
 
 $('#modalCreateTicket').on('show.bs.modal', function () {
     GetCategory();

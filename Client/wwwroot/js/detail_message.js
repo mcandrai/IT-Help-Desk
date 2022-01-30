@@ -1,8 +1,9 @@
-﻿var full_url = document.URL; 
+﻿var full_url = document.URL;
 var url_array = full_url.split('/')
-var last_segment = url_array[url_array.length-1];  
-console.log(last_segment);
+var last_segment = url_array[url_array.length - 1];
+
 Triggerdata();
+
 let nik = "";
 function Triggerdata() {
     $.ajax({
@@ -11,53 +12,25 @@ function Triggerdata() {
         dataSrc: ""
     }).done(result => {
         nik = result.nik;
-        console.log(nik);
     }).fail(error => {
         console.log(error);
     })
 }
-getDetailTicket(last_segment);
 
-function createMessage() {
-    var ticketData = new Object();
-    ticketData.nik = nik;
-    ticketData.messageId = last_segment;
-    ticketData.messageText = $('#messageText').val()
-    $.ajax({
-        type: 'POST',
-        url: 'https://localhost:44359/api/Messages/Create-Message',
-        contentType: 'application/json;charset=utf-8',
-        dataType: 'json',
-        data: JSON.stringify(ticketData),
-        success: function (data) {
-            closeTicketModal();
-            GetMessageDetail();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            var error = jqXHR.responseJSON;
-            console.log(error);
-        }
-    })
-}
+GetDetailTicket(last_segment);
 
-function closeTicketModal() {
-    document.getElementById("formTicket").reset();
-    document.getElementById("formTicket").classList.remove('was-validated');
-}
-
-function getDetailTicket(last_segment){
+function GetDetailTicket(last_segment) {
     $.ajax({
         type: 'GET',
         url: 'https://localhost:44359/api/Tickets/View-Ticket-Detail?ID=' + last_segment,
     }).done((data) => {
-        console.log(data);
-        document.getElementById("userfullname").innerHTML = data.userName;
-        document.getElementById("idTicket").innerHTML = data.id;
+        document.getElementById("ticket-id").innerHTML = "Ticket " + data.id + " " + data.categoryName;
+        var employee = `<div class="p-2">${data.userName} <span class="badge badge-secondary">Employee</span></div>`;
+        $("#userfullname").html(employee);
+        //var date = new Date(data.createAt + "Z").toISOString().substring(0, 10);
+        //let result = date.replace(/-/g, ",");
+        //document.getElementById("createdate").innerHTML = new Date(result).toLocaleString('en-GB');
         document.getElementById("message").innerHTML = data.message;
-        document.getElementById("createAt").innerHTML = data.createAt;
-        document.getElementById("priority").innerHTML = data.priorityName;
-        document.getElementById("status").innerHTML = data.statusName;
-        document.getElementById("category").innerHTML = data.categoryName;
         GetMessageDetail();
     }).fail((error) => {
         console.log(error);
@@ -69,18 +42,52 @@ function GetMessageDetail() {
     $.ajax({
         url: 'https://localhost:44359/api/Tickets/View-Message-Detail?id=' + last_segment
     }).done((data) => {
-        var categorySelect = '';
+        var messageDetail = '';
         $.each(data, function (key, val) {
-            categorySelect += `<p>Tanggal:${val.createAt}'</p>
-                               <p>Role:${val.name}'</p>
-                               <p>Message:${val.messageText}'</p>`
+            messageDetail += ` <div class="card shadow-sm bg-light mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="p-2">${val.fullName} <span class="badge ${val.name}">${val.name}</span></div>
+                        <div class="p-2 small"> ${val.createAt}</div>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <div class="p-2">
+                           ${val.messageText}
+                        </div>
+                    </div>
+                </div>
+            </div>`
         });
-        $("#categoryId").html(categorySelect);
+        $("#detail-message").html(messageDetail);
 
     }).fail((error) => {
         console.log(error);
     })
 }
+
+function CreateMessage() {
+    var ticketData = new Object();
+    ticketData.nik = nik;
+    ticketData.messageId = last_segment;
+    ticketData.messageText = $('#messageText').val()
+    $.ajax({
+        type: 'POST',
+        url: 'https://localhost:44359/api/Messages/Create-Message',
+        contentType: 'application/json;charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(ticketData),
+        success: function (data) {
+            document.getElementById("formTicket").reset();
+            document.getElementById("formTicket").classList.remove('was-validated');
+            GetMessageDetail();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            var error = jqXHR.responseJSON;
+            console.log(error);
+        }
+    })
+}
+
 
 (function () {
     'use strict';
@@ -95,7 +102,7 @@ function GetMessageDetail() {
                     event.stopPropagation();
                 } else {
                     event.preventDefault();
-                    createMessage();
+                    CreateMessage();
                 }
                 form.classList.add('was-validated');
             }, false);
@@ -103,35 +110,4 @@ function GetMessageDetail() {
     }, false);
 })();
 
-/*Nampilin Nama di user profil*/
-function GetNIK() {
-    $.ajax({
-        url: 'accounts/get-data-login'
-    }).done((data) => {
-        var nik = data.nik;
-        document.getElementById("nik").value = nik;
-    }).fail((error) => {
-        console.log(error);
-    })
-}
 
-function alertError() {
-    Swal.fire({
-        icon: 'error',
-        text: 'Failed save data!',
-    })
-}
-
-
-function alertSuccess() {
-    Swal.fire({
-        icon: 'success',
-        text: 'Successfully save data!',
-    })
-}
-
-function closeTicketModal() {
-    document.getElementById("formTicket").reset();
-    document.getElementById("formTicket").classList.remove('was-validated');
-    $('#modalCreateTicket').modal('hide');
-}

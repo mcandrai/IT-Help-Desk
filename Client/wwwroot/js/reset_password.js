@@ -32,6 +32,14 @@ function ChangePassword() {
                 $('#alert-text-success').text(data.message);
                 $('#forgot-alert-success').show();
                 document.getElementById("reset").reset();
+
+                $(document).ready(function () {
+                    window.setTimeout(function () {
+                        $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                            $(this).remove();
+                        });
+                    }, 3000);
+                });
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {

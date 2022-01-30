@@ -16,7 +16,7 @@ namespace Client.Controllers
         {
             messageRepository = repository;
         }
-        [HttpGet("message/{nik}")]
+        [HttpGet("ticket-detail/{nik}")]
         public IActionResult Index()
         {
             return View();

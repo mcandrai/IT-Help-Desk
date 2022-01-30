@@ -10,6 +10,7 @@ namespace Client.Controllers
     [Authorize(Roles = "Bug System")]
     public class BugSystemController : Controller
     {
+        [HttpGet("bug-system-ticket")]
         public IActionResult Index()
         {
             return View();

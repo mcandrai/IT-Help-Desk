@@ -3,38 +3,38 @@
     Layout = "_Layout";
 }
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">MessageDetail</h1>
-@*    <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateTicket"><i class="fa fa-plus pr-2"></i>Create Ticket</button>
-*@</div>
-<div class="row">
-    <details id="detailTicket">
-        <summary>Ticket Details</summary>
-        <br>Nama User: <span id="userfullname"></span>
-        <br>ID Ticket: <span id="idTicket"></span>
-        <br>Detail Problem: <span id="message"></span>
-        <br>Create Date: <span id="createAt"></span>
-        <br>Priority: <span id="priority"></span>
-        <br>Status: <span id="status"></span>
-        <br>Category: <span id="category"></span>
-    </details>
-</div>
-<div id="categoryId">
-
+    <h1 class="h3 mb-0 text-gray-800" id="ticket-id"></h1>
 </div>
 <div class="row">
-    <div class="col">
-        <form id="formTicket" class="needs-validation" novalidate>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <label for="message"></label>
-                    <textarea class="form-control" id="messageText" rows="3" required></textarea>
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div id="userfullname"></div>
+              
+            </div>
+            <div class="d-flex justify-content-start">
+                <p id="message" class="p-2">
+                </p>
+            </div>
+            <div id="detail-message"></div>
+            <div class="row">
+                <div class="col">
+                    <form id="formTicket" class="needs-validation" novalidate>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="message"></label>
+                                <textarea class="form-control" placeholder="Send message" id="messageText" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeTicketModal()">Cancel</button>
-                <button type="submit" class="btn btn-primary">Send</button>
-            </div>
-        </form>
+
+
+        </div>
     </div>
 </div>
 

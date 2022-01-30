@@ -47,6 +47,7 @@ namespace Server.Repository.Data
                 Id = getTicket.Id,
                 CreateAt = getTicket.CreateAt,
                 UpdateAt = DateTime.Now,
+                StatusId = getTicket.StatusId,
                 CategoryId = getTicket.CategoryId,
                 PriorityId = 2,
                 NIK = getTicket.NIK
@@ -64,6 +65,7 @@ namespace Server.Repository.Data
                 Id = getTicket.Id,
                 CreateAt = getTicket.CreateAt,
                 UpdateAt = DateTime.Now,
+                StatusId = getTicket.StatusId,
                 CategoryId = getTicket.CategoryId,
                 PriorityId = 3,
                 NIK = getTicket.NIK
@@ -222,6 +224,7 @@ namespace Server.Repository.Data
         {
             var ticket = (from m in myContext.Messages
                           join md in myContext.MessageDetails on m.Id equals md.MessageId
+                          join e in myContext.Employees on md.NIK equals e.NIK
                           join a in myContext.Accounts on md.NIK equals a.NIK
                           join ar in myContext.AccountRoles on md.NIK equals ar.AccountId
                           join r in myContext.Roles on ar.RoleId equals r.Id
@@ -230,6 +233,7 @@ namespace Server.Repository.Data
                           {
                               md.MessageText,
                               r.Name,
+                              fullName = e.FirstName+" "+e.LastName,
                               CreateAt = TimeAgo(md.CreateAt)
                           });
             return ticket;
@@ -247,31 +251,31 @@ namespace Server.Repository.Data
             else if (timeSpan <= TimeSpan.FromMinutes(60))
             {
                 result = timeSpan.Minutes > 1 ?
-                    String.Format("about {0} minutes ago", timeSpan.Minutes) :
+                    String.Format("{0} minutes ago", timeSpan.Minutes) :
                     "about a minute ago";
             }
             else if (timeSpan <= TimeSpan.FromHours(24))
             {
                 result = timeSpan.Hours > 1 ?
-                    String.Format("about {0} hours ago", timeSpan.Hours) :
+                    String.Format("{0} hours ago", timeSpan.Hours) :
                     "about an hour ago";
             }
             else if (timeSpan <= TimeSpan.FromDays(30))
             {
                 result = timeSpan.Days > 1 ?
-                    String.Format("about {0} days ago", timeSpan.Days) :
+                    String.Format("{0} days ago", timeSpan.Days) :
                     "yesterday";
             }
             else if (timeSpan <= TimeSpan.FromDays(365))
             {
                 result = timeSpan.Days > 30 ?
-                    String.Format("about {0} months ago", timeSpan.Days / 30) :
+                    String.Format("{0} months ago", timeSpan.Days / 30) :
                     "about a month ago";
             }
             else
             {
                 result = timeSpan.Days > 365 ?
-                    String.Format("about {0} years ago", timeSpan.Days / 365) :
+                    String.Format("{0} years ago", timeSpan.Days / 365) :
                     "about a year ago";
             }
             return result;

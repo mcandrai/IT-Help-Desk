@@ -40,7 +40,7 @@ namespace Server.Controllers
 
                 if (!isEmail)
                 {
-                    return Ok(new JwToken { status = HttpStatusCode.NotFound, idToken = null, message = "Account not found!" });
+                    return Ok(new JwToken { status = HttpStatusCode.NotFound, idToken = null, message = "Couldn't find your account!" });
                 }
 
                 bool isLogin = accountRepository.Login(login);
@@ -68,11 +68,11 @@ namespace Server.Controllers
                         );
                     var idToken = new JwtSecurityTokenHandler().WriteToken(token);
                     claims.Add(new Claim("Token Security", idToken.ToString()));
-                    return Ok(new JwToken { status = HttpStatusCode.OK, idToken = idToken,message = "Successful login!" });
+                    return Ok(new JwToken { status = HttpStatusCode.OK, idToken = idToken,message = "Successfully login!" });
                 }
                 else
                 {
-                    return Ok(new JwToken { status = HttpStatusCode.Forbidden, idToken = null, message = "Your password is invalid, Please try again!" });
+                    return Ok(new JwToken { status = HttpStatusCode.Forbidden, idToken = null, message = "The password you entered is incorrect!" });
                 }
 
             }
@@ -93,12 +93,12 @@ namespace Server.Controllers
                 bool isEmail = accountRepository.CheckEmail(forgotPassword.Email);
                 if (!isEmail)
                 {
-                    return BadRequest(new { status = HttpStatusCode.NotFound, message = "Account not found!" });
+                    return BadRequest(new { status = HttpStatusCode.NotFound, message = "Couldn't find your account!" });
                 }
                 else
                 {
                     accountRepository.SendOTP(forgotPassword.Email);
-                    return Ok(new { status = HttpStatusCode.OK, result = 1, message = "OTP code sent to your email, Please check inbox or spam!" });
+                    return Ok(new { status = HttpStatusCode.OK, result = 1, message = "OTP code sent to your email, please check inbox or spam!" });
                 }
             }
             catch (Exception)
@@ -126,7 +126,7 @@ namespace Server.Controllers
 
                 if (!isEmail)
                 {
-                    return BadRequest(new { status = HttpStatusCode.NotFound, message = "Account not found!" });
+                    return BadRequest(new { status = HttpStatusCode.NotFound, message = "Couldn't find your account!" });
                 }
 
                 bool isValidOTP = accountRepository.CheckExpiredOTP(forgotPassword.Email);
@@ -141,11 +141,11 @@ namespace Server.Controllers
 
                     if (isChangePassword)
                     {
-                        return Ok(new { status = HttpStatusCode.OK, message = "Success change password!" });
+                        return Ok(new { status = HttpStatusCode.OK, message = "Successfully change password!" });
                     }
                     else
                     {
-                        return BadRequest(new { status = HttpStatusCode.BadRequest, message = "OTP code does not match, Please try again!" });
+                        return BadRequest(new { status = HttpStatusCode.BadRequest, message = "OTP code does not match, please try again!" });
                     }
                 }
 

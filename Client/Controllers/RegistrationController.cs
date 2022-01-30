@@ -8,6 +8,7 @@ namespace Client.Controllers
 {
     public class RegistrationController : Controller
     {
+        [HttpGet("registration")]
         public IActionResult Index()
         {
             return View();

@@ -1,5 +1,4 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $('#ticketTable').DataTable({
         "ajax": {
             'url': 'https://localhost:44359/api/Tickets/View-Ticket-HelpDesk',
@@ -35,7 +34,7 @@ $(document).ready(function () {
             {
                 'data': null,
                 'render': function (data) {
-                    var link = `<a href="message/${data.id}">${data.id}</a>`
+                    var link = `<a href="ticket-detail/${data.id}">${data.id}</a>`
                     return link;
                 }
             },
@@ -48,36 +47,14 @@ $(document).ready(function () {
             {
                 'data': null,
                 'render': function (data) {
-                    if (data.priorityName == "Low") {
-                        var name = `<span class="label badge-pill label-primary">${data.priorityName}</span>`
-                    }
-                    else if (data.priorityName == "Medium") {
-                        var name = `<span class="label  badge-pill label-warning">${data.priorityName}</span>`
-                    }
-                    else if (data.priorityName == "High") {
-                        var name = `<span class="label  badge-pill label-danger">${data.priorityName}</span>`
-                    }
-                    else {
-                        var name = data.priorityName
-                    }
+                    var name = `<span class="label badge-pill ${data.priorityName}">${data.priorityName}</span>`
                     return name;
                 }
             },
             {
                 'data': null,
                 'render': function (data) {
-                    if (data.statusName == "New") {
-                        var status = `<span style="color:yellow;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
-                    }
-                    else if (data.statusName == "Done") {
-                        var status = `<span style="color:red;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
-                    }
-                    else if (data.statusName == "Replied") {
-                        var status = `<span style="color:blue;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
-                    }
-                    else if (data.statusName == "Waiting Reply") {
-                        var status = `<span style="color:orange;text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF">${data.statusName}</span>`
-                    }
+                    var status = `<span class="${data.statusName}">${data.statusName}</span>`
                     return status;
                 }
             },
@@ -85,7 +62,7 @@ $(document).ready(function () {
                 'data': null,
                 'bSortable': false,
                 'render': function (data) {
-                    var actionButton = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-bug" aria-hidden='true'></i></button>`
+                    var actionButton = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-people-carry" aria-hidden='true'></i></button>`
                     return actionButton;
                 }
             }

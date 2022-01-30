@@ -34,7 +34,7 @@ function SendOTP() {
 
 
                 setTimeout(function () {
-                    window.location.href = 'ResetPassword';
+                    window.location.href = 'reset-password';
                 }, 3000);
             
              

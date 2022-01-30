@@ -9,6 +9,7 @@ namespace Client.Controllers
 {
     public class LoginController : Controller
     {
+        [HttpGet("login")]
         public IActionResult Index()
         {
             var token = HttpContext.Session.GetString("JWToken");

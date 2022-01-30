@@ -10,6 +10,7 @@ namespace Client.Controllers
     [Authorize(Roles = "Employee")]
     public class UserController : Controller
     {
+        [HttpGet("ticket-user")]
         public IActionResult Index()
         {
             return View();

@@ -16,7 +16,7 @@
         enabled: false
     },
     xaxis: {
-        categories: ['Help Desk', 'Bug System', 'Database Engineer'],
+        categories: ['Low', 'Mid', 'High'],
     }
 };
 
@@ -29,7 +29,7 @@ var options = {
     chart: {
         type: 'donut',
     },
-    labels: ["New", "On Progress", "Done"],
+    labels: ["New", "Waiting Reply", "Replied"],
     responsive: [{
         breakpoint: 480,
         options: {

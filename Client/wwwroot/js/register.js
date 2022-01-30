@@ -14,8 +14,14 @@ function StoreRegistration() {
     var data = new Object();
 
     data.firstName = $('#firstName').val();
-    data.lastName = $('#lastName').val()
-    data.gender = $('#gender').val();
+    data.lastName = $('#lastName').val();
+
+    if (document.getElementById('gender-female').checked) {
+        data.gender = ('#gender-female').val();
+    } else {
+        data.gender = $('#gender-male').val();
+    }
+   
     data.phone = $('#phone').val();
     data.email = $('#email').val();
     data.password = $('#password').val();
@@ -36,6 +42,13 @@ function StoreRegistration() {
                 $('#alert-text-success').text(data.message);
                 $('#register-alert-success').show();
                 document.getElementById("registration").reset();
+
+                window.setTimeout(function () {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                        $(this).remove();
+                    });
+                }, 3000);
+               
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {

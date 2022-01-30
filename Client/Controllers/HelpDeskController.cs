@@ -10,6 +10,7 @@ namespace Client.Controllers
     [Authorize(Roles="Help Desk")]
     public class HelpDeskController : Controller
     {
+        [HttpGet("help-desk-ticket")]
         public IActionResult Index()
         {
             if (User.IsInRole("Employee"))

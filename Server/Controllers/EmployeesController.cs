@@ -30,19 +30,19 @@ namespace Server.Controllers
                 bool isDuplicateEmail = employeeRepository.DuplicateEmailValue(register);
                 if (isDuplicateEmail)
                 {
-                    return BadRequest(new { status = HttpStatusCode.Conflict, message = "Email already used!" });
+                    return BadRequest(new { status = HttpStatusCode.Conflict, message = "Email has already been taken!" });
                 }
 
                 bool isDuplicatePhone = employeeRepository.DuplicatePhoneValue(register);
 
                 if (isDuplicatePhone)
                 {
-                    return BadRequest(new { status = HttpStatusCode.Conflict, message = "Phone Number already used!" });
+                    return BadRequest(new { status = HttpStatusCode.Conflict, message = "Phone Number has already been taken!" });
                 }
                 else
                 {
                     employeeRepository.RegisterEmployee(register);
-                    return Ok(new { status = HttpStatusCode.OK, message = "Account has been successfully created!" });
+                    return Ok(new { status = HttpStatusCode.OK, message = "Your account has been successfully created!" });
                 }
 
             }
