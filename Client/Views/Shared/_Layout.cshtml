@@ -59,6 +59,12 @@
                         <span>Tickets</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="HelpDesk" asp-action="History">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>History</span>
+                    </a>
+                </li>
             }
             @if (User.IsInRole("Employee"))
             {
@@ -66,6 +72,12 @@
                     <a class="nav-link" asp-controller="User" asp-action="Index">
                         <i class="fas fa-ticket-alt"></i>
                         <span>Tickets</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="User" asp-action="History">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>History</span>
                     </a>
                 </li>
             }
@@ -77,6 +89,12 @@
                         <span>Tickets</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="BugSystem" asp-action="History">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>History</span>
+                    </a>
+                </li>
             }
             @if (User.IsInRole("Database Engineer"))
             {
@@ -84,6 +102,12 @@
                     <a class="nav-link" asp-controller="Database" asp-action="Index">
                         <i class="fas fa-ticket-alt"></i>
                         <span>Tickets</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Database" asp-action="History">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>History</span>
                     </a>
                 </li>
             }

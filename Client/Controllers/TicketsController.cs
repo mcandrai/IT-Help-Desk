@@ -49,5 +49,12 @@ namespace Client.Controllers
             var result = ticketRepository.UpdateTicketDatabase(ticketDetailVM);
             return Json(result);
         }
+
+        [HttpPost]
+        public JsonResult UpdateTicketDone(TicketDetailVM ticketDetailVM)
+        {
+            var result = ticketRepository.UpdateTicketDone(ticketDetailVM);
+            return Json(result);
+        }
     }
 }

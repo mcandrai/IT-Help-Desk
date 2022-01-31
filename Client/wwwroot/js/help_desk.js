@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     $('#ticketTable').DataTable({
+        "order": [[0,"desc"]],
         "ajax": {
             'url': 'https://localhost:44359/api/Tickets/View-Ticket-HelpDesk',
             'error': function (jqXHR) {
@@ -32,6 +33,7 @@
         ],
         'columns': [
             {
+                
                 'data': null,
                 'render': function (data) {
                     var link = `<a href="ticket-detail/${data.id}">${data.id}</a>`
@@ -62,7 +64,10 @@
                 'data': null,
                 'bSortable': false,
                 'render': function (data) {
-                    var actionButton = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-people-carry" aria-hidden='true'></i></button>`
+                    var actionButton = `<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-arrow-circle-up" aria-hidden='true'></i></button>
+                                        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalDone" data-whatever="${data.id}"> <i class="fas fa-check-circle" aria-hidden='true'></i></button>
+                                        <button class="btn btn-sm btn-dark" data-toggle="modal" data-target="#modalReport" data-whatever="${data.id}"> <i class="fas fa-share-square" aria-hidden='true'></i></button>
+                                        `
                     return actionButton;
                 }
             }
@@ -99,10 +104,17 @@ function alertError() {
     })
 }
 
-function alertSuccess() {
+function alertErrorReport() {
+    Swal.fire({
+        icon: 'error',
+        text: 'Failed Report Ticket, Done Ticket First!',
+    })
+}
+
+function alertSuccessReport() {
     Swal.fire({
         icon: 'success',
-        text: 'Successfully save data!',
+        text: 'Successfully Report ticket!',
     })
 }
 
@@ -131,3 +143,85 @@ function closeEscalationModal() {
     $('#modalEscalation').modal('hide');
 }
 
+
+function UpdateTicketDatabase(id) {
+    var ticketTable = $('#ticketTable').DataTable();
+    var ticketData = new Object();
+    ticketData.id = id;
+    $.ajax({
+        type: 'POST',
+        url: 'tickets/UpdateTicketDatabase',
+        data: ticketData,
+        success: function (data) {
+            closeDoneModal();
+            ticketTable.ajax.reload();
+            alertSuccessUpdate();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            var error = jqXHR.responseJSON;
+            alertError();
+        }
+    })
+
+}
+$('#modalDone').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var recipient = button.data('whatever');
+    var modal = $(this);
+    modal.find('#doneTicket').text(recipient);
+    var data = '';
+    data = `
+<button type="button" class="btn btn-secondary" onclick=" closeDoneModal()">Cancel</button>
+<button class="btn btn-primary" onClick="UpdateTicketDatabase(${recipient})">Finish</button>`
+    $("#doneData").html(data);
+});
+
+
+function closeDoneModal() {
+    $('#modalDone').modal('hide');
+}
+
+
+function ReportTicket(id) {
+    var ticketTable = $('#ticketTable').DataTable();
+    var ticketData = new Object();
+    ticketData.id = id;
+    $.ajax({
+        type: 'POST',
+        url: 'tickets/UpdateTicketDone',
+        data: ticketData,
+        success: function (data) {
+            if (!data) {
+                closeReportModal();
+                ticketTable.ajax.reload();
+                alertErrorReport();
+            }
+            else {
+            closeReportModal();
+            ticketTable.ajax.reload();
+                alertSuccessReport();
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            var error = jqXHR.responseJSON;
+            alertError();
+        }
+    })
+
+}
+$('#modalReport').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var recipient = button.data('whatever');
+    var modal = $(this);
+    modal.find('#reportTicket').text(recipient);
+    var data = '';
+    data = `
+<button type="button" class="btn btn-secondary" onclick=" closeReportModal()">Cancel</button>
+<button class="btn btn-primary" onClick="ReportTicket(${recipient})">Finish</button>`
+    $("#ReportData").html(data);
+});
+
+
+function closeReportModal() {
+    $('#modalReport').modal('hide');
+}

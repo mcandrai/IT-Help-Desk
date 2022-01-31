@@ -61,7 +61,9 @@
                 'bSortable': false,
                 'render': function (data) {
                     var actionButton = `
-                                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-people-carry" aria-hidden='true'></i></button>
+                                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-arrow-circle-up" aria-hidden='true'></i></button>
+                                        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalDone" data-whatever="${data.id}"> <i class="fas fa-check-circle" aria-hidden='true'></i></button >
+                                       
                                         `
                     return actionButton;
                 }
@@ -133,4 +135,41 @@ $('#modalEscalation').on('show.bs.modal', function (event) {
 
 function closeEscalationModal() {
     $('#modalEscalation').modal('hide');
+}
+
+function UpdateTicketDatabase(id) {
+    var ticketTable = $('#ticketTable').DataTable();
+    var ticketData = new Object();
+    ticketData.id = id;
+    $.ajax({
+        type: 'POST',
+        url: 'tickets/UpdateTicketDatabase',
+        data: ticketData,
+        success: function (data) {
+            closeDoneModal();
+            ticketTable.ajax.reload();
+            alertSuccessUpdate();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            var error = jqXHR.responseJSON;
+            alertError();
+        }
+    })
+
+}
+$('#modalDone').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var recipient = button.data('whatever');
+    var modal = $(this);
+    modal.find('#doneTicket').text(recipient);
+    var data = '';
+    data = `
+<button type="button" class="btn btn-secondary" onclick=" closeDoneModal()">Cancel</button>
+<button class="btn btn-primary" onClick="UpdateTicketDatabase(${recipient})">Finish</button>`
+    $("#doneData").html(data);
+});
+
+
+function closeDoneModal() {
+    $('#modalDone').modal('hide');
 }

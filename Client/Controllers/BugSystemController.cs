@@ -15,5 +15,11 @@ namespace Client.Controllers
         {
             return View();
         }
+
+        [HttpGet("bug-system-history")]
+        public IActionResult History()
+        {
+            return View();
+        }
     }
 }

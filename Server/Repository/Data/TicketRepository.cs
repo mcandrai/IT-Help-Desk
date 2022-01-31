@@ -5,6 +5,8 @@ using Server.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace Server.Repository.Data
@@ -84,12 +86,54 @@ namespace Server.Repository.Data
                 UpdateAt = DateTime.Now,
                 CategoryId = getTicket.CategoryId,
                 StatusId = 2,
-                PriorityId = 3,
+                PriorityId = getTicket.PriorityId,
                 NIK = getTicket.NIK
             };
             myContext.Entry(getTicket).State = EntityState.Detached;
             myContext.Entry(ticket).State = EntityState.Modified;
             return myContext.SaveChanges();
+        }
+
+        public bool SendReport(int Id)
+        {
+            var getTicket = myContext.Tickets.FirstOrDefault(t => t.Id == Id);
+            var getEmail = myContext.Accounts.FirstOrDefault(a => a.NIK == getTicket.NIK);
+            var getCategory = myContext.Categories.FirstOrDefault(c => c.Id == getTicket.CategoryId);
+            var client = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential("mccreg61net@gmail.com", "61mccregnet"),
+                EnableSsl = true
+            };
+
+            DateTime nowTime = DateTime.Now;
+            
+            string bodyMessage = $"Your Problem with ID ticket {Id} already Done \n\nCategory: {getCategory.Name}\n\nThanks for Your Patience.";
+            client.Send("mccreg61net@gmail.com", getEmail.Email, "Help Desk - Report Ticket Problem", bodyMessage);
+
+            return true;
+        }
+
+        public bool UpdateTicketDone(TicketDetailVM ticketDetailVM)
+        {
+            var getTicket = myContext.Tickets.FirstOrDefault(a => a.Id == ticketDetailVM.Id);
+            if (getTicket.StatusId != 2) {
+                return false;
+            } 
+            var ticket = new Ticket
+            {
+                Id = getTicket.Id,
+                CreateAt = getTicket.CreateAt,
+                UpdateAt = DateTime.Now,
+                CategoryId = getTicket.CategoryId,
+                StatusId = 5,
+                PriorityId = getTicket.PriorityId,
+                NIK = getTicket.NIK
+            };
+            myContext.Entry(getTicket).State = EntityState.Detached;
+            myContext.Entry(ticket).State = EntityState.Modified;
+            SendReport(ticket.Id);
+            myContext.SaveChanges();
+            return true;
         }
 
         public TicketMessage GetTicketDetail(int ID)
@@ -121,7 +165,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
-                          where  a.NIK==NIK
+                          where  a.NIK== NIK && st.Id != 5
                           select new
                           {
                               t.Id,
@@ -140,9 +184,12 @@ namespace Server.Repository.Data
             var ticket = (from t in myContext.Tickets
                           join m in myContext.Messages on t.Id equals m.TicketId
                           join e in myContext.Employees on t.NIK equals e.NIK
+                          join a in myContext.Accounts on t.NIK equals a.NIK
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
+                          orderby t.CreateAt descending
+                          where st.Id != 5
                           select new
                           {
                               t.Id,
@@ -164,7 +211,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
-                          where t.PriorityId==2
+                          where t.PriorityId==2 && st.Id!=5
                           select new
                           {
                               t.Id,
@@ -186,7 +233,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
-                          where t.PriorityId == 3
+                          where t.PriorityId == 3 && st.Id != 5
                           select new
                           {
                               t.Id,
@@ -200,13 +247,15 @@ namespace Server.Repository.Data
                           });
             return ticket;
         }
-        public IQueryable ViewTicketHistory()
+        public IQueryable ViewTicketHistoryUser(string NIK)
         {
             var ticket = (from t in myContext.Tickets
                           join m in myContext.Messages on t.Id equals m.TicketId
+                          join e in myContext.Employees on t.NIK equals e.NIK
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
+                          where e.NIK == NIK && st.Id==5
                           select new
                           {
                               t.Id,
@@ -214,6 +263,30 @@ namespace Server.Repository.Data
                               t.UpdateAt,
                               t.CreateAt,
                               StatusName = st.Name,
+                              EmployeeName = e.FirstName + " " + e.LastName,
+                              PriorityName = p.Name,
+                              CategoryName = ct.Name
+                          });
+            return ticket;
+        }
+
+        public IQueryable ViewTicketHistory()
+        {
+            var ticket = (from t in myContext.Tickets
+                          join m in myContext.Messages on t.Id equals m.TicketId
+                          join e in myContext.Employees on t.NIK equals e.NIK
+                          join st in myContext.Statuses on t.StatusId equals st.Id
+                          join ct in myContext.Categories on t.CategoryId equals ct.Id
+                          join p in myContext.Priorities on t.PriorityId equals p.Id
+                          where st.Id == 5
+                          select new
+                          {
+                              t.Id,
+                              m.MessageText,
+                              t.UpdateAt,
+                              t.CreateAt,
+                              StatusName = st.Name,
+                              EmployeeName = e.FirstName + " " + e.LastName,
                               PriorityName = p.Name,
                               CategoryName = ct.Name
                           });

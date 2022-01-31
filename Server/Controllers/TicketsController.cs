@@ -54,6 +54,18 @@ namespace Server.Controllers
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("Update-Ticket-Done")]
+        public ActionResult<TicketDetailVM> UpdateTicketDone(TicketDetailVM ticketDetailVM)
+        {
+            var result = ticketRepository.UpdateTicketDone(ticketDetailVM);
+            if (!result)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
         [HttpGet("View-Ticket-User")]
         public IActionResult ViewTicketUser(string nik)
         {
@@ -79,13 +91,27 @@ namespace Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("View-Ticket-History-User")]
+        public IActionResult ViewTicketHistoryUser(string nik)
+        {
+            var result = ticketRepository.ViewTicketHistoryUser(nik);
+            return Ok(result);
+        }
+
+        [HttpGet("View-Ticket-History")]
+        public IActionResult ViewTicketHistory()
+        {
+            var result = ticketRepository.ViewTicketHistory();
+            return Ok(result);
+        }
+
         [HttpGet("View-Ticket-Detail")]
         public IActionResult ViewTicketDetail(int ID)
         {
             var result = ticketRepository.GetTicketDetail(ID);
             return Ok(result);
         }
-
+        
         [HttpGet("View-Message-Detail")]
         public IActionResult ViewMessageDetail(int id)
         {

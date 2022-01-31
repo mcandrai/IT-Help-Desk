@@ -17,7 +17,7 @@ function StoreRegistration() {
     data.lastName = $('#lastName').val();
 
     if (document.getElementById('gender-female').checked) {
-        data.gender = ('#gender-female').val();
+        data.gender = $('#gender-female').val();
     } else {
         data.gender = $('#gender-male').val();
     }

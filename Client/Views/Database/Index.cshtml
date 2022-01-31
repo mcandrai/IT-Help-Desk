@@ -23,58 +23,7 @@
             </thead>
         </table>
 
-        <!-- Modal Create Ticket -->
-        <div class="modal fade" id="modalCreateTicket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Create Ticket</h5>
-                        <button type="button" class="close" onclick="closeTicketModal()" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <form id="formTicket" class="needs-validation" novalidate>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="createAt">Created At</label>
-                                        <input type="date" class="form-control" id="createAt" placeholder="CreateAt" required>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="updateAt">Update At</label>
-                                        <input type="date" class="form-control" id="updateAt" placeholder="UpdateAt" required>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="category">Category</label>
-                                        <select id="categoryId" class="custom-select" required>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="nik">NIK</label>
-                                        <input type="text" class="form-control" id="nik" placeholder="NIK" required>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="message">Message</label>
-                                        <input type="text" class="form-control" id="message" placeholder="message" required>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" onclick="closeTicketModal()">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
+        @*Modal Escalation*@
         <div class="modal fade" id="modalEscalation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">

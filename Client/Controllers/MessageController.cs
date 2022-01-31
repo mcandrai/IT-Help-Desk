@@ -22,5 +22,12 @@ namespace Client.Controllers
             return View();
         }
 
+        [HttpGet("ticket-history/{nik}")]
+        public IActionResult History()
+        {
+            return View();
+        }
+
+
     }
 }

@@ -30,5 +30,11 @@ namespace Client.Controllers
                 return RedirectToAction("index", "database");
             }
         }
+
+        [HttpGet("help-desk-history")]
+        public IActionResult History()
+        {
+           return View();
+        }
     }
 }

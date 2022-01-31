@@ -15,5 +15,11 @@ namespace Client.Controllers
         {
             return View();
         }
+
+        [HttpGet("database-engineer-history")]
+        public IActionResult History()
+        {
+            return View();
+        }
     }
 }
