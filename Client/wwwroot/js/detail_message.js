@@ -22,7 +22,7 @@ GetDetailTicket(last_segment);
 function GetDetailTicket(last_segment) {
     $.ajax({
         type: 'GET',
-        url: 'https://localhost:44359/api/Tickets/View-Ticket-Detail?ID=' + last_segment,
+        url: 'https://localhost:44359/api/Tickets/View-Ticket-Detail/' + last_segment,
     }).done((data) => {
         document.getElementById("ticket-id").innerHTML = "Ticket " + data.id + " " + data.categoryName;
         var employee = `<div class="p-2">${data.userName} <span class="badge badge-secondary">Employee</span></div>`;
@@ -40,7 +40,7 @@ function GetDetailTicket(last_segment) {
 
 function GetMessageDetail() {
     $.ajax({
-        url: 'https://localhost:44359/api/Tickets/View-Message-Detail?id=' + last_segment
+        url: 'https://localhost:44359/api/Tickets/View-Message-Detail/' + last_segment
     }).done((data) => {
         var messageDetail = '';
         $.each(data, function (key, val) {
@@ -72,10 +72,8 @@ function CreateMessage() {
     ticketData.messageText = $('#messageText').val()
     $.ajax({
         type: 'POST',
-        url: 'https://localhost:44359/api/Messages/Create-Message',
-        contentType: 'application/json;charset=utf-8',
-        dataType: 'json',
-        data: JSON.stringify(ticketData),
+        url: 'https://localhost:44323/messages/Create-Message',
+        data: ticketData,
         success: function (data) {
             document.getElementById("formTicket").reset();
             document.getElementById("formTicket").classList.remove('was-validated');

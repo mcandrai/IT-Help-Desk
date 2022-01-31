@@ -2,7 +2,7 @@
     $('#ticketTable').DataTable({
         "order": [[0,"desc"]],
         "ajax": {
-            'url': 'https://localhost:44359/api/Tickets/View-Ticket-History',
+            'url': 'tickets/View-Ticket-History',
             'error': function (jqXHR) {
                 console.log(jqXHR);
             },

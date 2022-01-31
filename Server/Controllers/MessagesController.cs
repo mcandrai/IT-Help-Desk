@@ -20,8 +20,7 @@ namespace Server.Controllers
             this.messageRepository = messageRepository;
         }
 
-        [HttpPost]
-        [Route("Create-Message")]
+        [HttpPost("Create-Message")]
         public ActionResult<MessageDetail> CreateMessageDetail(MessageDetail messageDetail)
         {
             var result = messageRepository.CreateMessageDetail(messageDetail);

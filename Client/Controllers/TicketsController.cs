@@ -56,5 +56,47 @@ namespace Client.Controllers
             var result = ticketRepository.UpdateTicketDone(ticketDetailVM);
             return Json(result);
         }
+
+        [HttpGet("tickets/View-Ticket-History-User/{nik}")]
+        public async Task<JsonResult> ViewTicketHistoryUser(string nik)
+        {
+            var result = await ticketRepository.ViewTicketHistoryUser(nik);
+            return Json(result);
+        }
+
+        [HttpGet("tickets/View-Ticket-History")]
+        public async Task<JsonResult> ViewTicketHistory()
+        {
+            var result = await ticketRepository.ViewTicketHistory();
+            return Json(result);
+        }
+
+        [HttpGet("tickets/View-Ticket-BugSystem")]
+        public async Task<JsonResult> ViewTicketBugSystem()
+        {
+            var result = await ticketRepository.ViewTicketBugSystem();
+            return Json(result);
+        }
+
+        [HttpGet("tickets/View-Ticket-HelpDesk")]
+        public async Task<JsonResult> ViewTicketHelpDesk()
+        {
+            var result = await ticketRepository.ViewTicketHelpDesk();
+            return Json(result);
+        }
+
+        [HttpGet("tickets/View-Ticket-Database")]
+        public async Task<JsonResult> ViewTicketDatabase()
+        {
+            var result = await ticketRepository.ViewTicketDatabase();
+            return Json(result);
+        }
+
+        [HttpGet("tickets/View-Ticket-User/{nik}")]
+        public async Task<JsonResult> ViewTicketUser(string nik)
+        {
+            var result = await ticketRepository.ViewTicketUser(nik);
+            return Json(result);
+        }
     }
 }

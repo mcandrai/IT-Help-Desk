@@ -174,6 +174,7 @@ namespace Server.Repository.Data
                               t.CreateAt,
                               StatusName = st.Name,
                               CategoryName = ct.Name,
+                              EmployeeName = e.FirstName + " " + e.LastName,
                               PriorityName = p.Name
                           });
             return ticket;

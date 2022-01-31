@@ -94,5 +94,77 @@ namespace Client.Repositories.Data
             return entities;
         }
 
+        public async Task<List<TicketRequestVM>> ViewTicketHistoryUser(string nik)
+        {
+            List<TicketRequestVM> entities = new List<TicketRequestVM>();
+
+            using (var response = await httpClient.GetAsync(request + "View-Ticket-History-User/" + nik))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<List<TicketRequestVM>>(apiResponse);
+            }
+            return entities;
+        }
+
+        public async Task<List<TicketRequestVM>> ViewTicketHistory()
+        {
+            List<TicketRequestVM> entities = new List<TicketRequestVM>();
+
+            using (var response = await httpClient.GetAsync(request + "View-Ticket-History"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<List<TicketRequestVM>>(apiResponse);
+            }
+            return entities;
+        }
+
+        public async Task<List<TicketRequestVM>> ViewTicketBugSystem()
+        {
+            List<TicketRequestVM> entities = new List<TicketRequestVM>();
+
+            using (var response = await httpClient.GetAsync(request + "View-Ticket-BugSystem"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<List<TicketRequestVM>>(apiResponse);
+            }
+            return entities;
+        }
+
+        public async Task<List<TicketRequestVM>> ViewTicketHelpDesk()
+        {
+            List<TicketRequestVM> entities = new List<TicketRequestVM>();
+
+            using (var response = await httpClient.GetAsync(request + "View-Ticket-HelpDesk"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<List<TicketRequestVM>>(apiResponse);
+            }
+            return entities;
+        }
+
+        public async Task<List<TicketRequestVM>> ViewTicketDatabase()
+        {
+            List<TicketRequestVM> entities = new List<TicketRequestVM>();
+
+            using (var response = await httpClient.GetAsync(request + "View-Ticket-Database"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<List<TicketRequestVM>>(apiResponse);
+            }
+            return entities;
+        }
+
+        public async Task<List<TicketRequestVM>> ViewTicketUser(string nik)
+        {
+            List<TicketRequestVM> entities = new List<TicketRequestVM>();
+
+            using (var response = await httpClient.GetAsync(request + "View-Ticket-User/" + nik))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<List<TicketRequestVM>>(apiResponse);
+            }
+            return entities;
+        }
+
     }
 }

@@ -16,7 +16,7 @@ function GetData(nik) {
     $('#ticketTable').DataTable({
         "order": [[0,"desc"]],
         "ajax": {
-            'url': 'https://localhost:44359/api/Tickets/View-Ticket-History-User?nik=' + nik,
+            'url': 'tickets/View-Ticket-History-User/' + nik,
             'error': function (jqXHR) {
                 console.log(jqXHR);
             },

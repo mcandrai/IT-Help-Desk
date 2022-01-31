@@ -66,7 +66,7 @@ namespace Server.Controllers
             return Ok(result);
         }
 
-        [HttpGet("View-Ticket-User")]
+        [HttpGet("View-Ticket-User/{nik}")]
         public IActionResult ViewTicketUser(string nik)
         {
             var result = ticketRepository.ViewTicketUser(nik);
@@ -91,7 +91,7 @@ namespace Server.Controllers
             return Ok(result);
         }
 
-        [HttpGet("View-Ticket-History-User")]
+        [HttpGet("View-Ticket-History-User/{nik}")]
         public IActionResult ViewTicketHistoryUser(string nik)
         {
             var result = ticketRepository.ViewTicketHistoryUser(nik);
@@ -105,14 +105,14 @@ namespace Server.Controllers
             return Ok(result);
         }
 
-        [HttpGet("View-Ticket-Detail")]
-        public IActionResult ViewTicketDetail(int ID)
+        [HttpGet("View-Ticket-Detail/{Id}")]
+        public IActionResult ViewTicketDetail(int Id)
         {
-            var result = ticketRepository.GetTicketDetail(ID);
+            var result = ticketRepository.GetTicketDetail(Id);
             return Ok(result);
         }
         
-        [HttpGet("View-Message-Detail")]
+        [HttpGet("View-Message-Detail/{Id}")]
         public IActionResult ViewMessageDetail(int id)
         {
             var result = ticketRepository.ViewMessageDetail(id);

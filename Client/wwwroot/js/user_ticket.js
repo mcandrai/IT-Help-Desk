@@ -14,7 +14,7 @@ function Triggerdata() {
 function GetData(nik) {
     $('#ticketTable').DataTable({
         "ajax": {
-            'url': 'https://localhost:44359/api/Tickets/View-Ticket-User?nik=' + nik,
+            'url': 'tickets/View-Ticket-User/' + nik,
             'error': function (jqXHR) {
                 console.log(jqXHR);
             },

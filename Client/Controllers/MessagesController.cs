@@ -2,6 +2,7 @@
 using Client.Repositories.Data;
 using Microsoft.AspNetCore.Mvc;
 using Server.Model;
+using Server.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Client.Controllers
 {
-    public class MessageController : BaseController<Message, MessageRepository, string>
+    public class MessagesController : BaseController<Message, MessageRepository, string>
     {
         private readonly MessageRepository messageRepository;
-        public MessageController(MessageRepository repository) : base(repository)
+        public MessagesController(MessageRepository repository) : base(repository)
         {
             messageRepository = repository;
         }
@@ -26,6 +27,13 @@ namespace Client.Controllers
         public IActionResult History()
         {
             return View();
+        }
+
+        [HttpPost("messages/Create-Message")]
+        public JsonResult CreateMessageDetail(MessageDetail messageDetail)
+        {
+            var result = messageRepository.CreateMessageDetail(messageDetail);
+            return Json(result);
         }
 
 

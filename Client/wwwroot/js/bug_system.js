@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $('#ticketTable').DataTable({
         "ajax": {
-            'url': 'https://localhost:44359/api/Tickets/View-Ticket-BugSystem',
+            'url': 'tickets/View-Ticket-BugSystem',
             'error': function (jqXHR) {
                 console.log(jqXHR);
             },

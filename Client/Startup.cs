@@ -38,8 +38,6 @@ namespace Client
             services.AddScoped<MessageRepository>();
             services.AddScoped<Address>();
             
-            
-
             services.AddSession();
             services.AddAuthentication(auth =>
             {
