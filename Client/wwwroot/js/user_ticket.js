@@ -124,7 +124,7 @@ function StoreTicket() {
 
 function GetCategory() {
     $.ajax({
-        url: 'https://localhost:44359/api/Categories'
+        url: 'categories/getall'
     }).done((data) => {
         var categorySelect = '';
         $.each(data, function (key, val) {
@@ -174,7 +174,7 @@ $('#modalCreateTicket').on('show.bs.modal', function () {
 function closeTicketModal() {
     document.getElementById("formTicket").reset();
     document.getElementById("formTicket").classList.remove('was-validated');
-    $('#modalCreateTicket').modal('hide');
+   
 }
 
 function closeUpdateEmployeeModal() {

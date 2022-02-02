@@ -1,14 +1,24 @@
-﻿
-/*check data registration*/
-function ValidationRegistration() {
-    var form = document.forms["registration"].checkValidity();
-    event.preventDefault();
-    if (form) {
-        StoreRegistration();
-    }
-}
+﻿(function () {
+    'use strict';
+    window.addEventListener('load', function () {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    event.preventDefault();
+                    StoreRegistration();
+                }
+                form.classList.add('was-validated');
 
-/*store data registration*/
+            }, false);
+        });
+    }, false);
+})();
+
+
 function StoreRegistration() {
 
     var data = new Object();
@@ -21,7 +31,7 @@ function StoreRegistration() {
     } else {
         data.gender = $('#gender-male').val();
     }
-   
+
     data.phone = $('#phone').val();
     data.email = $('#email').val();
     data.password = $('#password').val();
@@ -41,15 +51,17 @@ function StoreRegistration() {
                 $('#register-alert-danger').hide();
                 $('#alert-text-success').text(data.message);
                 $('#register-alert-success').show();
-                document.getElementById("registration").reset();
+                document.getElementById("formRegistration").reset();
+                document.getElementById("formRegistration").classList.remove('was-validated');
 
+            }
+            $(document).ready(function () {
                 window.setTimeout(function () {
                     $(".alert").fadeTo(500, 0).slideUp(500, function () {
                         $(this).remove();
                     });
                 }, 3000);
-               
-            }
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);

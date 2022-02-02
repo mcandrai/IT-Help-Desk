@@ -42,24 +42,33 @@
                         <div class="p-5">
                             <div class="text-left mb-4">
                                 <h1 class="h4 text-gray-900">Sign up.</h1>
-                                <small>Give us some of your information to get free access to help desk.</small>
+                                <small>Give us some of your information to get free access to system.</small>
                             </div>
-                            <form class="user" id="registration">
+                            <form class="needs-validation" id="formRegistration" method="post" novalidate>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" id="firstName" class="form-control form-control-user"
-                                               placeholder="First Name" required>
+                                               placeholder="First Name" pattern="\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+" required>
+                                        <div class="invalid-feedback">
+                                            First name is required
+                                        </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="text" id="lastName" class="form-control form-control-user"
-                                               placeholder="Last Name" required>
+                                               placeholder="Last Name" pattern="\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+" required>
+                                        <div class="invalid-feedback">
+                                            Last name is required
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" id="phone" class="form-control form-control-user"
-                                               placeholder="Phone Number">
+                                        <input type="text" name="Phone" id="phone" class="form-control form-control-user"
+                                               placeholder="Phone Number" pattern="\+?([ -]?\d+)+|\(\d+\)([ -]\d+)" required>
+                                        <div class="invalid-feedback">
+                                            Enter a valid phone
+                                        </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-check mt-2 form-check-inline">
@@ -73,14 +82,20 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="email"
-                                           placeholder="Email">
+                                    <input type="email" name="Email" class="form-control form-control-user" id="email"
+                                           placeholder="Email" required>
+                                    <div class="invalid-feedback">
+                                        Enter a valid email
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-user" id="password"
-                                           placeholder="Password">
+                                    <input type="password" name="Password" class="form-control form-control-user"
+                                           id="password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" placeholder="Password" required>
+                                    <div class="invalid-feedback">
+                                        Enter minimum six characters, at least one letter and one number
+                                    </div>
                                 </div>
-                                <button type="submit" onclick="ValidationRegistration()" class="btn btn-primary btn-user btn-block">
+                                <button type="submit" class="btn btn-primary btn-user btn-block">
                                     REGISTER
                                 </button>
 

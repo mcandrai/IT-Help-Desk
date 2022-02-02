@@ -166,5 +166,17 @@ namespace Client.Repositories.Data
             return entities;
         }
 
+        public async Task<TicketRequestVM> ViewTicketDetail(int id)
+        {
+            TicketRequestVM entity = null;
+
+            using (var response = await httpClient.GetAsync(request + "View-Ticket-Detail/" + id))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entity = JsonConvert.DeserializeObject<TicketRequestVM>(apiResponse);
+            }
+            return entity;
+        }
+
     }
 }

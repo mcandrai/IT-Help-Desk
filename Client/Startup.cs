@@ -36,6 +36,7 @@ namespace Client
             services.AddScoped<AccountRepository>();
             services.AddScoped<TicketRepository>();
             services.AddScoped<MessageRepository>();
+            services.AddScoped<CategoryRepository>();
             services.AddScoped<Address>();
             
             services.AddSession();
