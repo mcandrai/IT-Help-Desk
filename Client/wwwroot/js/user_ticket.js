@@ -124,7 +124,7 @@ function StoreTicket() {
 
 function GetCategory() {
     $.ajax({
-        url: 'https://localhost:44359/api/Categories'
+        url: 'Categories/GetAll'
     }).done((data) => {
         var categorySelect = '';
         $.each(data, function (key, val) {

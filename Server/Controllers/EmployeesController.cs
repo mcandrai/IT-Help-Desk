@@ -54,11 +54,10 @@ namespace Server.Controllers
         }
 
 
-        [HttpGet]
-        [Route("Get-Register-All")]
-        public virtual ActionResult<RegisterVM> GetRegisterAll()
+        [HttpGet("Get-Register-All/{NIK}")]
+        public virtual ActionResult<RegisterVM> GetRegisterAll(string NIK)
         {
-            var result = employeeRepository.GetRegisterAll();
+            var result = employeeRepository.GetRegisterAll(NIK);
             return Ok(result);
         }
 
@@ -72,7 +71,7 @@ namespace Server.Controllers
 
         [HttpPut]
         [Route("Update-Register")]
-        public ActionResult<RegisterVM> RegisterUpdate(RegisterVM register)
+        public ActionResult<RegisterVM> RegisterUpdate(GetRegisterVM register)
         {
             /*var result = employeeRepository.UpdateRegister(register);
             return Ok(result);*/

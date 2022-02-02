@@ -58,7 +58,7 @@ namespace Server.Repository.Data
             }
             return false;
         }
-        public bool UpdateEmail(RegisterVM register)
+        public bool UpdateEmail(GetRegisterVM register)
         {
             var getEmail = myContext.Accounts.Where(a => a.Email == register.Email).FirstOrDefault();
             if (getEmail == null)
@@ -74,7 +74,7 @@ namespace Server.Repository.Data
                 return true;
             }
         }
-        public bool UpdatePhone(RegisterVM register)
+        public bool UpdatePhone(GetRegisterVM register)
         {
             var getPhone = myContext.Employees.Where(e => e.Phone == register.Phone).FirstOrDefault();
             if (getPhone == null)
@@ -127,7 +127,7 @@ namespace Server.Repository.Data
             return myContext.SaveChanges();
         }
 
-        public IEnumerable GetRegisterAll()
+        public IQueryable GetRegisterAll(string NIK)
         {
             var query = (from employee in myContext.Set<Employee>()
                          join account in myContext.Set<Account>()
@@ -137,6 +137,7 @@ namespace Server.Repository.Data
                          join role in myContext.Set<Role>()
                             on accountrole.RoleId equals role.Id
                          orderby employee.FirstName
+                         where employee.NIK==NIK
                          select new
                          {
                              employee.NIK,
@@ -146,7 +147,7 @@ namespace Server.Repository.Data
                              Gender = employee.Gender.ToString(),
                              Role = role.Name,
                          });
-            return query.ToList();
+            return query;
         }
 
         public RegisterVM GetRegisterDetail(string NIK)
@@ -169,15 +170,16 @@ namespace Server.Repository.Data
             return getData;
         }
 
-        public int UpdateRegister(RegisterVM register)
+        public int UpdateRegister(GetRegisterVM register)
         {
+            var names = register.FullName.Split(' ');
             var employee = myContext.Employees.FirstOrDefault(a => a.NIK == register.NIK);
             {
                 employee.NIK = register.NIK;
-                employee.FirstName = register.FirstName;
-                employee.LastName = register.LastName;
+                employee.FirstName = names[0];
+                employee.LastName = names[1];
                 employee.Phone = register.Phone;
-                employee.Gender = (Model.Gender)register.Gender;
+                employee.Gender = register.Gender;
             };
             myContext.Entry(employee).State = EntityState.Modified;
             myContext.SaveChanges();
@@ -196,5 +198,6 @@ namespace Server.Repository.Data
             myContext.SaveChanges();
             return true;
         }
+
     }
 }

@@ -98,5 +98,19 @@ namespace Client.Controllers
             var result = await ticketRepository.ViewTicketUser(nik);
             return Json(result);
         }
+
+        [HttpGet("tickets/View-Ticket-Detail/{id}")]
+        public async Task<JsonResult> ViewTicketDetail(int id)
+        {
+            var result = await ticketRepository.ViewTicketDetail(id);
+            return Json(result);
+        }
+
+        [HttpGet("tickets/View-Message-Detail/{Id}")]
+        public async Task<JsonResult> ViewMessageDetail(int Id)
+        {
+            var result = await ticketRepository.ViewMessageDetail(Id);
+            return Json(result);
+        }
     }
 }

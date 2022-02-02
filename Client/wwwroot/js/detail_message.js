@@ -24,6 +24,7 @@ function GetDetailTicket(last_segment) {
         type: 'GET',
         url: 'https://localhost:44359/api/Tickets/View-Ticket-Detail/' + last_segment,
     }).done((data) => {
+        console.log(data);
         document.getElementById("ticket-id").innerHTML = "Ticket " + data.id + " " + data.categoryName;
         var employee = `<div class="p-2">${data.userName} <span class="badge badge-secondary">Employee</span></div>`;
         $("#userfullname").html(employee);
@@ -40,7 +41,8 @@ function GetDetailTicket(last_segment) {
 
 function GetMessageDetail() {
     $.ajax({
-        url: 'https://localhost:44359/api/Tickets/View-Message-Detail/' + last_segment
+        type: 'GET',
+        url: 'https://localhost:44323/Tickets/View-Message-Detail/' + last_segment
     }).done((data) => {
         var messageDetail = '';
         $.each(data, function (key, val) {

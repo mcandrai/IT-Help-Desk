@@ -45,6 +45,18 @@ namespace Client.Repositories.Data
             return entities;
         }
 
-      
+        public async Task<List<GetRegisterVM>> GetRegisterData(string nik)
+        {
+            List<GetRegisterVM> entities = new List<GetRegisterVM>();
+
+            using (var response = await httpClient.GetAsync(request + "Get-Register-All/" + nik))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<List<GetRegisterVM>>(apiResponse);
+            }
+            return entities;
+        }
+
+
     }
 }

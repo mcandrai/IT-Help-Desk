@@ -22,12 +22,23 @@ namespace Client.Controllers
             return View();
         }
 
+        public IActionResult Profile()
+        {
+            return View();
+        }
         //api client for registration
 
         [HttpPost("employees/register")]
         public JsonResult Register(RegisterVM register)
         {
             var result = employeeRepository.Register(register);
+            return Json(result);
+        }
+
+        [HttpGet("employees/Get-Register-All/{nik}")]
+        public async Task<JsonResult> GetRegisterData(string nik)
+        {
+            var result = await employeeRepository.GetRegisterData(nik);
             return Json(result);
         }
     }
