@@ -22,7 +22,7 @@ GetDetailTicket(last_segment);
 function GetDetailTicket(last_segment) {
     $.ajax({
         type: 'GET',
-        url: 'https://localhost:44359/api/Tickets/View-Ticket-Detail/' + last_segment,
+        url: 'https://localhost:44323/Tickets/View-Ticket-Detail/' + last_segment,
     }).done((data) => {
         console.log(data);
         document.getElementById("ticket-id").innerHTML = "Ticket " + data.id + " " + data.categoryName;

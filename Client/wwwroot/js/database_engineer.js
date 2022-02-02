@@ -31,9 +31,8 @@
         'columns': [
             {
                 'data': null,
-                'render': function (data) {
-                    var link = `<a href="ticket-detail/${data.id}">${data.id}</a>`
-                    return link;
+                'render': function (data, type, row, meta) {
+                    return (meta.row + meta.settings._iDisplayStart + 1);
                 }
             },
             {
@@ -61,6 +60,7 @@
                 'bSortable': false,
                 'render': function (data) {
                     var actionButton = `
+                                        <a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
                                         <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-check-circle" aria-hidden='true'></i></button>
                                        `
                     return actionButton;

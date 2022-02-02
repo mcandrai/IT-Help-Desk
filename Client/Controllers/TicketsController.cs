@@ -100,7 +100,7 @@ namespace Client.Controllers
         }
 
         [HttpGet("tickets/View-Ticket-Detail/{id}")]
-        public async Task<JsonResult> ViewTicketDetail(int id)
+        public async Task<JsonResult> Detail(int id)
         {
             var result = await ticketRepository.ViewTicketDetail(id);
             return Json(result);

@@ -166,16 +166,17 @@ namespace Client.Repositories.Data
             return entities;
         }
 
-        public async Task<List<TicketMessage>> ViewTicketDetail(int Id)
-        {
-            List<TicketMessage> entities = new List<TicketMessage>();
 
-            using (var response = await httpClient.GetAsync(request + "View-Ticket-Detail/" + Id))
+        public async Task<TicketMessage> ViewTicketDetail(int id)
+        {
+            TicketMessage entity = null;
+
+            using (var response = await httpClient.GetAsync(request + "View-Ticket-Detail/" + id))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entities = JsonConvert.DeserializeObject<List<TicketMessage>>(apiResponse);
+                entity = JsonConvert.DeserializeObject<TicketMessage>(apiResponse);
             }
-            return entities;
+            return entity;
         }
 
         public async Task<List<MessageDetailVM>> ViewMessageDetail(int Id)
