@@ -1,6 +1,8 @@
-﻿using Server.Model;
+﻿using Microsoft.AspNetCore.Http;
+using Server.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -25,5 +27,6 @@ namespace Server.ViewModel
         public virtual Employee Employee { get; set; }
         public string NIK { get; set; }
         public string Message { get; set; }
+        public IFormFile ProblemPicture { get; set; }
     }
 }

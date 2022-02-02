@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Server.Migrations
 {
-    public partial class fixMessageDetail : Migration
+    public partial class upload : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -107,7 +107,8 @@ namespace Server.Migrations
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false),
                     PriorityId = table.Column<int>(type: "int", nullable: false),
-                    NIK = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    NIK = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ProblemPicture = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

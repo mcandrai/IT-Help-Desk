@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Server.Context;
 using Server.Model;
 using Server.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -14,20 +16,24 @@ namespace Server.Repository.Data
     public class TicketRepository : GeneralRepository<MyContext, Ticket, int>
     {
         private readonly MyContext myContext;
-        public TicketRepository(MyContext myContext) : base(myContext)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public TicketRepository(MyContext myContext,IWebHostEnvironment hostEnvironment) : base(myContext)
         {
             this.myContext = myContext;
+            webHostEnvironment = hostEnvironment;
         }
         public int CreateTicket(TicketDetailVM ticketDetailVM)
         {
+            string uniqueFileName = UploadedFile(ticketDetailVM);
             var ticket = new Ticket
             {
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
                 StatusId = 1,
-                PriorityId = 1,
+                PriorityId = 4,
                 CategoryId = ticketDetailVM.CategoryId,
-                NIK = ticketDetailVM.NIK
+                NIK = ticketDetailVM.NIK,
+                ProblemPicture = uniqueFileName
             };
             myContext.Tickets.Add(ticket);
             myContext.SaveChanges();
@@ -39,8 +45,23 @@ namespace Server.Repository.Data
             myContext.Messages.Add(message);
             return myContext.SaveChanges();
         }
+        private string UploadedFile(TicketDetailVM model)
+        {
+            string uniqueFileName = null;
 
-        
+            if (model.ProblemPicture != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProblemPicture.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.ProblemPicture.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+        }
+
         public int UpdateTicket(TicketDetailVM ticketDetailVM)
         {
             var getTicket = myContext.Tickets.FirstOrDefault(a => a.Id == ticketDetailVM.Id);
@@ -85,7 +106,7 @@ namespace Server.Repository.Data
                 CreateAt = getTicket.CreateAt,
                 UpdateAt = DateTime.Now,
                 CategoryId = getTicket.CategoryId,
-                StatusId = 2,
+                StatusId = 4,
                 PriorityId = getTicket.PriorityId,
                 NIK = getTicket.NIK
             };
@@ -116,7 +137,7 @@ namespace Server.Repository.Data
         public bool UpdateTicketDone(TicketDetailVM ticketDetailVM)
         {
             var getTicket = myContext.Tickets.FirstOrDefault(a => a.Id == ticketDetailVM.Id);
-            if (getTicket.StatusId != 2) {
+            if (getTicket.StatusId != 4) {
                 return false;
             } 
             var ticket = new Ticket
@@ -165,6 +186,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
+                          orderby st.Id ascending, p.Id descending
                           where  a.NIK== NIK && st.Id != 5
                           select new
                           {
@@ -189,7 +211,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
-                          orderby t.CreateAt descending
+                          orderby st.Id ascending,p.Id descending
                           where st.Id != 5
                           select new
                           {
@@ -212,6 +234,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
+                          orderby st.Id ascending, p.Id descending
                           where t.PriorityId==2 && st.Id!=5
                           select new
                           {
@@ -234,6 +257,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
+                          orderby st.Id ascending, p.Id descending
                           where t.PriorityId == 3 && st.Id != 5
                           select new
                           {

@@ -54,6 +54,7 @@ function GetData(nik) {
             {
                 'data': null,
                 'render': function (data) {
+
                     var name = `<span class="label badge-pill ${data.priorityName}">${data.priorityName}</span>`
                         return name;
                 }
@@ -107,8 +108,9 @@ function StoreTicket() {
     ticketData.categoryId = parseInt($('#categoryId').val());
     ticketData.nik = nik_ticket;
     ticketData.message = $('#message').val();
+    ticketData.problemPicture = $('#exampleFormControlFile1').val().split("\\").pop();;
 
-
+    console.log(ticketData.problemPicture);
     var ticketTable = $('#ticketTable').DataTable();
 
     $.ajax({
@@ -155,6 +157,11 @@ function GetNIK() {
     })
 }
 
+/*$(".custom-control-file").on("change", function () {
+    console.log("name");
+    var fileName = $(this).val().split("\\").pop();
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});*/
 
 function alertError() {
     Swal.fire({

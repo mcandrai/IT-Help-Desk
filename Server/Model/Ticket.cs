@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -29,5 +30,6 @@ namespace Server.Model
         public string NIK { get; set; }
         [JsonIgnore]
         public virtual Message Message { get; set; }
+        public string ProblemPicture { get; set; }
     }
 }

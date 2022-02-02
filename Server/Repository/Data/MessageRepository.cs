@@ -53,11 +53,11 @@ namespace Server.Repository.Data
             else if(status.StatusId == 3 && role.Id == 3)
             {
                 {
-                    status.StatusId = 4;
+                    status.StatusId = 2;
                 };
             }
             //helpdesk reply setelah user reply kembali
-            else if (status.StatusId == 4 && role.Id != 3)
+            else if (status.StatusId == 2 && role.Id != 3)
             {
                 {
                     status.StatusId = 3;

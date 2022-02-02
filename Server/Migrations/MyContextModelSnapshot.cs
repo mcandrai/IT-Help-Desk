@@ -216,6 +216,9 @@ namespace Server.Migrations
                     b.Property<int>("PriorityId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProblemPicture")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 

@@ -10,8 +10,8 @@ using Server.Context;
 namespace Server.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220128071349_fixMessageDetail")]
-    partial class fixMessageDetail
+    [Migration("20220202134816_upload")]
+    partial class upload
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -217,6 +217,9 @@ namespace Server.Migrations
 
                     b.Property<int>("PriorityId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProblemPicture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int");

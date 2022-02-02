@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
     $('#ticketTable').DataTable({
-        "order": [[0,"desc"]],
         "ajax": {
             'url': 'https://localhost:44359/api/Tickets/View-Ticket-HelpDesk',
             'error': function (jqXHR) {
@@ -62,18 +61,38 @@
                 'data': null,
                 'bSortable': false,
                 'render': function (data) {
+                    if (data.statusName == "Done") {
+                        var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
+                                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-arrow-circle-up" aria-hidden='true'></i></button>
+                                        <button class="btn btn-sm btn-dark" data-toggle="modal" data-target="#modalReport" data-whatever="${data.id}"> <i class="fas fa-share-square" aria-hidden='true'></i></button>
+                                        `
+                        return actionButton;
+                    } else {
                     var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
                                         <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-arrow-circle-up" aria-hidden='true'></i></button>
                                         <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalDone" data-whatever="${data.id}"> <i class="fas fa-check-circle" aria-hidden='true'></i></button>
-                                        <button class="btn btn-sm btn-dark" data-toggle="modal" data-target="#modalReport" data-whatever="${data.id}"> <i class="fas fa-share-square" aria-hidden='true'></i></button>
                                         `
-                    return actionButton;
+                        return actionButton;
+                    }
                 }
             }
         ]
     });
 });
 
+let category = '';
+function GetCategory() {
+    $.ajax({
+        url: 'Categories/GetAll'
+    }).done((data) => {
+        $.each(data, function (key, val) {
+            categorySelect += `<option value=${val.id}>${val.name}</option>`
+        });
+        category = categorySelect;
+    }).fail((error) => {
+        console.log(error);
+    })
+}
 
 function UpdateTicket(id) {
     var ticketTable = $('#ticketTable').DataTable();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Server.Model;
@@ -17,11 +18,13 @@ namespace Server.Controllers
     public class TicketsController : BaseController<Ticket, TicketRepository, int>
     {
         private readonly TicketRepository ticketRepository;
+        private readonly IWebHostEnvironment webHostEnvironment;
         public IConfiguration _configuration;
-        public TicketsController(TicketRepository ticketRepository, IConfiguration configuration) : base(ticketRepository)
+        public TicketsController(TicketRepository ticketRepository, IConfiguration configuration, IWebHostEnvironment hostEnvironment) : base(ticketRepository)
         {
             this.ticketRepository = ticketRepository;
             this._configuration = configuration;
+            webHostEnvironment = hostEnvironment;
         }
 
         [HttpPost]
