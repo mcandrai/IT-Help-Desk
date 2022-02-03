@@ -47,11 +47,9 @@ function GetData(nik) {
         ],
         'columns': [
             {
-                
                 'data': null,
-                'render': function (data) {
-                    var link = `<a href="ticket-history/${data.id}">${data.id}</a>`
-                    return link;
+                'render': function (data, type, row, meta) {
+                    return (meta.row + meta.settings._iDisplayStart + 1);
                 }
             },
             {
@@ -72,6 +70,14 @@ function GetData(nik) {
                 'render': function (data) {
                     var status = `<span class="${data.statusName}">${data.statusName}</span>`
                     return status;
+                }
+            },
+            {
+                'data': null,
+                'bSortable': false,
+                'render': function (data) {
+                    var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-history/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>`
+                    return actionButton;
                 }
             }
         ]

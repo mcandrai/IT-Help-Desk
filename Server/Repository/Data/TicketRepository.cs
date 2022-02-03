@@ -262,6 +262,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
+                          orderby t.CreateAt descending
                           where e.NIK == NIK && st.Id==5
                           select new
                           {
@@ -285,6 +286,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
+                          orderby t.CreateAt descending
                           where st.Id == 5
                           select new
                           {
