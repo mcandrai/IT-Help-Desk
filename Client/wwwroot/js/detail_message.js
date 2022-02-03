@@ -72,6 +72,7 @@ function CreateMessage() {
     ticketData.nik = nik;
     ticketData.messageId = last_segment;
     ticketData.messageText = $('#messageText').val()
+    console.log(ticketData);
     $.ajax({
         type: 'POST',
         url: 'https://localhost:44323/messages/Create-Message',

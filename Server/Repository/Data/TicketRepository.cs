@@ -72,7 +72,7 @@ namespace Server.Repository.Data
                 UpdateAt = DateTime.Now,
                 StatusId = getTicket.StatusId,
                 CategoryId = getTicket.CategoryId,
-                PriorityId = 2,
+                PriorityId = ticketDetailVM.PriorityId,
                 NIK = getTicket.NIK
             };
             myContext.Entry(getTicket).State = EntityState.Detached;

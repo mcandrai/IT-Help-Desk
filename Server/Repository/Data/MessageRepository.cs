@@ -37,20 +37,21 @@ namespace Server.Repository.Data
             var account = myContext.AccountRoles.FirstOrDefault(ar => ar.AccountId == messageDetail.NIK);
             var role = myContext.Roles.FirstOrDefault(r => r.Id == account.RoleId);
             //user reply sendiri
-            if (status.StatusId == 1 && role.Id==3) { 
+            if (status.StatusId == 1 && role.Id == 3)
             {
-                status.StatusId = 1;
-            };
+                {
+                    status.StatusId = 1;
+                };
             }
             //helpdesk reply
-            else if(status.StatusId == 1 && role.Id!=3)
+            else if (status.StatusId == 1 && role.Id != 3)
             {
                 {
                     status.StatusId = 3;
                 };
             }
             //user reply setelah helpdesk reply
-            else if(status.StatusId == 3 && role.Id == 3)
+            else if (status.StatusId == 3 && role.Id == 3)
             {
                 {
                     status.StatusId = 2;
