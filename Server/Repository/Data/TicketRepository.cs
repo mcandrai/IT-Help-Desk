@@ -55,7 +55,8 @@ namespace Server.Repository.Data
                 StatusId = getTicket.StatusId,
                 CategoryId = getTicket.CategoryId,
                 PriorityId = ticketDetailVM.PriorityId,
-                NIK = getTicket.NIK
+                NIK = getTicket.NIK,
+                ProblemPicture = getTicket.ProblemPicture
             };
             myContext.Entry(getTicket).State = EntityState.Detached;
             myContext.Entry(ticket).State = EntityState.Modified;
@@ -73,7 +74,8 @@ namespace Server.Repository.Data
                 StatusId = getTicket.StatusId,
                 CategoryId = getTicket.CategoryId,
                 PriorityId = 3,
-                NIK = getTicket.NIK
+                NIK = getTicket.NIK,
+                ProblemPicture = getTicket.ProblemPicture
             };
             myContext.Entry(getTicket).State = EntityState.Detached;
             myContext.Entry(ticket).State = EntityState.Modified;
@@ -90,7 +92,8 @@ namespace Server.Repository.Data
                 CategoryId = getTicket.CategoryId,
                 StatusId = 4,
                 PriorityId = getTicket.PriorityId,
-                NIK = getTicket.NIK
+                NIK = getTicket.NIK,
+                ProblemPicture = getTicket.ProblemPicture
             };
             myContext.Entry(getTicket).State = EntityState.Detached;
             myContext.Entry(ticket).State = EntityState.Modified;
@@ -130,7 +133,8 @@ namespace Server.Repository.Data
                 CategoryId = getTicket.CategoryId,
                 StatusId = 5,
                 PriorityId = getTicket.PriorityId,
-                NIK = getTicket.NIK
+                NIK = getTicket.NIK,
+                ProblemPicture = getTicket.ProblemPicture
             };
             myContext.Entry(getTicket).State = EntityState.Detached;
             myContext.Entry(ticket).State = EntityState.Modified;
@@ -154,7 +158,8 @@ namespace Server.Repository.Data
                 StatusName = query.Status.Name,
                 PriorityName = query.Priority.Name,
                 UserName = query.Employee.FirstName+" "+query.Employee.LastName,
-                Message = query.Message.MessageText
+                Message = query.Message.MessageText,
+                Image = query.ProblemPicture
             };
             return getData;
         }
@@ -310,6 +315,7 @@ namespace Server.Repository.Data
                           join a in myContext.Accounts on md.NIK equals a.NIK
                           join ar in myContext.AccountRoles on md.NIK equals ar.AccountId
                           join r in myContext.Roles on ar.RoleId equals r.Id
+                          orderby md.CreateAt ascending
                           where m.Id == ID
                           select new
                           {

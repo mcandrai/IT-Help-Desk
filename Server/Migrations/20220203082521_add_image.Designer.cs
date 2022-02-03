@@ -10,8 +10,8 @@ using Server.Context;
 namespace Server.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220202134816_upload")]
-    partial class upload
+    [Migration("20220203082521_add_image")]
+    partial class add_image
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

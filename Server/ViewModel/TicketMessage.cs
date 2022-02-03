@@ -25,5 +25,7 @@ namespace Server.ViewModel
         public string UserName { get; set; }
         public string Message { get; set; }
         public virtual ICollection<MessageDetail> MessageDetail { get; set; }
+
+        public string Image { get; set; }
     }
 }

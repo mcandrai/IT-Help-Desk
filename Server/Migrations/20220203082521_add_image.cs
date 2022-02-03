@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Server.Migrations
 {
-    public partial class upload : Migration
+    public partial class add_image : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

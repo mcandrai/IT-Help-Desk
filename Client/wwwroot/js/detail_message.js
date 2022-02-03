@@ -26,11 +26,12 @@ function GetDetailTicket(last_segment) {
     }).done((data) => {
         console.log(data);
         document.getElementById("ticket-id").innerHTML = "Ticket " + data.id + " " + data.categoryName;
-        var employee = `<div class="p-2">${data.userName} <span class="badge badge-secondary">Employee</span></div>`;
+        var employee = `<div class="p-2">${data.userName} <span class="badge badge-secondary">Employee</span></div>
+                        <div class="p-2"><img src="/images/${data.image}" class="img-thumbnail"></div>
+
+                        `;
         $("#userfullname").html(employee);
-        //var date = new Date(data.createAt + "Z").toISOString().substring(0, 10);
-        //let result = date.replace(/-/g, ",");
-        //document.getElementById("createdate").innerHTML = new Date(result).toLocaleString('en-GB');
+        
         document.getElementById("message").innerHTML = data.message;
         GetMessageDetail();
     }).fail((error) => {
