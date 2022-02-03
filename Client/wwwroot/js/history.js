@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
     $('#ticketTable').DataTable({
-        "order": [[0,"desc"]],
         "ajax": {
             'url': 'tickets/View-Ticket-History',
             'error': function (jqXHR) {
