@@ -14,7 +14,7 @@ function Triggerdata() {
 function GetProfile(nik) {
     $.ajax({
         type: 'GET',
-        url: 'Get-Register-All/' + nik,
+        url: 'https://localhost:44359/api/employees/Get-Register-All/' + nik,
     }).done((data) => {
         $.each(data, function (key, val) {
             console.log(val);
