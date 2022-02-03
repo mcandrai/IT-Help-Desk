@@ -29,7 +29,7 @@ namespace Server.Controllers
 
         [HttpPost]
         [Route("Create-Ticket")]
-        public ActionResult<TicketDetailVM> CreateTicket(TicketDetailVM ticketDetailVM)
+        public ActionResult CreateTicket(TicketDetailVM ticketDetailVM)
         {
             var result = ticketRepository.CreateTicket(ticketDetailVM);
             return Ok(new { status = HttpStatusCode.OK,message = "Successfully added data!" });

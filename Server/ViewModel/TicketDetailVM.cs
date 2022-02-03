@@ -28,5 +28,6 @@ namespace Server.ViewModel
         public string NIK { get; set; }
         public string Message { get; set; }
         public IFormFile ProblemPicture { get; set; }
+        public string ImgProblem { get; set; }
     }
 }

@@ -103,29 +103,21 @@ function GetData(nik) {
 
 let nik_ticket;
 function StoreTicket() {
-    var ticketData = new Object();
+    var form = $('formTicket')[0];
+    var formData = new FormData(form);
+    var fileUpload = $("#problemPicture").get(0);
+    var files = fileUpload.files;
 
-    ticketData.categoryId = parseInt($('#categoryId').val());
-    ticketData.nik = nik_ticket;
-    ticketData.message = $('#message').val();
-
-    /*var form = $('#formTicket')[0];*/
-    var formData = new FormData();
-    formData.append("imgFile", $("#exampleFormControlFile1")[0].files[0]);
-    /*formdata.append('category', $('#categoryId').val());
-    formdata.append('nik', nik_ticket);
-    formdata.append('message', $('#message').val());*/
-    ticketData.problemPicture = formData.get("imgFile");
-    
-
-    console.log(ticketData);
+    formData.append("problemPicture", files[0]);
+    formData.append("NIK", nik_ticket);
+    formData.append("categoryId", $('#categoryId').val());
+    formData.append("message", $('#message').val());
     var ticketTable = $('#ticketTable').DataTable();
-
+    console.log(formData.get("message"));
     $.ajax({
         type: 'POST',
         url: 'tickets/create-ticket',
-        cache: false,
-        dataType: 'json',
+        contentType: false,
         processData: false,
         data: formData,
         success: function (data) {

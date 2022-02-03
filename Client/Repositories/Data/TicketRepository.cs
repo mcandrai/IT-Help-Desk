@@ -1,10 +1,12 @@
 ﻿using Client.Base;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Server.Model;
 using Server.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -18,10 +20,12 @@ namespace Client.Repositories.Data
         private readonly string request;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly HttpClient httpClient;
-        public TicketRepository(Address address, string request = "tickets/") : base(address, request)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public TicketRepository(Address address, IWebHostEnvironment hostEnvironment, string request = "tickets/") : base(address, request)
         {
             this.address = address;
             this.request = request;
+            webHostEnvironment = hostEnvironment;
             _contextAccessor = new HttpContextAccessor();
             httpClient = new HttpClient
             {
@@ -31,7 +35,30 @@ namespace Client.Repositories.Data
         }
         public Object CreateTicket(TicketDetailVM ticketDetailVM)
         {
-            StringContent content = new StringContent(JsonConvert.SerializeObject(ticketDetailVM), Encoding.UTF8, "application/json");
+            string uniqueFileName = null;
+
+            if (ticketDetailVM.ProblemPicture != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + ticketDetailVM.ProblemPicture.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    ticketDetailVM.ProblemPicture.CopyTo(fileStream);
+                }
+            }
+            Object ticket = new TicketDetailVM
+            {
+                CreateAt = DateTime.Now,
+                UpdateAt = DateTime.Now,
+                StatusId = 1,
+                PriorityId = 4,
+                CategoryId = ticketDetailVM.CategoryId,
+                NIK = ticketDetailVM.NIK,
+                ImgProblem = uniqueFileName,
+                Message = ticketDetailVM.Message
+            };
+            StringContent content = new StringContent(JsonConvert.SerializeObject(ticket), Encoding.UTF8, "application/json");
             Object entities = new Object();
             using (var response = httpClient.PostAsync(request + "Create-Ticket", content).Result)
             {

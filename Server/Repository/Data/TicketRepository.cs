@@ -24,8 +24,7 @@ namespace Server.Repository.Data
         }
         public int CreateTicket(TicketDetailVM ticketDetailVM)
         {
-            string uniqueFileName = UploadedFile(ticketDetailVM);
-            var ticket = new Ticket
+            var requestTicket = new Ticket
             {
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
@@ -33,35 +32,18 @@ namespace Server.Repository.Data
                 PriorityId = 4,
                 CategoryId = ticketDetailVM.CategoryId,
                 NIK = ticketDetailVM.NIK,
-                ProblemPicture = uniqueFileName
+                ProblemPicture = ticketDetailVM.ImgProblem
             };
-            myContext.Tickets.Add(ticket);
+            myContext.Tickets.Add(requestTicket);
             myContext.SaveChanges();
             var message = new Message
             {
                 MessageText = ticketDetailVM.Message,
-                TicketId = ticket.Id,
+                TicketId = requestTicket.Id
             };
             myContext.Messages.Add(message);
             return myContext.SaveChanges();
         }
-        private string UploadedFile(TicketDetailVM model)
-        {
-            string uniqueFileName = null;
-
-            if (model.ProblemPicture != null)
-            {
-                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProblemPicture.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    model.ProblemPicture.CopyTo(fileStream);
-                }
-            }
-            return uniqueFileName;
-        }
-
         public int UpdateTicket(TicketDetailVM ticketDetailVM)
         {
             var getTicket = myContext.Tickets.FirstOrDefault(a => a.Id == ticketDetailVM.Id);
