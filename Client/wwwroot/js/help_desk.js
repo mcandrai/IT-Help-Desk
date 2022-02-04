@@ -70,7 +70,6 @@ $(document).ready(function () {
                 'data': null,
                 'bSortable': false,
                 'render': function (data) {
-                    console.log(data);
                     if (data.statusName == "Done") {
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
                                         <button class="btn btn-sm btn-dark" data-toggle="modal" data-target="#modalReport" data-whatever="${data.id}"> <i class="fas fa-share-square" aria-hidden='true'></i></button>
@@ -79,10 +78,17 @@ $(document).ready(function () {
                     } else if (data.priorityName == "General") {
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>`
                         return actionButton;
-                    } else if (data.statusName == "New" && data.EscalationName == "Level 1") {
+                    } else if (data.statusName == "New" && data.escalationName == "Level 1") {
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
+                                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-arrow-circle-up" aria-hidden='true'></i></button>
                                             `
                                             return actionButton;
+                    }
+                    else if (data.escalationName == "Level 1") {
+                        var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
+                                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-arrow-circle-up" aria-hidden='true'></i></button>
+                                            `
+                        return actionButton;
                     }
                     else {
                     var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>

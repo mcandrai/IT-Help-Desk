@@ -58,6 +58,12 @@ namespace Client.Controllers
         }
 
         [HttpPost]
+        public JsonResult EscalationTicketBugSystem(TicketDetailVM ticketDetailVM)
+        {
+            var result = ticketRepository.EscalationTicketBug(ticketDetailVM);
+            return Json(result);
+        }
+        [HttpPost]
         public JsonResult UpdateTicketDone(TicketDetailVM ticketDetailVM)
         {
             var result = ticketRepository.UpdateTicketDone(ticketDetailVM);

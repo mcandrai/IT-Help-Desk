@@ -63,7 +63,12 @@
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
                                         `
                         return actionButton;
-                    } else {
+                    } else if (data.statusName == "New") {
+                        var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
+                                            `
+                        return actionButton;
+                    }
+                    else {
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
                                         <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"> <i class="fas fa-check-circle" aria-hidden='true'></i></button>
                                         `

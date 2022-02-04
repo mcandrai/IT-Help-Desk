@@ -63,8 +63,15 @@
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
                                         `
                         return actionButton;
-                    } else {
+                    } else if (data.statusName == "New") {
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
+                                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-arrow-circle-up" aria-hidden='true'></i></button>
+                                            `
+                        return actionButton;
+                    }
+                    else {
+                        var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
+                                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-arrow-circle-up" aria-hidden='true'></i></button>
                                         <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalDone" data-whatever="${data.id}"> <i class="fas fa-check-circle" aria-hidden='true'></i></button>
                                         `
                         return actionButton;
@@ -76,13 +83,13 @@
 });
 
 
-function UpdateTicketBug(id) {
+function EscalationTickettoDatabase(id) {
     var ticketTable = $('#ticketTable').DataTable();
     var ticketData = new Object();
     ticketData.id = id;
     $.ajax({
         type: 'POST',
-        url: 'tickets/UpdateTicketBug',
+        url: 'tickets/EscalationTicketBugSystem',
         data: ticketData,
         success: function (data) {
             closeEscalationModal();
@@ -96,7 +103,21 @@ function UpdateTicketBug(id) {
     })
 
 }
+$('#modalEscalation').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var recipient = button.data('whatever');
+    var modal = $(this);
+    modal.find('#escalationTicket').text(recipient);
+    var data = '';
+    data = `
+<button type="button" class="btn btn-secondary" onclick=" closeEscalationModal()">Cancel</button>
+<button class="btn btn-primary" onClick="EscalationTickettoDatabase(${recipient})">Move</button>`
+    $("#ticketData").html(data);
+});
 
+function closeEscalationModal() {
+    $('#modalEscalation').modal('hide');
+}
 
 
 function alertError() {
@@ -123,22 +144,7 @@ function alertSuccessUpdate() {
 
 
 
-$('#modalEscalation').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget);
-    var recipient = button.data('whatever');
-    var modal = $(this);
-    modal.find('#escalationTicket').text(recipient);
-    var data = '';
-    data = `
-<button type="button" class="btn btn-secondary" onclick=" closeEscalationModal()">Cancel</button>
-<button class="btn btn-primary" onClick="UpdateTicketBug(${recipient})">Move</button>`
-    $("#ticketData").html(data);
-});
 
-
-function closeEscalationModal() {
-    $('#modalEscalation').modal('hide');
-}
 
 function UpdateTicketDatabase(id) {
     var ticketTable = $('#ticketTable').DataTable();

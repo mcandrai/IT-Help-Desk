@@ -95,6 +95,18 @@ namespace Client.Repositories.Data
 
             return entities;
         }
+        public Object EscalationTicketBug(TicketDetailVM ticketDetailVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(ticketDetailVM), Encoding.UTF8, "application/json");
+            Object entities = new Object();
+            using (var response = httpClient.PostAsync(request + "Escalation-Ticket-BugSystem", content).Result)
+            {
+                string apiResponse = response.Content.ReadAsStringAsync().Result;
+                entities = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+
+            return entities;
+        }
 
         public Object UpdateTicketDatabase(TicketDetailVM ticketDetailVM)
         {
