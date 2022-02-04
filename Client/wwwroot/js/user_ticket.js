@@ -1,4 +1,6 @@
-﻿Triggerdata();
+﻿
+/*Get data user login*/
+Triggerdata();
 function Triggerdata() {
     $.ajax({
         url: 'accounts/get-data-login',
@@ -11,6 +13,7 @@ function Triggerdata() {
     })
 }
 
+/*Get data ticket by user login*/
 function GetData(nik) {
     $('#ticketTable').DataTable({
         "ajax": {
@@ -28,7 +31,7 @@ function GetData(nik) {
                 text: '<i class="fa fa-file-excel-o"></i>',
                 extend: 'excelHtml5',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4]
+                    columns: [0, 1, 2, 3]
                 }
             },
             {
@@ -36,7 +39,7 @@ function GetData(nik) {
                 text: '<i class="fa fa-file-pdf-o"></i>',
                 extend: 'pdfHtml5',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4]
+                    columns: [0, 1, 2, 3]
                 }
             }
 
@@ -80,12 +83,11 @@ function GetData(nik) {
 }
 
 
+/*Function to validate ticket data check*/
 (function () {
     'use strict';
     window.addEventListener('load', function () {
-
         var forms = document.getElementsByClassName('needs-validation');
-
         var validation = Array.prototype.filter.call(forms, function (form) {
             document.getElementById('formTicket').addEventListener('submit', function (event) {
                 if (form.checkValidity() === false) {
@@ -101,6 +103,8 @@ function GetData(nik) {
     }, false);
 })();
 
+
+/*Function to store ticket data user*/
 let nik_ticket;
 function StoreTicket() {
     var form = $('formTicket')[0];
@@ -160,11 +164,6 @@ function GetNIK() {
     })
 }
 
-/*$(".custom-control-file").on("change", function () {
-    console.log("name");
-    var fileName = $(this).val().split("\\").pop();
-    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-});*/
 
 function alertError() {
     Swal.fire({
@@ -187,15 +186,9 @@ $('#modalCreateTicket').on('show.bs.modal', function () {
     GetNIK();
 });
 
-/*helper close modal insert*/
+
 function closeTicketModal() {
     document.getElementById("formTicket").reset();
     document.getElementById("formTicket").classList.remove('was-validated');
     $('#modalCreateTicket').modal('hide');
-}
-
-function closeUpdateEmployeeModal() {
-    document.getElementById("formUpdateEmployee").reset();
-    document.getElementById("formUpdateEmployee").classList.remove('was-validated');
-    $('#modalUpdateEmployee').modal('hide');
 }

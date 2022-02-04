@@ -117,5 +117,51 @@ namespace Server.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("System/Report")]
+        public ActionResult<ReportVM> ReportDataAll()
+        {
+            try
+            {
+                var result = employeeRepository.AllReport();
+                return Ok(new { status = HttpStatusCode.OK,  message = "Successfully get data!", data = result });
+            }
+            catch (Exception )
+            {
+                return BadRequest(new { status = HttpStatusCode.InternalServerError, message = "Something has gone wrong" });
+            }
+        }
+
+       
+        [HttpGet]
+        [Route("System/Report-Priority")]
+        public ActionResult<PriorityVM> GetTicketPriority()
+        {
+            try
+            {
+                var result = employeeRepository.GetTicketPriority();
+                return Ok(new { status = HttpStatusCode.OK, message = "Successfully get data!", data = result });
+            }
+            catch (Exception )
+            {
+                return BadRequest(new { status = HttpStatusCode.InternalServerError,  message = "Something has gone wrong!" });
+            }
+        }
+
+        [HttpGet]
+        [Route("System/Report-Statuses")]
+        public ActionResult<StatusVM> GetTicketStatus()
+        {
+            try
+            {
+                var result = employeeRepository.GetTicketStatus();
+                return Ok(new { status = HttpStatusCode.OK, message = "Successfully get data!", data = result });
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { status = HttpStatusCode.InternalServerError, message = "Something has gone wrong!" });
+            }
+        }
+
     }
 }

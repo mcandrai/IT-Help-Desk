@@ -26,10 +26,13 @@ function GetDetailTicket(last_segment) {
     }).done((data) => {
         console.log(data);
         document.getElementById("ticket-id").innerHTML = "Ticket " + data.id + " " + data.categoryName;
-        var employee = `<div class="p-2">${data.userName} <span class="badge badge-secondary">Employee</span></div>
-                        <div class="p-2"><img src="/images/${data.image}" class="img-thumbnail"></div>
-
-                        `;
+        if (data.image == null) {
+            var employee = `<div class="p-2">${data.userName} <span class="badge badge-secondary">Employee</span></div>`;
+        } else {
+            var employee = `<div class="p-2">${data.userName} <span class="badge badge-secondary">Employee</span></div>
+                        <div class="p-2"><img src="/images/${data.image}" class="img-thumbnail"></div>`;
+        }
+      
         $("#userfullname").html(employee);
         
         document.getElementById("message").innerHTML = data.message;

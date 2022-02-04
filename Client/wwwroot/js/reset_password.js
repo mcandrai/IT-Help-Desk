@@ -1,14 +1,25 @@
 ﻿
-/*check data email and otp*/
-function ValidationOTP() {
-    var form = document.forms["reset"].checkValidity();
-    event.preventDefault();
-    if (form) {
-        ChangePassword();
-    }
-}
+/*Function to validate email and otp*/
+(function () {
+    'use strict';
+    window.addEventListener('load', function () {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    event.preventDefault();
+                    ChangePassword();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
 
-/*change password*/
+/*Function to store new password*/
 function ChangePassword() {
 
     var data = new Object();
@@ -23,23 +34,22 @@ function ChangePassword() {
         data: data,
         success: function (data) {
             if (data.status != 200) {
-                $('#forgot-alert-success').hide();
-                $('#alert-text-danger').text(data.message);
-                $('#forgot-alert-danger').show();
+                Swal.fire({
+                    icon: 'error',
+                    text: data.message,
+                })
 
             } else {
-                $('#forgot-alert-danger').hide();
-                $('#alert-text-success').text(data.message);
-                $('#forgot-alert-success').show();
-                document.getElementById("reset").reset();
+                Swal.fire({
+                    icon: 'success',
+                    text: data.message,
+                })
+                document.getElementById("formReset").reset();
+                document.getElementById("formReset").classList.remove('was-validated');
 
-                $(document).ready(function () {
-                    window.setTimeout(function () {
-                        $(".alert").fadeTo(500, 0).slideUp(500, function () {
-                            $(this).remove();
-                        });
-                    }, 3000);
-                });
+                setTimeout(function () {
+                    window.location.href = 'login';
+                }, 3000);
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {

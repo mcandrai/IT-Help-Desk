@@ -14,28 +14,22 @@
 
                     </div>
                     <div class="col-lg-7">
-                        <div class="alert alert-danger alert-dismissible fade show mx-2 my-2" id="forgot-alert-danger" style="display:none;">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <span id="alert-text-danger"> </span>
-                        </div>
-
-                        <div class="alert alert-success alert-dismissible fade show mx-2 my-2" id="forgot-alert-success" style="display:none;">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <span id="alert-text-success"> </span>
-                        </div>
                         <div class="p-5">
                             <div class="text-left mb-4">
                                 <h1 class="h4 text-gray-900">Forgot password.</h1>
                                 <small>Dont worry, resetting your password is easy.</small>
                             </div>
-                            <form class="user" id="otp">
+                            <form class="needs-validation" id="formOTP" novalidate>
                                 <div class="form-group">
                                     <input type="email" name="Email" class="form-control form-control-user"
                                            id="email" aria-describedby="emailHelp"
                                            placeholder="Email" required>
+                                    <div class="invalid-feedback">
+                                        Enter a valid email
+                                    </div>
                                 </div>
 
-                                <button type="submit" onclick="ValidationEmail()" class="btn btn-primary btn-user btn-block">
+                                <button type="submit" class="btn btn-primary btn-user btn-block">
                                     SEND
                                 </button>
 

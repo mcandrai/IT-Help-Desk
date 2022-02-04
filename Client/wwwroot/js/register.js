@@ -1,14 +1,26 @@
 ﻿
-/*check data registration*/
-function ValidationRegistration() {
-    var form = document.forms["registration"].checkValidity();
-    event.preventDefault();
-    if (form) {
-        StoreRegistration();
-    }
-}
 
-/*store data registration*/
+/*Function for validation check registration data*/
+(function () {
+    'use strict';
+    window.addEventListener('load', function () {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    event.preventDefault();
+                    StoreRegistration();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+/*Function to save registration data*/
 function StoreRegistration() {
 
     var data = new Object();
@@ -33,26 +45,22 @@ function StoreRegistration() {
         data: data,
         success: function (data) {
             if (data.status != 200) {
-                $('#register-alert-success').hide();
-                $('#alert-text-danger').text(data.message);
-                $('#register-alert-danger').show();
-
+                Swal.fire({
+                    icon: 'error',
+                    text: data.message,
+                })
             } else {
-                $('#register-alert-danger').hide();
-                $('#alert-text-success').text(data.message);
-                $('#register-alert-success').show();
-                document.getElementById("registration").reset();
-
-                window.setTimeout(function () {
-                    $(".alert").fadeTo(500, 0).slideUp(500, function () {
-                        $(this).remove();
-                    });
-                }, 3000);
-               
+                Swal.fire({
+                    icon: 'success',
+                    text: data.message,
+                })
+                document.getElementById("formRegistration").reset();
+                document.getElementById("formRegistration").classList.remove('was-validated');
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
         }
+
     })
 }

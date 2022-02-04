@@ -199,5 +199,53 @@ namespace Server.Repository.Data
             return true;
         }
 
+        public ReportVM AllReport()
+        {
+            var emp = myContext.Employees.Count();
+            var cat = myContext.Categories.Count();
+            var tick = myContext.Tickets.Count();
+            var prio = myContext.Priorities.Count();
+
+            var getReport = new ReportVM
+            {
+                employees = emp,
+                tickets = tick,
+                categories = cat,
+                priorities = prio
+            };
+
+            return getReport;
+        }
+
+        public IEnumerable<PriorityVM> GetTicketPriority()
+        {
+            var list = from tic in myContext.Tickets
+                       join pri in myContext.Priorities on tic.PriorityId equals pri.Id
+                       group pri by new { pri.Id, pri.Name } into Group
+                       select new PriorityVM
+                       {
+                           PriorityId = Group.Key.Id,
+                           PriorityName = Group.Key.Name,
+                           BasePriority = Group.Count()
+                       };
+
+            return list.ToList();
+        }
+
+        public IEnumerable<StatusVM> GetTicketStatus()
+        {
+            var list = from tic in myContext.Tickets
+                       join sta in myContext.Statuses on tic.StatusId equals sta.Id
+                       group sta by new { sta.Id, sta.Name } into Group
+                       select new StatusVM
+                       {
+                           StatusId = Group.Key.Id,
+                           StatusName = Group.Key.Name,
+                           BaseStatus = Group.Count()
+                       };
+
+            return list.ToList();
+        }
+
     }
 }

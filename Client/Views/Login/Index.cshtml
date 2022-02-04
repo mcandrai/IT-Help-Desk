@@ -44,25 +44,23 @@
                                 <h1 class="h4 text-gray-900">Log in.</h1>
                                 <small>Log in with your data that you entered during your registration.</small>
                             </div>
-                            <form class="user" method="post" action="accounts/login" id="login">
+                            <form class="needs-validation" method="post" action="accounts/login" id="login" novalidate>
                                 <div class="form-group">
                                     <input type="email" name="Email" class="form-control form-control-user"
-                                           id="exampleInputEmail" aria-describedby="emailHelp"
+                                           id="email" aria-describedby="emailHelp"
                                            placeholder="Email" required>
+                                    <div class="invalid-feedback">
+                                        Enter a valid email
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <input type="password" name="Password" class="form-control form-control-user"
-                                           id="exampleInputPassword" placeholder="Password" required>
-                                </div>
-                                <div class="form-group">
-                                    <div class="custom-control custom-checkbox small">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                                        <label class="custom-control-label" for="customCheck">
-                                            Remember
-                                            Me
-                                        </label>
+                                           id="password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$" placeholder="Password" required>
+                                    <div class="invalid-feedback">
+                                        Enter minimum six characters, at least one letter and one number
                                     </div>
                                 </div>
+                             
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
                                     LOGIN
                                 </button>

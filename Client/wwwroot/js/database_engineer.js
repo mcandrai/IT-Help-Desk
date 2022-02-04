@@ -15,7 +15,7 @@
                 text: '<i class="fa fa-file-excel-o"></i>',
                 extend: 'excelHtml5',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4,5,6]
+                    columns: [0, 1, 2, 3]
                 }
             },
             {
@@ -23,7 +23,7 @@
                 text: '<i class="fa fa-file-pdf-o"></i>',
                 extend: 'pdfHtml5',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4,5,6]
+                    columns: [0, 1, 2, 3]
                 }
             }
 
@@ -65,7 +65,7 @@
                         return actionButton;
                     } else {
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
-                                        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalDone" data-whatever="${data.id}"> <i class="fas fa-check-circle" aria-hidden='true'></i></button>
+                                        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"> <i class="fas fa-check-circle" aria-hidden='true'></i></button>
                                         `
                         return actionButton;
                     }
