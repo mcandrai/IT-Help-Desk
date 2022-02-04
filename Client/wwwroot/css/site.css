@@ -58,7 +58,7 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 
 #detail-message .Help {
-    background-color: #db3b21;
+    background-color: #28a745;
     color: #ffffff;
 }
 
@@ -68,6 +68,6 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 
 #detail-message .Database {
-    background-color: #28a745;
+    background-color:#db3b21;
     color: #ffffff;
 }

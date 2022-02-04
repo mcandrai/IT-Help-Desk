@@ -30,6 +30,7 @@ namespace Server.Repository.Data
                 UpdateAt = DateTime.Now,
                 StatusId = 1,
                 PriorityId = 4,
+                EscalationId = 1,
                 CategoryId = ticketDetailVM.CategoryId,
                 NIK = ticketDetailVM.NIK,
                 ProblemPicture = ticketDetailVM.ImgProblem
@@ -55,6 +56,7 @@ namespace Server.Repository.Data
                 StatusId = getTicket.StatusId,
                 CategoryId = getTicket.CategoryId,
                 PriorityId = ticketDetailVM.PriorityId,
+                EscalationId = getTicket.EscalationId,
                 NIK = getTicket.NIK,
                 ProblemPicture = getTicket.ProblemPicture
             };
@@ -62,6 +64,7 @@ namespace Server.Repository.Data
             myContext.Entry(ticket).State = EntityState.Modified;
             return myContext.SaveChanges();
         }
+
 
         public int UpdateTicketBug(TicketDetailVM ticketDetailVM)
         {
@@ -73,7 +76,27 @@ namespace Server.Repository.Data
                 UpdateAt = DateTime.Now,
                 StatusId = getTicket.StatusId,
                 CategoryId = getTicket.CategoryId,
-                PriorityId = 3,
+                PriorityId = getTicket.PriorityId,
+                EscalationId = 2,
+                NIK = getTicket.NIK,
+                ProblemPicture = getTicket.ProblemPicture
+            };
+            myContext.Entry(getTicket).State = EntityState.Detached;
+            myContext.Entry(ticket).State = EntityState.Modified;
+            return myContext.SaveChanges();
+        }
+        public int EscalationTickettoDatabase(TicketDetailVM ticketDetailVM)
+        {
+            var getTicket = myContext.Tickets.FirstOrDefault(a => a.Id == ticketDetailVM.Id);
+            var ticket = new Ticket
+            {
+                Id = getTicket.Id,
+                CreateAt = getTicket.CreateAt,
+                UpdateAt = DateTime.Now,
+                StatusId = getTicket.StatusId,
+                CategoryId = getTicket.CategoryId,
+                PriorityId = getTicket.PriorityId,
+                EscalationId = 3,
                 NIK = getTicket.NIK,
                 ProblemPicture = getTicket.ProblemPicture
             };
@@ -93,6 +116,7 @@ namespace Server.Repository.Data
                 StatusId = 4,
                 PriorityId = getTicket.PriorityId,
                 NIK = getTicket.NIK,
+                EscalationId = getTicket.EscalationId,
                 ProblemPicture = getTicket.ProblemPicture
             };
             myContext.Entry(getTicket).State = EntityState.Detached;
@@ -104,6 +128,8 @@ namespace Server.Repository.Data
         {
             var getTicket = myContext.Tickets.FirstOrDefault(t => t.Id == Id);
             var getEmail = myContext.Accounts.FirstOrDefault(a => a.NIK == getTicket.NIK);
+            var getName = myContext.Employees.FirstOrDefault(e => e.NIK == getTicket.NIK);
+            var getMessage = myContext.Messages.FirstOrDefault(m => m.TicketId == getTicket.Id);
             var getCategory = myContext.Categories.FirstOrDefault(c => c.Id == getTicket.CategoryId);
             var client = new SmtpClient("smtp.gmail.com", 587)
             {
@@ -112,10 +138,22 @@ namespace Server.Repository.Data
             };
 
             DateTime nowTime = DateTime.Now;
-            
-            string bodyMessage = $"Your Problem with ID ticket {Id} already Done \n\nCategory: {getCategory.Name}\n\nThanks for Your Patience.";
-            client.Send("mccreg61net@gmail.com", getEmail.Email, "Help Desk - Report Ticket Problem", bodyMessage);
-
+            using (var message = new MailMessage("mccreg61net@gmail.com", getEmail.Email)
+            {
+                Subject = "Report Ticket "+getName.FirstName+" "+getName.LastName,
+                Body = 
+                "Kepada, "
+                +getName.FirstName + " " + getName.LastName+ 
+                "<br> Terima kasih telah menggunakan layanan Help Desk kami,Tiket anda : <pre>" +
+                " Tanggal Request   :" +getTicket.CreateAt+
+                "<br> Kategori Masalah  :" +getCategory.Name+ "</br>" +
+                "<br> Keterangan        :" + getMessage.MessageText+ "</br></pre>" +
+                "<br><span style="+"background-color:#00c851;color:white;padding:10px;border-radius:10px;letter-spacing:5px;font-weight:600;"+">DONE</span>" +
+                "<br><br>Catatan : <br><p> Untuk support lebih lanjut bisa menghubungi kita di 085 - 320 - 119 - 930.</p>" +
+                "<br> Hormat Kami,</br>" +
+                "<br> Help Desk </br>",
+                     IsBodyHtml = true,
+            })client.Send(message);
             return true;
         }
 
@@ -133,6 +171,7 @@ namespace Server.Repository.Data
                 CategoryId = getTicket.CategoryId,
                 StatusId = 5,
                 PriorityId = getTicket.PriorityId,
+                EscalationId = getTicket.EscalationId,
                 NIK = getTicket.NIK,
                 ProblemPicture = getTicket.ProblemPicture
             };
@@ -198,6 +237,7 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
+                          join esc in myContext.Escalations on t.EscalationId equals esc.Id
                           orderby st.Id ascending,p.Id descending
                           where st.Id != 5
                           select new
@@ -206,6 +246,7 @@ namespace Server.Repository.Data
                               m.MessageText,
                               t.UpdateAt,
                               t.CreateAt,
+                              EscalationName = esc.Name,
                               StatusName = st.Name,
                               PriorityName = p.Name,
                               EmployeeName = e.FirstName+" "+e.LastName,
@@ -221,8 +262,9 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
+                          join esc in myContext.Escalations on t.EscalationId equals esc.Id
                           orderby st.Id ascending, p.Id descending
-                          where t.PriorityId==2 && st.Id!=5
+                          where esc.Id==2 && st.Id!=5
                           select new
                           {
                               t.Id,
@@ -230,6 +272,7 @@ namespace Server.Repository.Data
                               t.UpdateAt,
                               t.CreateAt,
                               StatusName = st.Name,
+                              EscalationName = esc.Name,
                               EmployeeName = e.FirstName + " " + e.LastName,
                               PriorityName = p.Name,
                               CategoryName = ct.Name
@@ -244,8 +287,9 @@ namespace Server.Repository.Data
                           join st in myContext.Statuses on t.StatusId equals st.Id
                           join ct in myContext.Categories on t.CategoryId equals ct.Id
                           join p in myContext.Priorities on t.PriorityId equals p.Id
+                          join esc in myContext.Escalations on t.EscalationId equals esc.Id
                           orderby st.Id ascending, p.Id descending
-                          where t.PriorityId == 3 && st.Id != 5
+                          where esc.Id == 3 && st.Id != 5
                           select new
                           {
                               t.Id,
@@ -253,6 +297,7 @@ namespace Server.Repository.Data
                               t.UpdateAt,
                               t.CreateAt,
                               StatusName = st.Name,
+                              EscalationName = esc.Name,
                               EmployeeName = e.FirstName + " " + e.LastName,
                               PriorityName = p.Name,
                               CategoryName = ct.Name

@@ -10,8 +10,8 @@ using Server.Context;
 namespace Server.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220203082521_add_image")]
-    partial class add_image
+    [Migration("20220204061257_escalation")]
+    partial class escalation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,6 +88,21 @@ namespace Server.Migrations
                     b.HasKey("NIK");
 
                     b.ToTable("tb_m_employees");
+                });
+
+            modelBuilder.Entity("Server.Model.Escalation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_escalations");
                 });
 
             modelBuilder.Entity("Server.Model.Message", b =>
@@ -212,6 +227,9 @@ namespace Server.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EscalationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("NIK")
                         .HasColumnType("nvarchar(450)");
 
@@ -230,6 +248,8 @@ namespace Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("EscalationId");
 
                     b.HasIndex("NIK");
 
@@ -304,6 +324,12 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Server.Model.Escalation", "Escalation")
+                        .WithMany("Ticket")
+                        .HasForeignKey("EscalationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Server.Model.Employee", "Employee")
                         .WithMany("Ticket")
                         .HasForeignKey("NIK");
@@ -324,6 +350,8 @@ namespace Server.Migrations
 
                     b.Navigation("Employee");
 
+                    b.Navigation("Escalation");
+
                     b.Navigation("Priority");
 
                     b.Navigation("Status");
@@ -340,6 +368,11 @@ namespace Server.Migrations
 
                     b.Navigation("MessageDetail");
 
+                    b.Navigation("Ticket");
+                });
+
+            modelBuilder.Entity("Server.Model.Escalation", b =>
+                {
                     b.Navigation("Ticket");
                 });
 

@@ -42,6 +42,7 @@ namespace Server.Controllers
             var result = ticketRepository.UpdateTicket(ticketDetailVM);
             return Ok(result);
         }
+        //eskalasi dari helpdesk ke bug system
         [HttpPost]
         [Route("Update-Ticket-BugSystem")]
         public ActionResult<TicketDetailVM> UpdateTicketBug(TicketDetailVM ticketDetailVM)
@@ -49,6 +50,7 @@ namespace Server.Controllers
             var result = ticketRepository.UpdateTicketBug(ticketDetailVM);
             return Ok(result);
         }
+        //eskalasi dari bug system ke database
         [HttpPost]
         [Route("Update-Ticket-Database")]
         public ActionResult<TicketDetailVM> UpdateTicketDatabase(TicketDetailVM ticketDetailVM)

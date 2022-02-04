@@ -26,6 +26,9 @@ namespace Server.Model
         public virtual Priority Priority { get; set; }
         public int PriorityId { get; set; }
         [JsonIgnore]
+        public virtual Escalation Escalation { get; set; }
+        public int EscalationId { get; set; }
+        [JsonIgnore]
         public virtual Employee Employee { get; set; }
         public string NIK { get; set; }
         [JsonIgnore]

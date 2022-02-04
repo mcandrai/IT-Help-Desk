@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Server.Migrations
 {
-    public partial class add_image : Migration
+    public partial class escalation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,6 +33,19 @@ namespace Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tb_m_employees", x => x.NIK);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tb_m_escalations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_m_escalations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,6 +120,7 @@ namespace Server.Migrations
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false),
                     PriorityId = table.Column<int>(type: "int", nullable: false),
+                    EscalationId = table.Column<int>(type: "int", nullable: false),
                     NIK = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ProblemPicture = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -125,6 +139,12 @@ namespace Server.Migrations
                         principalTable: "tb_m_employees",
                         principalColumn: "NIK",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_tb_m_tickets_tb_m_escalations_EscalationId",
+                        column: x => x.EscalationId,
+                        principalTable: "tb_m_escalations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_tb_m_tickets_tb_m_priorities_PriorityId",
                         column: x => x.PriorityId,
@@ -219,6 +239,11 @@ namespace Server.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tb_m_tickets_EscalationId",
+                table: "tb_m_tickets",
+                column: "EscalationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tb_m_tickets_NIK",
                 table: "tb_m_tickets",
                 column: "NIK");
@@ -285,6 +310,9 @@ namespace Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "tb_m_employees");
+
+            migrationBuilder.DropTable(
+                name: "tb_m_escalations");
 
             migrationBuilder.DropTable(
                 name: "tb_m_priorities");

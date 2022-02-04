@@ -21,6 +21,7 @@ namespace Server.Context
         public DbSet<Ticket>Tickets { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Priority> Priorities { get; set; }
+        public DbSet<Escalation> Escalations { get; set; }
         public DbSet<MessageDetail> MessageDetails { get; set; }
         public DbSet<AccountRole> AccountRoles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -61,6 +62,10 @@ namespace Server.Context
             modelBuilder.Entity<Priority>()
                 .HasMany(t => t.Ticket)
                 .WithOne(p => p.Priority);
+
+            modelBuilder.Entity<Escalation>()
+                .HasMany(t => t.Ticket)
+                .WithOne(e=>e.Escalation);
 
             modelBuilder.Entity<ProblemCategory>()
                 .HasMany(t => t.Ticket)

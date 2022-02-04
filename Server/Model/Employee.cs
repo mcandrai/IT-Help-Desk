@@ -24,7 +24,7 @@ namespace Server.Model
     }
     public enum Gender
     {
-        Male,
-        Female
+        Female,
+        Male
     }
 }

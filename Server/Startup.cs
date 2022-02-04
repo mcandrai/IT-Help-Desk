@@ -46,6 +46,7 @@ namespace Server
             services.AddScoped<StatusRepository>();
             services.AddScoped<TicketRepository>();
             services.AddScoped<MessageRepository>();
+            services.AddScoped<EscalationRepository>();
 
             services.AddDbContext<MyContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("Database")));

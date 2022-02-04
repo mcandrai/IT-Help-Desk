@@ -56,7 +56,8 @@ namespace Client.Repositories.Data
                 CategoryId = ticketDetailVM.CategoryId,
                 NIK = ticketDetailVM.NIK,
                 ImgProblem = uniqueFileName,
-                Message = ticketDetailVM.Message
+                Message = ticketDetailVM.Message,
+                EscalationId = 1
             };
             StringContent content = new StringContent(JsonConvert.SerializeObject(ticket), Encoding.UTF8, "application/json");
             Object entities = new Object();
@@ -100,6 +101,19 @@ namespace Client.Repositories.Data
             StringContent content = new StringContent(JsonConvert.SerializeObject(ticketDetailVM), Encoding.UTF8, "application/json");
             Object entities = new Object();
             using (var response = httpClient.PostAsync(request + "Update-Ticket-Database", content).Result)
+            {
+                string apiResponse = response.Content.ReadAsStringAsync().Result;
+                entities = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+
+            return entities;
+        }
+
+        public Object UpdateTicketBugSystem(TicketDetailVM ticketDetailVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(ticketDetailVM), Encoding.UTF8, "application/json");
+            Object entities = new Object();
+            using (var response = httpClient.PostAsync(request + "Update-Ticket-BugSystem", content).Result)
             {
                 string apiResponse = response.Content.ReadAsStringAsync().Result;
                 entities = JsonConvert.DeserializeObject<Object>(apiResponse);

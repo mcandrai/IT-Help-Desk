@@ -50,7 +50,7 @@ $(document).ready(function () {
                 'render': function (data) {
                     if (data.priorityName == "General") {
                         var $name = `<span class="label badge-pill ${data.priorityName}">${data.priorityName}</span>
-                                 <button class="btn btn-sm btn-dark" data-toggle="modal" data-target="#modalEscalation" data-whatever="${data.id}"><i class="fas fa-ellipsis-h" aria-hidden='true'></i></button>`
+                                 <button class="btn btn-sm btn-dark" data-toggle="modal" data-target="#modalPriority" data-whatever="${data.id}"><i class="fas fa-ellipsis-h" aria-hidden='true'></i></button>`
                         return $name;
                     }
                     else {
@@ -70,6 +70,7 @@ $(document).ready(function () {
                 'data': null,
                 'bSortable': false,
                 'render': function (data) {
+                    console.log(data);
                     if (data.statusName == "Done") {
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
                                         <button class="btn btn-sm btn-dark" data-toggle="modal" data-target="#modalReport" data-whatever="${data.id}"> <i class="fas fa-share-square" aria-hidden='true'></i></button>
@@ -78,19 +79,13 @@ $(document).ready(function () {
                     } else if (data.priorityName == "General") {
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>`
                         return actionButton;
-                    } else if (data.statusName == "New") {
+                    } else if (data.statusName == "New" && data.EscalationName == "Level 1") {
                         var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
-                                             `
-                        return actionButton;
-                    }
-                    else if (data.priorityName != "Low") {
-                        var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
-                                        `
-                        return actionButton;
+                                            `
+                                            return actionButton;
                     }
                     else {
                     var actionButton = `<a class="btn btn-sm btn-warning" href="ticket-detail/${data.id}" role="button"><i class="fas fa-comment-dots" aria-hidden='true'></i></a>
-                                        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalDone" data-whatever="${data.id}"> <i class="fas fa-check-circle" aria-hidden='true'></i></button>
                                         `
                         return actionButton;
                     }
@@ -102,46 +97,7 @@ $(document).ready(function () {
 
 
 
-function UpdateTicket(id) {
-    var ticketTable = $('#ticketTable').DataTable();
-    var ticketData = new Object();
-    ticketData.id = id;
-    ticketData.priorityId = parseInt($('#priorityId').val());
-    $.ajax({
-        type: 'POST',
-        url: 'tickets/UpdateTicket',
-        data: ticketData,
-        success: function (data) {
-            closeEscalationModal();
-            ticketTable.ajax.reload();
-            alertSuccessUpdate();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            var error = jqXHR.responseJSON;
-            alertError();
-        }
-    })
 
-}
-
-function GetPriority() {
-    $.ajax({
-        url: 'Priorities/GetAll'
-    }).done((data) => {
-        var prioritySelect = "";
-        $.each(data, function (key, val) {
-            if (val.name == "General") {
-                prioritySelect;
-            }
-            else {
-                prioritySelect += `<option value=${val.id}>${val.name}</option>`
-            }
-        });
-        $("#priorityId").html(prioritySelect);
-    }).fail((error) => {
-        console.log(error);
-    })
-}
 
 function alertError() {
     Swal.fire({
@@ -171,8 +127,84 @@ function alertSuccessUpdate() {
     })
 }
 
-
+//Eskalasi
+function UpdateTicketBugSystem(id) {
+    var ticketTable = $('#ticketTable').DataTable();
+    var ticketData = new Object();
+    ticketData.id = id;
+    console.log(ticketData);
+    $.ajax({
+        type: 'POST',
+        url: 'tickets/UpdateTicketBugSystem',
+        data: ticketData,
+        success: function (data) {
+            closeEscalationModal();
+            ticketTable.ajax.reload();
+            alertSuccessUpdate();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            var error = jqXHR.responseJSON;
+            alertError();
+        }
+    })
+}
 $('#modalEscalation').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var recipient = button.data('whatever');
+    var modal = $(this);
+    modal.find('#escalationTicket').text(recipient);
+    var data = '';
+    data = `
+  <button type="button" class="btn btn-secondary" onclick=" closeEscalationModal()">Cancel</button>
+        <button class="btn btn-primary" onClick="UpdateTicketBugSystem(${recipient})">Move</button>`
+    $("#ticketEscalation").html(data);
+});
+
+function closeEscalationModal() {
+    $('#modalEscalation').modal('hide');
+}
+
+//Ubah Priority
+function UpdateTicket(id) {
+    var ticketTable = $('#ticketTable').DataTable();
+    var ticketData = new Object();
+    ticketData.id = id;
+    ticketData.priorityId = parseInt($('#priorityId').val());
+    $.ajax({
+        type: 'POST',
+        url: 'tickets/UpdateTicket',
+        data: ticketData,
+        success: function (data) {
+            closePriorityModal();
+            ticketTable.ajax.reload();
+            alertSuccessUpdate();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            var error = jqXHR.responseJSON;
+            alertError();
+        }
+    })
+
+}
+function GetPriority() {
+    $.ajax({
+        url: 'Priorities/GetAll'
+    }).done((data) => {
+        var prioritySelect = "";
+        $.each(data, function (key, val) {
+            if (val.name == "General") {
+                prioritySelect;
+            }
+            else {
+                prioritySelect += `<option value=${val.id}>${val.name}</option>`
+            }
+        });
+        $("#priorityId").html(prioritySelect);
+    }).fail((error) => {
+        console.log(error);
+    })
+}
+$('#modalPriority').on('show.bs.modal', function (event) {
     GetPriority();
 
     var button = $(event.relatedTarget);
@@ -181,17 +213,16 @@ $('#modalEscalation').on('show.bs.modal', function (event) {
     modal.find('#escalationTicket').text(recipient);
     var data = '';
     data = `
-  <button type="button" class="btn btn-secondary" onclick=" closeEscalationModal()">Cancel</button>
+  <button type="button" class="btn btn-secondary" onclick=" closePriorityModal()">Cancel</button>
         <button class="btn btn-primary" onClick="UpdateTicket(${recipient})">Move</button>`
     $("#ticketData").html(data);
 });
 
-
-function closeEscalationModal() {
-    $('#modalEscalation').modal('hide');
+function closePriorityModal() {
+    $('#modalPriority').modal('hide');
 }
 
-
+//Done by HelpDesk
 function UpdateTicketDatabase(id) {
     var ticketTable = $('#ticketTable').DataTable();
     var ticketData = new Object();
@@ -230,6 +261,12 @@ function closeDoneModal() {
 }
 
 
+
+
+
+
+
+//Report HelpDesk
 function ReportTicket(id) {
     var ticketTable = $('#ticketTable').DataTable();
     var ticketData = new Object();

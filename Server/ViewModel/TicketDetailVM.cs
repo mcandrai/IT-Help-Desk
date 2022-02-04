@@ -23,6 +23,7 @@ namespace Server.ViewModel
         [JsonIgnore]
         public virtual Priority Priority { get; set; }
         public int PriorityId { get; set; }
+        public int EscalationId { get; set; }
         [JsonIgnore]
         public virtual Employee Employee { get; set; }
         public string NIK { get; set; }

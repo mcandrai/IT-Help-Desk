@@ -88,6 +88,21 @@ namespace Server.Migrations
                     b.ToTable("tb_m_employees");
                 });
 
+            modelBuilder.Entity("Server.Model.Escalation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_escalations");
+                });
+
             modelBuilder.Entity("Server.Model.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -210,6 +225,9 @@ namespace Server.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EscalationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("NIK")
                         .HasColumnType("nvarchar(450)");
 
@@ -228,6 +246,8 @@ namespace Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("EscalationId");
 
                     b.HasIndex("NIK");
 
@@ -302,6 +322,12 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Server.Model.Escalation", "Escalation")
+                        .WithMany("Ticket")
+                        .HasForeignKey("EscalationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Server.Model.Employee", "Employee")
                         .WithMany("Ticket")
                         .HasForeignKey("NIK");
@@ -322,6 +348,8 @@ namespace Server.Migrations
 
                     b.Navigation("Employee");
 
+                    b.Navigation("Escalation");
+
                     b.Navigation("Priority");
 
                     b.Navigation("Status");
@@ -338,6 +366,11 @@ namespace Server.Migrations
 
                     b.Navigation("MessageDetail");
 
+                    b.Navigation("Ticket");
+                });
+
+            modelBuilder.Entity("Server.Model.Escalation", b =>
+                {
                     b.Navigation("Ticket");
                 });
 
